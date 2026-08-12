@@ -2,11 +2,13 @@ from django.db.models import F, Sum
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
+from urllib3 import request
 
 from . import services
 from .models import Booking, Payment
 from .serializers import BookingCreateSerializer, BookingDetailSerializer
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
 
 class BookingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
@@ -92,3 +94,10 @@ def earnings(request):
                         .values("id", "amount", "status", "created_at")
                         .annotate(booking_ref=F("booking__reference_code"))),
     })
+
+
+@login_required
+def confirmed_page(request, pk):
+    """HTML page: the 'Booking Confirmed' screen from the Stitch designs."""
+    booking = get_object_or_404(Booking, pk=pk, client=request.user)
+    return render(request, "bookings/confirmed.html", {"booking": booking})
