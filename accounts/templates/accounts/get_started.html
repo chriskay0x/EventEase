@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to EventEase</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #FAF7F0;
+            --primary-emerald: #14432A;
+            --accent-gold: #B8935A;
+            --text-main: #111827;
+            --text-muted: #6B7280;
+            --card-bg: #FFFFFF;
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2.5rem 1.5rem 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .main-title {
+            font-family: var(--font-serif);
+            font-size: 2.75rem;
+            font-weight: 500;
+            color: var(--primary-emerald);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 2rem;
+            max-width: 900px;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-image-wrapper {
+            height: 260px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background-color: #e5e5e5;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 2rem 1.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: var(--primary-emerald);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 1.75rem;
+            max-width: 320px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.75rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-emerald);
+            color: #FFFFFF;
+            border: 1px solid var(--primary-emerald);
+        }
+
+        .btn-primary:hover {
+            background-color: #0d2d1c;
+            border-color: #0d2d1c;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid #D1D5DB;
+        }
+
+        .btn-outline:hover {
+            background-color: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-title {
+                font-size: 2rem;
+            }
+
+            body {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">EventEase</div>
+        <h1 class="main-title">Welcome to EventEase</h1>
+        <p class="subtitle">How would you like to begin your journey with us today?</p>
+    </header>
+
+    <main class="cards-container">
+        <!-- Client Card -->
+        <div class="card">
+            <div class="card-image-wrapper">
+                <!-- Ensure couple.jpg is placed in static/images/ or update path accordingly -->
+                <img src="{% static 'images/couple.jpg' %}" alt="Wedding couple" class="card-image" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=800&q=80';">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">I'm planning an event</h2>
+                <p class="card-description">Discover stunning venues, talented vendors, and curated inspiration for your perfect celebration.</p>
+                <a href="{% url 'accounts:signup' %}" class="btn btn-primary">
+                    Get Started <i class="fa-solid font-awesome-arrow-right fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Vendor Card -->
+        <div class="card">
+            <div class="card-image-wrapper">
+                <!-- Ensure vendor.jpg is placed in static/images/ or update path accordingly -->
+                <img src="{% static 'images/vendor.jpg' %}" alt="Vendor showcase" class="card-image" onerror="this.src='https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=800&q=80';">
+            </div>
+            <div class="card-content">
+                <h2 class="card-title">I'm a vendor</h2>
+                <p class="card-description">Showcase your portfolio, manage bookings, and connect with clients seeking your unique expertise.</p>
+                <a href="{% url 'accounts:vendor_signup' %}" class="btn btn-outline">
+                    Get Started <i class="fa-solid fa-store"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        &copy; 2024 EventEase.
+    </footer>
+
+</body>
+</html>
