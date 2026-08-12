@@ -23,7 +23,7 @@ class Venue(models.Model):
     Venue_maxguest = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     Created_at = models.DateTimeField(auto_now_add=True)
     Updated_at = models.DateTimeField(auto_now_add=True,blank=True, null=True)
-    base_price = models.IntegerField(max_length=10)
+    base_price = models.IntegerField()
     services = models.JSONField(default=list, blank=True)
 
 class ServiceListing(models.Model):
