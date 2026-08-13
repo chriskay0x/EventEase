@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notifications</title>
+</head>
+<body>
+
+    <h1>Notifications</h1>
+
+    <form
+        method="POST"
+        action="{% url 'engagement:notification_mark_all_read' %}"
+    >
+        {% csrf_token %}
+        <button type="submit">
+            Mark All as Read
+        </button>
+    </form>
+
+    <hr>
+
+    {% if page_obj %}
+
+        {% for notification in page_obj %}
+
+            <article>
+
+                <strong>
+                    {{ notification.get_kind_display }}
+                </strong>
+
+                <p>
+                    {{ notification.message }}
+                </p>
+
+                <small>
+                    {{ notification.created_at }}
+                </small>
+
+                {% if not notification.is_read %}
+
+                    <form
+                        method="POST"
+                        action="{% url 'engagement:notification_mark_read' notification.pk %}"
+                    >
+                        {% csrf_token %}
+                        <button type="submit">
+                            Mark as Read
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    <p>✓ Read</p>
+
+                {% endif %}
+
+            </article>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No notifications.</p>
+
+    {% endif %}
+
+    <a href="{% url 'engagement:dashboard' %}">
+        Back to Dashboard
+    </a>
+
+</body>
+</html>

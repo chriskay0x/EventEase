@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -69,3 +70,5 @@ def get_started_view(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:login')
+=======
+>>>>>>> Stashed changes

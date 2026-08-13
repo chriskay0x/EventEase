@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 """
 URL configuration for eventease project.
 
@@ -17,8 +18,18 @@ Including another URLconf
 # eventease/urls.py (Root - Pre-configured on main)
 from django.contrib import admin
 from django.urls import path, include
+=======
+from django.contrib import admin
+from django.urls import path, include
+from django.views.generic.base import RedirectView
+>>>>>>> Stashed changes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+<<<<<<< Updated upstream
+=======
+    path('engagement/', include('engagement.urls')),
+    path('', RedirectView.as_view(url='/engagement/', permanent=False)),
+>>>>>>> Stashed changes
 ]
