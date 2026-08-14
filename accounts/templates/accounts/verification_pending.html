@@ -1,0 +1,391 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Under Review - EventEase</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-ivory: #FAF8F5;
+            --primary-emerald: #0A4332;
+            --emerald-hover: #073326;
+            --text-dark: #111827;
+            --text-muted: #6B7280;
+            --badge-bg: #FCF4E9;
+            --badge-text: #925816;
+            --card-inner-bg: #F5F2EB;
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-ivory);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Top Header Navigation */
+        .top-navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 3rem;
+            background: transparent;
+        }
+
+        .brand-logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-emerald);
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .vendor-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            text-decoration: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .logout-btn:hover {
+            color: var(--primary-emerald);
+        }
+
+        /* Main Content Container */
+        .main-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+            flex: 1;
+        }
+
+        .review-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 640px;
+            border-radius: 16px;
+            padding: 3.5rem 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .icon-wrapper {
+            width: 72px;
+            height: 72px;
+            background-color: #FAF2E6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            color: #C07D2B;
+            font-size: 1.75rem;
+        }
+
+        .review-title {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            color: var(--primary-emerald);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 500px;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        /* Time Estimate Pill */
+        .time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background-color: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .time-badge .dot {
+            width: 6px;
+            height: 6px;
+            background-color: #D97706;
+            border-radius: 50%;
+        }
+
+        /* Inner "What Happens Next?" Box */
+        .steps-box {
+            background-color: var(--card-inner-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .steps-box-title {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .step-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 0.15rem;
+        }
+
+        .step-icon-circle.done {
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+        }
+
+        .step-icon-circle.review {
+            background: #E5E7EB;
+            color: #4B5563;
+        }
+
+        .step-icon-circle.notify {
+            background: #E5E7EB;
+            color: #9CA3AF;
+        }
+
+        .step-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .step-info p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Action Buttons */
+        .action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-home {
+            padding: 0.85rem 1.75rem;
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-home:hover {
+            background-color: var(--emerald-hover);
+        }
+
+        .btn-support {
+            padding: 0.85rem 1.75rem;
+            background: #FFFFFF;
+            color: var(--text-dark);
+            border: 1px solid #D1D5DB;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-support:hover {
+            background-color: #F9FAFB;
+            border-color: #9CA3AF;
+        }
+
+        /* Footer */
+        .page-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 3rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .page-footer .footer-logo {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-emerald);
+        }
+
+        @media (max-width: 650px) {
+            .top-navbar, .page-footer {
+                padding: 1rem 1.5rem;
+            }
+            .review-card {
+                padding: 2.5rem 1.5rem;
+            }
+            .action-row {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-home, .btn-support {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar -->
+    <header class="top-navbar">
+        <a href="{% url 'accounts:get_started' %}" class="brand-logo">EventEase</a>
+        <div class="header-actions">
+            <span class="vendor-profile-btn">
+                <i class="fa-regular fa-user"></i> {{ vendor_profile.business_name|default:"Vendor Profile" }}
+            </span>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn" title="Log Out">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Review Content -->
+    <main class="main-container">
+        <div class="review-card">
+            <!-- Icon -->
+            <div class="icon-wrapper">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <h1 class="review-title">Application Under Review</h1>
+            <p class="review-subtitle">
+                Thank you for applying to be an EventEase vendor. We're carefully reviewing your documents and portfolio to ensure quality across our platform.
+            </p>
+
+            <!-- Time Estimate Badge -->
+            <div class="time-badge">
+                <span class="dot"></span>
+                <span>Typically takes 24-48 hours</span>
+            </div>
+
+            <!-- Steps Breakdown Box -->
+            <div class="steps-box">
+                <h3 class="steps-box-title">What happens next?</h3>
+
+                <!-- Step 1 -->
+                <div class="step-row">
+                    <div class="step-icon-circle done">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="step-info">
+                        <h4>Application Submitted</h4>
+                        <p>Your details have been received successfully.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-row">
+                    <div class="step-icon-circle review">
+                        <i class="fa-regular fa-eye"></i>
+                    </div>
+                    <div class="step-info">
+                        <h4>Curation Team Review</h4>
+                        <p>Our team will verify your business details and review your submitted portfolio.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-row">
+                    <div class="step-icon-circle notify">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <div class="step-info">
+                        <h4>Notification via Email</h4>
+                        <p>You will receive an email once a decision has been made or if we need more information.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Actions -->
+            <div class="action-row">
+                <a href="{% url 'accounts:get_started' %}" class="btn-home">Return to Homepage</a>
+                <a href="mailto:support@eventease.com" class="btn-support">Contact Support</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <span class="footer-logo">EventEase</span>
+        <span>&copy; 2026 EventEase. All rights reserved.</span>
+    </footer>
+
+</body>
+</html>

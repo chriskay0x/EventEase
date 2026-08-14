@@ -1,0 +1,475 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Business - EventEase</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-ivory: #FAF8F5;
+            --primary-emerald: #0A4332;
+            --emerald-hover: #073326;
+            --text-dark: #111827;
+            --text-muted: #6B7280;
+            --input-bg: #F3F1EC;
+            --border-light: #E5E7EB;
+            --info-bg: #F5F2EB;
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-ivory);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 680px;
+        }
+
+        /* 4-Step Progress Stepper */
+        .stepper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 2.5rem;
+            padding: 0 1rem;
+        }
+
+        .stepper-progress-bar {
+            position: absolute;
+            top: 18px;
+            left: 12%;
+            right: 12%;
+            height: 2px;
+            background-color: #E5E2DC;
+            z-index: 1;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: #FAF8F5;
+            color: #9CA3AF;
+            border: 2px solid #E5E2DC;
+            transition: all 0.3s ease;
+        }
+
+        .step-circle.completed {
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            border-color: var(--primary-emerald);
+        }
+
+        .step-circle.active {
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            border-color: var(--primary-emerald);
+            box-shadow: 0 0 0 4px rgba(10, 67, 50, 0.15);
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #9CA3AF;
+        }
+
+        .step-label.active {
+            color: var(--primary-emerald);
+            font-weight: 600;
+        }
+
+        /* Form Card */
+        .verification-card {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2.25rem;
+        }
+
+        .card-header h1 {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            color: var(--primary-emerald);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-header p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.6rem;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid transparent;
+            padding: 0.95rem 1.1rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-emerald);
+            background-color: #FFFFFF;
+        }
+
+        .input-field::placeholder {
+            color: #9CA3AF;
+        }
+
+        /* Drag and Drop Zone */
+        .dropzone-container {
+            position: relative;
+            border: 1.5px dashed #D1D5DB;
+            border-radius: 12px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dropzone-container:hover, .dropzone-container.dragover {
+            border-color: var(--primary-emerald);
+            background: #F8FAF9;
+        }
+
+        .dropzone-icon {
+            width: 48px;
+            height: 48px;
+            background: #E8EFEA;
+            color: var(--primary-emerald);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin: 0 auto 1rem auto;
+        }
+
+        .dropzone-text {
+            font-size: 0.92rem;
+            color: var(--text-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .dropzone-text .browse-link {
+            color: var(--primary-emerald);
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .dropzone-hint {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-preview {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.75rem 1rem;
+            background: #E8F0EC;
+            border-radius: 8px;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            color: var(--primary-emerald);
+            font-weight: 500;
+        }
+
+        /* Info Alert Box */
+        .info-box {
+            background-color: var(--info-bg);
+            border: 1px solid #EBE7DF;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.85rem;
+            margin-bottom: 2.25rem;
+        }
+
+        .info-icon {
+            color: var(--primary-emerald);
+            font-size: 1rem;
+            margin-top: 0.15rem;
+        }
+
+        .info-text {
+            font-size: 0.85rem;
+            color: #4B5563;
+            line-height: 1.45;
+        }
+
+        /* Action Buttons */
+        .action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-draft {
+            padding: 0.9rem 2rem;
+            background: transparent;
+            border: 1px solid #D1D5DB;
+            border-radius: 9999px;
+            color: var(--text-dark);
+            font-size: 0.92rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-draft:hover {
+            background: #F3F4F6;
+            border-color: #9CA3AF;
+        }
+
+        .btn-submit {
+            padding: 0.9rem 2.25rem;
+            background: var(--primary-emerald);
+            border: 1px solid var(--primary-emerald);
+            border-radius: 9999px;
+            color: #FFFFFF;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: var(--emerald-hover);
+        }
+
+        @media (max-width: 600px) {
+            .verification-card {
+                padding: 2rem 1.5rem;
+            }
+            .action-row {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn-draft, .btn-submit {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Progress Stepper -->
+        <div class="stepper">
+            <div class="stepper-progress-bar"></div>
+
+            <!-- Step 1: Sign up (Completed) -->
+            <div class="step-item">
+                <div class="step-circle completed">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <span class="step-label">Sign up</span>
+            </div>
+
+            <!-- Step 2: Verify (Active) -->
+            <div class="step-item">
+                <div class="step-circle active">2</div>
+                <span class="step-label active">Verify</span>
+            </div>
+
+            <!-- Step 3: Get approved -->
+            <div class="step-item">
+                <div class="step-circle">3</div>
+                <span class="step-label">Get approved</span>
+            </div>
+
+            <!-- Step 4: Go live -->
+            <div class="step-item">
+                <div class="step-circle">4</div>
+                <span class="step-label">Go live</span>
+            </div>
+        </div>
+
+        <!-- Verification Form Card -->
+        <div class="verification-card">
+            <div class="card-header">
+                <h1>Verify Your Business</h1>
+                <p>Provide a few details to confirm your identity and ensure trust on our platform.</p>
+            </div>
+
+            <form method="post" action="{% url 'accounts:verify_business' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Legal Business Name -->
+                <div class="form-group">
+                    <label class="form-label">Legal Business Name</label>
+                    <input type="text" 
+                           name="legal_business_name" 
+                           class="input-field" 
+                           placeholder="e.g. Bella Events LLC" 
+                           value="{{ vendor_profile.legal_business_name|default:vendor_profile.business_name|default:'' }}" 
+                           required>
+                </div>
+
+                <!-- Business Documents Upload -->
+                <div class="form-group">
+                    <label class="form-label">Business Documents</label>
+                    <div class="dropzone-container" id="dropzone" onclick="document.getElementById('documentInput').click()">
+                        <div class="dropzone-icon">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+                        <div class="dropzone-text">
+                            Drag and drop files here, or <span class="browse-link">browse</span>
+                        </div>
+                        <div class="dropzone-hint">
+                            Supports PDF, JPG, PNG (Max 10MB)
+                        </div>
+                        <input type="file" name="verification_document" id="documentInput" class="file-input" accept=".pdf, .jpg, .jpeg, .png">
+                    </div>
+
+                    <!-- Live File Preview Indicator -->
+                    <div class="file-preview" id="filePreview">
+                        <span id="fileName"><i class="fa-solid fa-paperclip"></i> document.pdf</span>
+                        <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="clearFile(event)"></i>
+                    </div>
+                </div>
+
+                <!-- Info Box -->
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-info info-icon"></i>
+                    <div class="info-text">
+                        Verification typically takes 1-2 business days. We will notify you via email once your account is reviewed.
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-row">
+                    <button type="submit" name="action" value="draft" class="btn-draft">Save Draft</button>
+                    <button type="submit" name="action" value="submit" class="btn-submit">
+                        Submit Verification <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dropzone Interactions Script -->
+    <script>
+        const dropzone = document.getElementById('dropzone');
+        const fileInput = document.getElementById('documentInput');
+        const filePreview = document.getElementById('filePreview');
+        const fileNameSpan = document.getElementById('fileName');
+
+        // Dragover visual styles
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+            }, false);
+        });
+
+        // Drop file handling
+        dropzone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length) {
+                fileInput.files = files;
+                updateFilePreview();
+            }
+        });
+
+        fileInput.addEventListener('change', updateFilePreview);
+
+        function updateFilePreview() {
+            if (fileInput.files && fileInput.files[0]) {
+                fileNameSpan.innerHTML = `<i class="fa-solid fa-paperclip"></i> ${fileInput.files[0].name}`;
+                filePreview.style.display = 'flex';
+            }
+        }
+
+        function clearFile(e) {
+            e.stopPropagation();
+            fileInput.value = '';
+            filePreview.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

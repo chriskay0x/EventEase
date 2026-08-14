@@ -68,15 +68,32 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/accounts/get-started/'
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
 
 SOCIAL_AUTH_PIPELINE = (
+    # Get the information we can about the user and return it in a simple
+    # format to create the user instance later.
     'social_core.pipeline.social_auth.social_details',
+
+    # Get the social uid from backend.
     'social_core.pipeline.social_auth.social_uid',
+
+    # Validate that the account can be authenticated
     'social_core.pipeline.social_auth.auth_allowed',
+
+    # Checks if the current social-account is already associated in the site.
     'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
+
+    # <--- CRITICAL STEP: Automatically associate with an existing User by email
+    'social_core.pipeline.social_auth.associate_by_email',
+
+    # Create a user account if we don't find one yet.
     'social_core.pipeline.user.create_user',
-    'accounts.pipeline.set_user_role',  # <--- Custom step assigns role
+
+    # Create the record that associates the social account with this user.
     'social_core.pipeline.social_auth.associate_user',
+
+    # Populate the extra_data field in the social record.
     'social_core.pipeline.social_auth.load_extra_data',
+
+    # Update user fields with any new data.
     'social_core.pipeline.user.user_details',
 )
 
@@ -162,7 +179,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files (User uploaded documents, images, etc.)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Email

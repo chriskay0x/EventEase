@@ -11,6 +11,9 @@ urlpatterns = [
     path('vendor-signup/', views.register_vendor_view, name='vendor_signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    
+    path('verify-business/', views.verify_business_view, name='verify_business'),
+    path('verification-pending/', views.verification_pending_view, name='verification_pending'),
 
     # Password Reset Routes
     path('password-reset/', 

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ClientRegistrationForm, VendorRegistrationForm
 from .models import User, VendorProfile
@@ -122,3 +123,42 @@ def get_started_view(request):
 def logout_view(request):
     logout(request)
     return redirect('accounts:login')
+
+# Verify Business View
+@login_required(login_url='accounts:login')
+def verify_business_view(request):
+    """View to collect business verification documents from vendor partners."""
+    vendor_profile, created = VendorProfile.objects.get_or_create(user=request.user)
+
+    if request.method == 'POST':
+        action = request.POST.get('action', 'submit')
+        legal_business_name = request.POST.get('legal_business_name')
+        uploaded_doc = request.FILES.get('verification_document')
+
+        if legal_business_name:
+            vendor_profile.legal_business_name = legal_business_name
+
+        if uploaded_doc:
+            vendor_profile.verification_document = uploaded_doc
+
+        if action == 'submit':
+            vendor_profile.verification_status = VendorProfile.VerificationStatus.PENDING
+            vendor_profile.save()
+            return redirect('accounts:verification_pending')
+        else:
+            vendor_profile.verification_status = VendorProfile.VerificationStatus.DRAFT
+            vendor_profile.save()
+            return redirect('accounts:get_started')
+
+    return render(request, 'accounts/verify_business.html', {
+        'vendor_profile': vendor_profile
+    })
+    
+    
+@login_required(login_url='accounts:login')
+def verification_pending_view(request):
+    """Screen shown to vendors while their submitted documents are under review."""
+    vendor_profile = getattr(request.user, 'vendor_profile', None)
+    return render(request, 'accounts/verification_pending.html', {
+        'vendor_profile': vendor_profile
+    })
