@@ -1,0 +1,382 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Back - EventEase</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-ivory: #FAF8F5;
+            --primary-emerald: #0A4332;
+            --text-dark: #111827;
+            --text-muted: #6B7280;
+            --input-bg: #F3F4F6;
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-ivory);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .login-card {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        /* Left Side Showcase Image */
+        .image-section {
+            flex: 1.1;
+            position: relative;
+            background-color: #E5E7EB;
+            min-height: 580px;
+            display: flex;
+            align-items: flex-end;
+            padding: 2.5rem;
+        }
+
+        .showcase-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-overlay-text {
+            position: relative;
+            z-index: 2;
+            color: #FFFFFF;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .image-overlay-text h2 {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            font-weight: 500;
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .image-overlay-text p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Right Side Form Container */
+        .form-section {
+            flex: 1;
+            padding: 3.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background-color: var(--bg-ivory);
+        }
+
+        .brand-logo {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-emerald);
+            text-align: right;
+            margin-bottom: 2.5rem;
+        }
+
+        .form-header h1 {
+            font-family: var(--font-serif);
+            font-size: 2.25rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Input Fields */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .field-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-field {
+            width: 100%;
+            background: #EFECE6;
+            border: 1px solid transparent;
+            padding: 0.95rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-emerald);
+        }
+
+        .input-field::placeholder {
+            color: #8E8E8E;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Checkbox & Forgot Password Row */
+        .options-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            accent-color: var(--primary-emerald);
+            width: 16px;
+            height: 16px;
+        }
+
+        .forgot-link {
+            color: var(--primary-emerald);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.95rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s;
+            margin-bottom: 2rem;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            margin-bottom: 1.5rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .divider span {
+            padding: 0 0.75rem;
+        }
+
+        /* Google OAuth Button */
+        .btn-google {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            background: transparent;
+            border: 1px solid #D1D5DB;
+            padding: 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-google:hover {
+            background: #F9FAFB;
+        }
+
+        .form-footer {
+            text-align: center;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .form-footer a {
+            color: var(--primary-emerald);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 850px) {
+            .login-card {
+                flex-direction: column-reverse;
+            }
+            .image-section {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <!-- Left Side Image Section -->
+        <div class="image-section">
+            <img src="{% static 'images/couple.jpg' %}" alt="Celebration couple" class="showcase-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80';">
+            <div class="image-overlay-text">
+                <h2>Curated celebrations, perfectly executed.</h2>
+                <p>Discover elite vendors for your next unforgettable event.</p>
+            </div>
+        </div>
+
+        <!-- Right Side Form Section -->
+        <div class="form-section">
+            <div>
+                <div class="brand-logo">
+                    EventEase
+                </div>
+
+                <div class="form-header">
+                    <h1>Welcome back</h1>
+                    <p>Sign in to manage your curated events and bookings.</p>
+                </div>
+
+                <!-- Login Form -->
+                <form method="post" action="{% url 'accounts:login' %}">
+                    {% csrf_token %}
+                    
+                    <div class="input-group">
+                        <div class="field-container">
+                            <input type="email" name="username" class="input-field" placeholder="Email Address" required>
+                        </div>
+
+                        <div class="field-container">
+                            <input type="password" name="password" id="password" class="input-field" placeholder="Password" required>
+                            <i class="fa-regular fa-eye-slash toggle-password" onclick="togglePasswordVisibility()"></i>
+                        </div>
+                    </div>
+
+                    <div class="options-row">
+                        <label class="remember-me">
+                            <input type="checkbox" name="remember_me">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="{% url 'accounts:password_reset' %}" class="forgot-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        Sign In <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>OR CONTINUE WITH</span>
+                </div>
+
+                <!-- Google Auth Button (Using POST Form) -->
+                <form action="{% url 'social:begin' 'google-oauth2' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-google">
+                        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.259h2.908c1.702-1.567 2.684-3.874 2.684-6.617z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+                        Google
+                    </button>
+                </form>
+            </div>
+
+            <div class="form-footer">
+                Don't have an account? <a href="{% url 'accounts:get_started' %}">Sign up for EventEase</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const icon = event.target;
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+</body>
+</html>

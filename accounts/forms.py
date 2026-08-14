@@ -1,6 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm
 from .models import User, VendorProfile
+from django.template import loader
+from django.core.mail import EmailMultiAlternatives
 
 class ClientRegistrationForm(UserCreationForm):
     phone = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={
@@ -46,3 +48,4 @@ class VendorRegistrationForm(UserCreationForm):
 
 class CustomLoginForm(AuthenticationForm):
     username = forms.EmailField(label="Email Address")
+    password = forms.CharField(label="Password", widget=forms.PasswordInput)
