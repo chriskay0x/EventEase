@@ -1,9 +1,9 @@
 from .models import Notification
 
 
-def notify(recipient, kind, message):
+def notify(user, title, message):
     return Notification.objects.create(
-        recipient=recipient,
-        kind=kind,
+        user=user,
+        title=title,
         message=message,
     )

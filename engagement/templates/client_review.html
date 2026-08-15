@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EventEase - Vendor Reviews</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#707974",
+                        "secondary": "#755a26",
+                        "primary-container": "#064e3b",
+                        "surface-tint": "#2b6954",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#e5c183",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e5e2dd",
+                        "surface-bright": "#fcf9f4",
+                        "background": "#fcf9f4",
+                        "on-primary-container": "#80bea6",
+                        "surface-container": "#f0ede9",
+                        "inverse-primary": "#95d3ba",
+                        "tertiary-fixed": "#e4e2e1",
+                        "on-secondary-fixed-variant": "#5b4310",
+                        "secondary-container": "#fdd897",
+                        "on-surface-variant": "#404944",
+                        "tertiary": "#2e2e2e",
+                        "primary-fixed": "#b0f0d6",
+                        "surface-container-high": "#ebe8e3",
+                        "on-primary-fixed": "#002117",
+                        "outline-variant": "#bfc9c3",
+                        "tertiary-container": "#444444",
+                        "on-tertiary-container": "#b3b1b1",
+                        "inverse-on-surface": "#f3f0eb",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "on-secondary-fixed": "#271900",
+                        "surface-dim": "#dcdad5",
+                        "surface-variant": "#e5e2dd",
+                        "surface": "#fcf9f4",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "secondary-fixed": "#ffdea8",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#95d3ba",
+                        "on-background": "#1c1c19",
+                        "surface-container-low": "#f6f3ee",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "primary": "#003527",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1c1c19",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#785c28",
+                        "inverse-surface": "#31302d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "section-gap": "80px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.icon-unfilled {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }
+        .toast { animation: toast-in .2s ease-out; }
+        @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-backdrop { animation: fade-in .15s ease-out; }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .star-input .material-symbols-outlined { cursor: pointer; transition: transform .1s ease; }
+        .star-input .material-symbols-outlined:hover { transform: scale(1.15); }
+        #mobile-menu { transition: max-height .25s ease, opacity .2s ease; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased flex flex-col min-h-screen">
+
+<div id="toast-container"></div>
+
+<!-- TopNavBar (Client Role) -->
+<header class="fixed top-0 left-0 w-full flex flex-col bg-surface/80 backdrop-blur-md dark:bg-surface-dim/80 shadow-sm top-0 z-50">
+<div class="flex justify-between items-center px-margin-desktop py-4 max-w-container-max mx-auto w-full">
+<a href="#" data-nav="discover" class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">EventEase</a>
+<nav class="hidden md:flex gap-gutter items-center" id="nav-links">
+<a data-nav="discover" class="nav-link font-label-caps text-label-caps text-primary dark:text-primary-fixed font-bold relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-primary after:rounded-full hover:text-primary transition-colors duration-300 cursor-pointer transition-all active:scale-95" href="#">Discover</a>
+<a data-nav="bookings" class="nav-link font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all active:scale-95" href="#">Bookings</a>
+<a data-nav="messages" class="nav-link font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all active:scale-95" href="#">Messages</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<button id="search-toggle" class="text-on-surface-variant hover:text-primary transition-colors duration-300 cursor-pointer p-2">
+<span class="material-symbols-outlined">search</span>
+</button>
+<a id="profile-link" class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors duration-300 cursor-pointer transition-all active:scale-95 items-center gap-2 hidden sm:flex" href="#">
+                Profile
+                <img class="w-8 h-8 rounded-full object-cover border border-outline-variant" alt="Profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHWSenml8UkutrlyMmypO1DTFhwkMQUt5VnXVnfhnSzEAy98NKq7HaexTh34FfrDUyfyuAhlrji-CO8xJ6c-4bnfZ27NKUT4ztXHRc76rRV1rzUuQgCrjFRBsrc7KihI0-OrkSUgUUrve9NU_sIYrNaO3GFX6UaMQcvmiHoLa5ZMHMqOxWhubtRboS5YWgyviNevsR0C3yIbug3m_d8A5ZwpbRoUXhkAE4yqAHOtLOM95ByMiDpIkLtg"/>
+</a>
+<button id="mobile-menu-btn" class="md:hidden text-on-surface-variant hover:text-primary p-2">
+<span class="material-symbols-outlined" id="mobile-menu-icon">menu</span>
+</button>
+</div>
+</div>
+<!-- Search bar (toggle) -->
+<div id="search-bar" class="hidden px-margin-desktop pb-4 max-w-container-max mx-auto w-full">
+<input id="search-input" type="text" placeholder="Search vendors, cities, or event types..." class="w-full px-4 py-2.5 border border-outline-variant rounded-full outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface-container-lowest"/>
+</div>
+<!-- Mobile nav -->
+<div id="mobile-menu" class="md:hidden overflow-hidden max-h-0 opacity-0 px-margin-desktop">
+<nav class="flex flex-col gap-1 pb-4">
+<a data-nav="discover" class="nav-link-mobile font-label-caps text-label-caps text-primary font-bold py-2" href="#">Discover</a>
+<a data-nav="bookings" class="nav-link-mobile font-label-caps text-label-caps text-on-surface-variant py-2" href="#">Bookings</a>
+<a data-nav="messages" class="nav-link-mobile font-label-caps text-label-caps text-on-surface-variant py-2" href="#">Messages</a>
+<a id="profile-link-mobile" class="font-label-caps text-label-caps text-on-surface-variant py-2" href="#">Profile</a>
+</nav>
+</div>
+</header>
+
+<main class="flex-grow pt-section-gap px-margin-desktop md:px-margin-desktop max-w-container-max mx-auto w-full pb-section-gap">
+<!-- Vendor Profile Header Context -->
+<div class="mb-stack-lg border-b border-surface-container-highest pb-stack-md flex items-start justify-between gap-4 flex-wrap">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary mb-stack-sm">Lumina Floral Design</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Boutique Floral Arrangements • Portland, OR</p>
+</div>
+<button id="save-vendor-btn" class="flex items-center gap-2 py-2.5 px-5 rounded-full border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined icon-unfilled text-lg" id="save-vendor-icon">bookmark_border</span>
+<span id="save-vendor-label">Save Vendor</span>
+</button>
+</div>
+
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Aggregate Rating Sidebar -->
+<div class="lg:col-span-4 bg-surface-container-lowest rounded-xl p-stack-lg shadow-[0_4px_20px_rgba(45,45,45,0.05)] border border-surface-container-highest flex flex-col h-fit lg:sticky lg:top-32">
+<h2 class="font-headline-sm text-headline-sm text-primary mb-stack-md">Client Reviews</h2>
+<div class="flex items-end gap-stack-sm mb-stack-sm">
+<span id="agg-rating" class="font-display-lg text-display-lg text-primary leading-none">4.9</span>
+<span class="font-body-md text-body-md text-on-surface-variant pb-1">out of 5</span>
+</div>
+<div class="flex items-center gap-1 mb-stack-md text-secondary">
+<span id="agg-stars" class="flex items-center gap-1"></span>
+<span id="agg-count" class="font-label-md text-label-md text-on-surface-variant ml-2">(128 reviews)</span>
+</div>
+<!-- Distribution Bars -->
+<div id="distribution" class="flex flex-col gap-3 mt-stack-md"></div>
+<button id="write-review-btn" class="mt-stack-lg w-full bg-primary-container text-on-secondary font-label-md text-label-md py-3 px-6 rounded-full hover:bg-surface-tint transition-colors duration-200">
+                    Write a Review
+                </button>
+</div>
+
+<!-- Review List -->
+<div class="lg:col-span-8 flex flex-col gap-stack-lg">
+<div id="review-list" class="flex flex-col gap-stack-lg"></div>
+<div class="flex justify-center mt-stack-md">
+<button id="load-more-btn" class="font-label-md text-label-md text-primary border border-outline-variant py-2 px-6 rounded-full hover:bg-surface-container-highest transition-colors duration-200">
+                        Load More Reviews
+                    </button>
+</div>
+</div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full flex flex-col md:flex-row justify-between items-center px-margin-desktop py-section-gap border-t border-outline-variant bg-surface-container-highest dark:bg-surface-dim mt-auto">
+<div class="font-display-lg text-display-lg text-primary mb-stack-md md:mb-0">EventEase</div>
+<nav class="flex flex-wrap gap-stack-md justify-center md:justify-end mb-stack-md md:mb-0" id="footer-links">
+<a data-doc="terms" class="footer-link font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" href="#">Terms of Service</a>
+<a data-doc="privacy" class="footer-link font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" href="#">Privacy Policy</a>
+<a data-doc="contact" class="footer-link font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" href="#">Contact Support</a>
+<a data-doc="careers" class="footer-link font-label-caps text-label-caps text-on-surface-variant hover:text-secondary transition-colors cursor-pointer" href="#">Careers</a>
+</nav>
+<div class="font-body-md text-body-md text-on-surface dark:text-on-surface-variant w-full md:w-auto text-center md:text-left mt-stack-md md:mt-0">
+            © 2024 EventEase. All rights reserved.
+        </div>
+</footer>
+
+<!-- Write a Review Modal -->
+<div id="review-modal-backdrop" class="hidden fixed inset-0 bg-black/40 z-[60] modal-backdrop flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Write a Review</h3>
+<button id="review-modal-close" class="p-1 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined icon-unfilled">close</span></button>
+</div>
+<form id="review-form" class="flex flex-col gap-4">
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Your rating</label>
+<div class="star-input flex gap-1 text-secondary text-3xl" id="star-input" data-value="5">
+<span class="material-symbols-outlined" data-star="1">star</span>
+<span class="material-symbols-outlined" data-star="2">star</span>
+<span class="material-symbols-outlined" data-star="3">star</span>
+<span class="material-symbols-outlined" data-star="4">star</span>
+<span class="material-symbols-outlined" data-star="5">star</span>
+</div>
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Your name</label>
+<input required id="review-name" type="text" placeholder="e.g. Priya Nair" class="w-full px-3 py-2 border border-outline-variant rounded-lg outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Event type</label>
+<input required id="review-event" type="text" placeholder="e.g. Wedding, Corporate Gala" class="w-full px-3 py-2 border border-outline-variant rounded-lg outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+</div>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Your review</label>
+<textarea required id="review-text" rows="4" placeholder="Share your experience with this vendor..." class="w-full px-3 py-2 border border-outline-variant rounded-lg outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none"></textarea>
+</div>
+<button type="button" id="review-submit-btn" class="mt-2 w-full py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md hover:bg-surface-tint transition-colors">Submit review</button>
+</form>
+</div>
+</div>
+
+<!-- Generic Info Modal (footer links / non-Discover nav) -->
+<div id="info-modal-backdrop" class="hidden fixed inset-0 bg-black/40 z-[60] modal-backdrop flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-md p-6">
+<div class="flex items-center justify-between mb-3">
+<h3 id="info-modal-title" class="font-headline-sm text-headline-sm text-on-surface">Title</h3>
+<button id="info-modal-close" class="p-1 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined icon-unfilled">close</span></button>
+</div>
+<p id="info-modal-body" class="text-body-md text-on-surface-variant"></p>
+</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- Data ---------------- */
+  let ratingCounts = { 5: 109, 4: 13, 3: 4, 2: 1, 1: 1 }; // approximating 85/10/3/1/1 of 128
+  let reviews = [
+    {
+      name: "Eleanor Vance",
+      meta: "Wedding Client • Oct 15, 2024",
+      rating: 5,
+      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDQEDgOA0D70RN120yjeX5faKPrH-xWDLtrlEC72sZ52xA5IQH170u5k3jtkPM0PYn9f9sDpKbkxY0n6o0xb8JTfNfkJFj6WFweDZ42mCImOdLwLMZQaLyuNk6m7p7N8v_SzAxk7xXM7mpD-Rl78tE06ynHN91wxWbN7CZQJmMgFGNnFjGFZjmwDV1C9I5lx1ox9RJGYjCN80XSzYej8tHiW8pkSU2-1Gv9BMgnNq7VKjTLEXVxZz3XIA",
+      text: "Working with Lumina Floral Design was an absolute dream. They perfectly captured the editorial, moody aesthetic we wanted for our autumn wedding. The cascading centerpieces were breathtaking, and the bridal bouquet was exactly what I had envisioned—sophisticated but with an organic, slightly wild shape. Their team was professional, responsive, and truly felt like partners in designing our event."
+    },
+    {
+      name: "James & David",
+      meta: "Corporate Gala • Sep 02, 2024",
+      rating: 5,
+      initials: "JD",
+      text: "We hired Lumina for a high-end corporate gala, and they delivered beyond expectations. The minimalist structural arrangements provided the exact modern luxury feel we needed for the venue. They were incredibly communicative during the planning phase and executed flawlessly on the day of the event. Highly recommend for any upscale function."
+    },
+    {
+      name: "Sarah Jenkins",
+      meta: "Anniversary Party • Aug 18, 2024",
+      rating: 4,
+      avatar: "https://lh3.googleusercontent.com/aida-public/AB6AXuDJulyY6VCiy_wWl2sDTk7QwACHRKskbeWDSQOGZeEleliTS64og5tHfUvV1Ej8PUPOgomYlP1w4XtGmh7pLhqACty_sydoIaWZos1UUWZv3mJxXJXsvSr69YW4sR7NS0lJ8Y6KPN-ctAdkhPW3K6p-onHD5p2h33SKUGtmiA-wnMQz_umatSbyf6Z13a9d4RWfCmymBgHtpRHHzB5osJGy5crPRqttrvCqMz0CdR4t15NLATdQDztLtg",
+      text: "Beautiful flowers and good service. The arrangements were lovely, though one of the installations was slightly smaller than I had anticipated based on the mood board. However, the quality of the blooms was top-tier, and they lasted beautifully throughout the evening. A very solid choice for refined event styling."
+    }
+  ];
+  // extra reviews revealed via "Load More"
+  const moreReviews = [
+    { name: "Marcus Bell", meta: "Baby Shower • Jul 30, 2024", rating: 5, initials: "MB", text: "Absolutely stunning pastel arrangements that matched our theme perfectly. Delivery was right on time and the team was a pleasure to work with." },
+    { name: "Ingrid Solberg", meta: "Engagement Party • Jul 11, 2024", rating: 5, initials: "IS", text: "Lumina turned our small backyard gathering into something out of a magazine. The floral arch alone was worth every penny." },
+    { name: "Owen Castillo", meta: "Wedding • Jun 22, 2024", rating: 4, initials: "OC", text: "Gorgeous work overall. Communication was a little slow during peak wedding season, but the final result made up for it." },
+    { name: "Naomi Frost", meta: "Corporate Launch • May 09, 2024", rating: 5, initials: "NF", text: "Professional from first call to final teardown. Our product launch looked incredible thanks to their floral installation." },
+    { name: "Théo Marchand", meta: "Vow Renewal • Apr 14, 2024", rating: 3, initials: "TM", text: "The flowers were pretty but a few arrangements wilted faster than expected in the afternoon heat. Would ask about weather-proofing next time." }
+  ];
+  let moreLoadedCount = 0;
+  const LOAD_MORE_BATCH = 2;
+
+  /* ---------------- Helpers ---------------- */
+  function showToast(message, icon) {
+    icon = icon || "check_circle";
+    const container = document.getElementById("toast-container");
+    const el = document.createElement("div");
+    el.className = "toast bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 text-label-md font-label-md";
+    el.innerHTML = '<span class="material-symbols-outlined text-lg">' + icon + '</span><span>' + message + '</span>';
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.transition = "opacity .3s ease";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 300);
+    }, 2600);
+  }
+
+  function starsMarkup(rating, size) {
+    // rating can be fractional; render filled/half/empty out of 5
+    size = size || "";
+    let html = "";
+    for (let i = 1; i <= 5; i++) {
+      if (rating >= i) {
+        html += '<span class="material-symbols-outlined ' + size + '">star</span>';
+      } else if (rating >= i - 0.5) {
+        html += '<span class="material-symbols-outlined ' + size + '">star_half</span>';
+      } else {
+        html += '<span class="material-symbols-outlined icon-unfilled ' + size + '">star</span>';
+      }
+    }
+    return html;
+  }
+
+  function totalReviewCount() {
+    return Object.values(ratingCounts).reduce((a, b) => a + b, 0);
+  }
+
+  function averageRating() {
+    const total = totalReviewCount();
+    if (total === 0) return 0;
+    const sum = Object.entries(ratingCounts).reduce((acc, [star, count]) => acc + Number(star) * count, 0);
+    return sum / total;
+  }
+
+  function renderAggregate() {
+    const avg = averageRating();
+    const total = totalReviewCount();
+    document.getElementById("agg-rating").textContent = avg.toFixed(1);
+    document.getElementById("agg-count").textContent = "(" + total + " reviews)";
+    document.getElementById("agg-stars").innerHTML = starsMarkup(avg);
+
+    const dist = document.getElementById("distribution");
+    let html = "";
+    for (let star = 5; star >= 1; star--) {
+      const pct = total ? Math.round((ratingCounts[star] / total) * 100) : 0;
+      html +=
+        '<div class="flex items-center gap-3">' +
+          '<span class="font-label-md text-label-md w-8 text-on-surface-variant">' + star + '</span>' +
+          '<div class="flex-grow h-2 bg-surface-container-high rounded-full overflow-hidden">' +
+            '<div class="h-full bg-secondary rounded-full" style="width: ' + pct + '%;"></div>' +
+          '</div>' +
+          '<span class="font-label-md text-label-md w-8 text-right text-on-surface-variant">' + pct + '%</span>' +
+        '</div>';
+    }
+    dist.innerHTML = html;
+  }
+
+  function reviewCardHTML(r) {
+    const avatarHTML = r.avatar
+      ? '<img class="w-12 h-12 rounded-full object-cover" alt="' + r.name + ' avatar" src="' + r.avatar + '"/>'
+      : '<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-headline-sm">' + (r.initials || r.name.slice(0, 2).toUpperCase()) + '</div>';
+
+    return (
+      '<article class="border-b border-surface-container-highest pb-stack-lg last:border-b-0">' +
+        '<div class="flex justify-between items-start mb-stack-sm">' +
+          '<div class="flex items-center gap-stack-sm">' +
+            avatarHTML +
+            '<div>' +
+              '<h3 class="font-headline-sm text-[20px] font-medium text-primary leading-tight">' + r.name + '</h3>' +
+              '<p class="font-label-md text-label-md text-on-surface-variant">' + r.meta + '</p>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flex text-secondary text-sm">' + starsMarkup(r.rating) + '</div>' +
+        '</div>' +
+        '<p class="font-body-md text-body-md text-on-surface-variant mt-stack-md">' + r.text + '</p>' +
+      '</article>'
+    );
+  }
+
+  function renderReviews() {
+    document.getElementById("review-list").innerHTML = reviews.map(reviewCardHTML).join("");
+    const loadMoreBtn = document.getElementById("load-more-btn");
+    if (moreLoadedCount >= moreReviews.length) {
+      loadMoreBtn.classList.add("hidden");
+    } else {
+      loadMoreBtn.classList.remove("hidden");
+    }
+  }
+
+  function render() {
+    renderAggregate();
+    renderReviews();
+  }
+
+  /* ---------------- Search bar toggle ---------------- */
+  const searchBar = document.getElementById("search-bar");
+  document.getElementById("search-toggle").addEventListener("click", () => {
+    searchBar.classList.toggle("hidden");
+    if (!searchBar.classList.contains("hidden")) {
+      document.getElementById("search-input").focus();
+    }
+  });
+  document.getElementById("search-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const q = e.target.value.trim();
+      showToast(q ? 'Searching for "' + q + '"…' : "Enter a search term", "search");
+    }
+  });
+
+  /* ---------------- Mobile menu ---------------- */
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileMenuIcon = document.getElementById("mobile-menu-icon");
+  let mobileMenuOpen = false;
+  document.getElementById("mobile-menu-btn").addEventListener("click", () => {
+    mobileMenuOpen = !mobileMenuOpen;
+    if (mobileMenuOpen) {
+      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + "px";
+      mobileMenu.style.opacity = "1";
+      mobileMenuIcon.textContent = "close";
+    } else {
+      mobileMenu.style.maxHeight = "0";
+      mobileMenu.style.opacity = "0";
+      mobileMenuIcon.textContent = "menu";
+    }
+  });
+
+  /* ---------------- Nav links ---------------- */
+  const navSectionNames = { discover: "Discover", bookings: "Bookings", messages: "Messages" };
+  function setActiveNav(section) {
+    document.querySelectorAll(".nav-link, .nav-link-mobile").forEach(link => {
+      const isActive = link.getAttribute("data-nav") === section;
+      link.classList.toggle("text-primary", isActive);
+      link.classList.toggle("font-bold", isActive);
+      link.classList.toggle("text-on-surface-variant", !isActive);
+    });
+    if (section !== "discover") {
+      showToast(navSectionNames[section] + " isn't built yet in this preview — staying on Discover", "info");
+    }
+  }
+  document.querySelectorAll(".nav-link, .nav-link-mobile").forEach(link => {
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      setActiveNav(link.getAttribute("data-nav"));
+      if (mobileMenuOpen) document.getElementById("mobile-menu-btn").click();
+    });
+  });
+
+  /* ---------------- Profile ---------------- */
+  function openProfile(e) {
+    e.preventDefault();
+    showToast("Profile page isn't built yet in this preview", "person");
+  }
+  document.getElementById("profile-link").addEventListener("click", openProfile);
+  document.getElementById("profile-link-mobile").addEventListener("click", (e) => { openProfile(e); if (mobileMenuOpen) document.getElementById("mobile-menu-btn").click(); });
+
+  /* ---------------- Save vendor ---------------- */
+  let saved = false;
+  const saveIcon = document.getElementById("save-vendor-icon");
+  const saveLabel = document.getElementById("save-vendor-label");
+  document.getElementById("save-vendor-btn").addEventListener("click", () => {
+    saved = !saved;
+    saveIcon.textContent = "bookmark";
+    saveIcon.classList.toggle("icon-unfilled", !saved);
+    saveLabel.textContent = saved ? "Saved" : "Save Vendor";
+    showToast(saved ? "Lumina Floral Design saved to your favorites" : "Removed from favorites", saved ? "bookmark" : "bookmark_border");
+  });
+
+  /* ---------------- Write a review modal ---------------- */
+  const reviewModal = document.getElementById("review-modal-backdrop");
+  const starInput = document.getElementById("star-input");
+  const starEls = Array.from(starInput.querySelectorAll("[data-star]"));
+
+  function paintStars(value) {
+    starEls.forEach(s => {
+      const filled = Number(s.getAttribute("data-star")) <= value;
+      s.classList.toggle("icon-unfilled", !filled);
+    });
+  }
+  starEls.forEach(s => {
+    s.addEventListener("click", () => {
+      const v = Number(s.getAttribute("data-star"));
+      starInput.setAttribute("data-value", v);
+      paintStars(v);
+    });
+    s.addEventListener("mouseenter", () => paintStars(Number(s.getAttribute("data-star"))));
+  });
+  starInput.addEventListener("mouseleave", () => paintStars(Number(starInput.getAttribute("data-value"))));
+  paintStars(5);
+
+  function openReviewModal() { reviewModal.classList.remove("hidden"); }
+  function closeReviewModal() { reviewModal.classList.add("hidden"); document.getElementById("review-form").reset(); starInput.setAttribute("data-value", 5); paintStars(5); }
+
+  document.getElementById("write-review-btn").addEventListener("click", openReviewModal);
+  document.getElementById("review-modal-close").addEventListener("click", closeReviewModal);
+  reviewModal.addEventListener("click", (e) => { if (e.target === reviewModal) closeReviewModal(); });
+
+  document.getElementById("review-submit-btn").addEventListener("click", () => {
+    const name = document.getElementById("review-name").value.trim();
+    const eventType = document.getElementById("review-event").value.trim();
+    const text = document.getElementById("review-text").value.trim();
+    const rating = Number(starInput.getAttribute("data-value"));
+    if (!name) { showToast("Please add your name", "error"); document.getElementById("review-name").focus(); return; }
+    if (!eventType) { showToast("Please add the event type", "error"); document.getElementById("review-event").focus(); return; }
+    if (!text) { showToast("Please write your review", "error"); document.getElementById("review-text").focus(); return; }
+    if (!rating) { showToast("Please select a star rating", "error"); return; }
+
+    const today = new Date().toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+    reviews.unshift({
+      name,
+      meta: eventType + " • " + today,
+      rating,
+      initials: name.split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase(),
+      text
+    });
+    ratingCounts[rating] = (ratingCounts[rating] || 0) + 1;
+
+    closeReviewModal();
+    render();
+    showToast("Thanks for your review, " + name.split(" ")[0] + "!", "rate_review");
+  });
+
+  /* ---------------- Load more reviews ---------------- */
+  document.getElementById("load-more-btn").addEventListener("click", () => {
+    const nextBatch = moreReviews.slice(moreLoadedCount, moreLoadedCount + LOAD_MORE_BATCH);
+    nextBatch.forEach(r => {
+      reviews.push(r);
+      ratingCounts[r.rating] = (ratingCounts[r.rating] || 0) + 1;
+    });
+    moreLoadedCount += nextBatch.length;
+    renderReviews();
+    renderAggregate();
+    showToast(nextBatch.length + " more reviews loaded", "reviews");
+  });
+
+  /* ---------------- Footer links ---------------- */
+  const infoModal = document.getElementById("info-modal-backdrop");
+  const infoTitle = document.getElementById("info-modal-title");
+  const infoBody = document.getElementById("info-modal-body");
+  const infoContent = {
+    terms: { title: "Terms of Service", body: "This is a preview build of EventEase. The full Terms of Service will be published here before launch." },
+    privacy: { title: "Privacy Policy", body: "This is a preview build of EventEase. The full Privacy Policy will be published here before launch." },
+    contact: { title: "Contact Support", body: "Need help? Reach the EventEase team at support@eventease.example — replies typically arrive within one business day." },
+    careers: { title: "Careers", body: "We're not hiring through this preview yet. Check back soon for open roles at EventEase." }
+  };
+  document.getElementById("footer-links").addEventListener("click", (e) => {
+    const link = e.target.closest(".footer-link");
+    if (!link) return;
+    e.preventDefault();
+    const key = link.getAttribute("data-doc");
+    const content = infoContent[key];
+    infoTitle.textContent = content.title;
+    infoBody.textContent = content.body;
+    infoModal.classList.remove("hidden");
+  });
+  document.getElementById("info-modal-close").addEventListener("click", () => infoModal.classList.add("hidden"));
+  infoModal.addEventListener("click", (e) => { if (e.target === infoModal) infoModal.classList.add("hidden"); });
+
+  /* ---------------- Escape key ---------------- */
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeReviewModal();
+      infoModal.classList.add("hidden");
+      if (!searchBar.classList.contains("hidden")) searchBar.classList.add("hidden");
+    }
+  });
+
+  /* ---------------- Init ---------------- */
+  render();
+})();
+</script>
+
+</body></html>

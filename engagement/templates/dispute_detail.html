@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EventEase - Dispute Resolution</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#707974",
+                        "secondary": "#755a26",
+                        "primary-container": "#064e3b",
+                        "surface-tint": "#2b6954",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#e5c183",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e5e2dd",
+                        "surface-bright": "#fcf9f4",
+                        "background": "#fcf9f4",
+                        "on-primary-container": "#80bea6",
+                        "surface-container": "#f0ede9",
+                        "inverse-primary": "#95d3ba",
+                        "tertiary-fixed": "#e4e2e1",
+                        "on-secondary-fixed-variant": "#5b4310",
+                        "secondary-container": "#fdd897",
+                        "on-surface-variant": "#404944",
+                        "tertiary": "#2e2e2e",
+                        "primary-fixed": "#b0f0d6",
+                        "surface-container-high": "#ebe8e3",
+                        "on-primary-fixed": "#002117",
+                        "outline-variant": "#bfc9c3",
+                        "tertiary-container": "#444444",
+                        "on-tertiary-container": "#b3b1b1",
+                        "inverse-on-surface": "#f3f0eb",
+                        "on-primary-fixed-variant": "#0b513d",
+                        "on-secondary-fixed": "#271900",
+                        "surface-dim": "#dcdad5",
+                        "surface-variant": "#e5e2dd",
+                        "surface": "#fcf9f4",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "secondary-fixed": "#ffdea8",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#95d3ba",
+                        "on-background": "#1c1c19",
+                        "surface-container-low": "#f6f3ee",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "primary": "#003527",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1c1c19",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#785c28",
+                        "inverse-surface": "#31302d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "section-gap": "80px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "stack-lg": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); }
+        .glass-panel { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .shadow-ambient { box-shadow: 0 4px 20px rgba(45, 45, 45, 0.05); }
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }
+        .toast { animation: toast-in .2s ease-out; }
+        @keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-backdrop { animation: fade-in .15s ease-out; }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .msg-in { animation: msg-in .2s ease-out; }
+        @keyframes msg-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        #mobile-drawer { transition: transform .25s ease; }
+        #mobile-drawer-backdrop { transition: opacity .2s ease; }
+        button:disabled { opacity: .5; cursor: not-allowed; }
+    </style>
+</head>
+<body class="font-body-md text-body-md antialiased flex">
+
+<div id="toast-container"></div>
+
+<!-- Admin Side Nav -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/30 py-stack-lg z-40">
+<div class="px-margin-desktop mb-stack-lg flex flex-col gap-2">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary">EventEase</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Admin Suite</p>
+</div>
+<ul id="nav-list" class="flex flex-col gap-2 flex-grow">
+<li data-nav="overview" class="nav-item mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md">
+<span class="material-symbols-outlined nav-icon" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+                    Overview
+                </a>
+</li>
+<li data-nav="disputes" class="nav-item mx-2 rounded-lg bg-primary-container text-on-primary-container cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md">
+<span class="material-symbols-outlined nav-icon" style="font-variation-settings: 'FILL' 1;">gavel</span>
+                    Disputes
+                </a>
+</li>
+<li data-nav="users" class="nav-item mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md">
+<span class="material-symbols-outlined nav-icon" style="font-variation-settings: 'FILL' 0;">people</span>
+                    Users
+                </a>
+</li>
+</ul>
+<div class="px-4 mt-auto">
+<a id="logout-link" class="flex items-center px-4 py-3 gap-3 text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors rounded-lg mx-2 cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+                 Logout
+             </a>
+</div>
+</nav>
+
+<!-- Mobile Top Bar -->
+<header class="md:hidden fixed top-0 left-0 w-full flex items-center justify-between px-margin-mobile py-4 bg-surface/90 backdrop-blur-md z-50 border-b border-outline-variant/20">
+<h1 class="font-display-lg-mobile text-2xl text-primary">EventEase</h1>
+<button id="mobile-menu-btn" class="p-2 text-on-surface-variant"><span class="material-symbols-outlined">menu</span></button>
+</header>
+<div id="mobile-drawer-backdrop" class="hidden md:hidden fixed inset-0 bg-black/40 z-50 opacity-0"></div>
+<div id="mobile-drawer" class="md:hidden fixed top-0 right-0 h-screen w-64 bg-surface-container-low z-50 shadow-2xl translate-x-full py-stack-lg flex flex-col">
+<div class="px-6 mb-stack-lg flex items-center justify-between">
+<h1 class="font-display-lg-mobile text-xl text-primary">Admin Suite</h1>
+<button id="mobile-drawer-close" class="p-1 text-on-surface-variant"><span class="material-symbols-outlined">close</span></button>
+</div>
+<ul id="nav-list-mobile" class="flex flex-col gap-2 flex-grow">
+<li data-nav="overview" class="nav-item-mobile mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md"><span class="material-symbols-outlined">dashboard</span>Overview</a>
+</li>
+<li data-nav="disputes" class="nav-item-mobile mx-2 rounded-lg bg-primary-container text-on-primary-container cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md"><span class="material-symbols-outlined">gavel</span>Disputes</a>
+</li>
+<li data-nav="users" class="nav-item-mobile mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high cursor-pointer">
+<a class="flex items-center px-4 py-3 gap-3 font-label-md text-label-md"><span class="material-symbols-outlined">people</span>Users</a>
+</li>
+</ul>
+<div class="px-4"><a id="logout-link-mobile" class="flex items-center px-4 py-3 gap-3 text-on-surface-variant font-label-md text-label-md rounded-lg mx-2 cursor-pointer"><span class="material-symbols-outlined">logout</span>Logout</a></div>
+</div>
+
+<!-- Main Content Canvas -->
+<main class="flex-grow md:ml-64 pt-20 md:pt-margin-desktop p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto min-h-screen">
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-stack-lg gap-4">
+<div>
+<a id="back-link" class="inline-flex items-center text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md mb-2 cursor-pointer">
+<span class="material-symbols-outlined text-sm mr-1">arrow_back</span>
+                    Back to Disputes
+                </a>
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-3 flex-wrap">
+                    Dispute #DS-9482
+                    <span id="dispute-status-badge" class="inline-flex items-center px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-caps text-label-caps">Action Required</span>
+</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Opened on Oct 12, 2024</p>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button id="full-refund-btn" class="flex-1 md:flex-none px-6 py-2 rounded-full border border-tertiary text-tertiary font-label-md text-label-md hover:bg-surface-container transition-colors">
+                    Issue Full Refund
+                </button>
+<button id="resolve-btn" class="flex-1 md:flex-none px-6 py-2 rounded-full bg-primary-container text-on-secondary font-label-md text-label-md hover:bg-surface-tint transition-colors">
+                    Resolve Dispute
+                </button>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Context & Details -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Party Context -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">Involved Parties</h3>
+<div class="flex flex-col gap-4">
+<!-- Client -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" alt="Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0lNCIha8FO985suMh49w-okoWbvyTWmr0dz7XmCV-deh4fjuQyYdfe3xODImK33LY2Tjjlfp2kPIuEemCVxNh4ETTbnUQO0dA0JwBpjgvDVXQpTr8NAOwGM_5LgRz-eY_trFhym-OfM2HKrL9PsQyV1XS-GBRWDliTh4urfZTDeUeDFUlCs4emIE9gD4-RdVK_xYdYV-h2ws9t4PSoyeoYXDdM5tzue-I5uWBtQL-WO34_w-Otxjhgg"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Client</p>
+<p class="font-label-md text-label-md text-on-surface font-semibold">Sarah Jenkins</p>
+<a class="contact-link font-body-md text-sm text-primary hover:underline block truncate cursor-pointer" data-email="sarah.j@example.com">sarah.j@example.com</a>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<!-- Vendor -->
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" alt="Luxe Catering Co. logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4Fa70SRnfnhXHPZ8idJPEJj-pbZEERNhuTMHdP_IpRTyvLjrtLFjj7EMGW3Wu5mY60NTc2P0mnZo4x5jD3LRxexxE2eqfgcvPaVRZNfTonjDlHpff8wCdipy4EXCU93Dg8ZdEHb80bodIaSlS0qE6jRsvx-IU_CsRYTiRTsYIJm0mVRtgVTkpcyAMGg6OwtA7Yj85rR-ODKOKVNuX4Aksua9Kkprxd5VlxgQ5HE_5yXIXkXYEyuC1DA"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Vendor</p>
+<p class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-1">
+                                    Luxe Catering Co.
+                                    <span class="material-symbols-outlined text-[14px] text-secondary">verified</span>
+</p>
+<a class="contact-link font-body-md text-sm text-primary hover:underline block truncate cursor-pointer" data-email="contact@luxecatering.com">contact@luxecatering.com</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking Details -->
+<section class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-ambient">
+<div class="h-32 bg-surface-container relative">
+<img class="w-full h-full object-cover" alt="Catering spread" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfVuyvEqZisx3lr1_C7Q-Ml-a6qtW0FG1RxsUYgD7Pp4AIJ-Ejc_L0CSD7d1D_If-HVl4Vmtc1zuf2sGcZgfVonJEbx9ZmV1HohcpG3hwLaImyjC0crmLjN1BdHYPdns2fsW6TCSubjRIj6FnWVR8nHOOqCWzCNqGUL463txqnT2_dw7WAKMsdWlxLvagSaslorwSrEv6wbwdNGZ0ugrNqSyrVwQ1D8DXTtpXXGDu-fMttS8BryNvRHA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-tertiary/60 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4 text-on-secondary">
+<p class="font-headline-sm text-headline-sm truncate">Premium Wedding Package</p>
+</div>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Date</p>
+<p class="font-body-md text-body-md text-on-surface">Oct 24, 2024</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Location</p>
+<p class="font-body-md text-body-md text-on-surface truncate">The Grand Hall, NY</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Booking ID</p>
+<p class="font-body-md text-body-md text-on-surface">#BK-88421</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Total Value</p>
+<p class="font-body-md text-body-md text-on-surface">$4,500.00</p>
+</div>
+</div>
+<div class="bg-error-container/20 rounded-lg p-3 mt-4 border border-error-container/50">
+<p class="font-label-caps text-label-caps text-error mb-1">Dispute Reason</p>
+<p class="font-body-md text-sm text-on-surface">Service not delivered as described (Missing vegetarian options).</p>
+</div>
+</div>
+</section>
+<!-- Financials -->
+<section class="bg-surface-container-lowest rounded-xl p-6 shadow-ambient">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-stack-md">Financial Status</h3>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30">
+<span class="font-body-md text-on-surface-variant">Total Paid</span>
+<span class="font-label-md text-on-surface">$4,500.00</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/30">
+<span class="font-body-md text-on-surface-variant">Escrow Status</span>
+<span id="escrow-status" class="font-label-md text-secondary">Held (In Dispute)</span>
+</div>
+<div id="refund-line" class="hidden flex justify-between items-center py-2 border-b border-outline-variant/30">
+<span class="font-body-md text-on-surface-variant">Refunded</span>
+<span id="refund-amount" class="font-label-md text-on-surface">$0.00</span>
+</div>
+<div class="mt-4">
+<button id="partial-refund-btn" class="w-full px-4 py-2 rounded-full border border-tertiary text-tertiary font-label-md text-label-md hover:bg-surface-container transition-colors">
+                             Issue Partial Refund
+                         </button>
+</div>
+</section>
+</div>
+<!-- Right Column: Communication Log -->
+<div class="lg:col-span-8 flex flex-col h-[800px]">
+<section class="flex flex-col h-full bg-surface-container-lowest rounded-xl shadow-ambient overflow-hidden">
+<!-- Chat Header -->
+<div class="p-6 border-b border-outline-variant/30 bg-surface-bright flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Communication Log</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Internal Admin View</span>
+</div>
+<!-- Messages Area -->
+<div id="messages-area" class="flex-grow overflow-y-auto p-6 flex flex-col gap-6 bg-surface">
+<!-- Client Message -->
+<div class="flex gap-4 max-w-[85%]">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden flex-shrink-0 mt-1">
+<img class="w-full h-full object-cover" alt="Sarah Jenkins" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1wzzEH8ifm41brIBSjYLIMPut1UBbPW8X2vFMNQcZxUGSbLt5W5WzYRiezvN80woO_GjqN5hWfh69lsSOc9MeL3dR1lQyvolL8z2-p6ACd9vSb3cgZjLo_fYhxsoiE_f5RwGKbvpUZxtfAiw2SBseajVzqJDve2Mq7jBnshexow6Km5lU8ybAJOMcGtVSccl83TcrbhPbKPAjlTYYHUXAvgS7NCFmWQee4cdi2uCjWffUXM-7lm7HZw"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-baseline gap-2">
+<span class="font-label-md text-label-md text-on-surface">Sarah Jenkins</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">Oct 12, 10:45 AM</span>
+</div>
+<div class="bg-surface-container p-4 rounded-2xl rounded-tl-sm text-body-md text-on-surface">
+                                    I am opening this dispute because half of the promised vegetarian options were missing at the event. We had 20 guests who could not eat the main course.
+                                </div>
+</div>
+</div>
+<!-- Vendor Message -->
+<div class="flex gap-4 max-w-[85%] self-end flex-row-reverse">
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden flex-shrink-0 mt-1">
+<img class="w-full h-full object-cover" alt="Luxe Catering Co." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-k6f05JUj2x5zkyoJx2tmn5ZMAmNfT2AseUPC0wzpldpCznwasBYhzk0WOmr2CmckpAN16ulp5LRHITDiecVJySW2Y_QoaItYiTDIXhpxkMm2B_rP3oXCr7VSCfFmxrAjAdSXo09EpK5UDVgsc0gfdCdCUhlzozS9fZJMqgYvr55vmDrutZwqN9Zl1bBi3H6soM6uEUZDQcTXqvSzaIU9sumBih-MGNwvc1QL4AyLXSwVl-O4kwoPfg"/>
+</div>
+<div class="flex flex-col gap-1 items-end">
+<div class="flex items-baseline gap-2 flex-row-reverse">
+<span class="font-label-md text-label-md text-on-surface">Luxe Catering Co.</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant text-[10px]">Oct 12, 11:30 AM</span>
+</div>
+<div class="bg-surface-variant p-4 rounded-2xl rounded-tr-sm text-body-md text-on-surface">
+                                    We apologize for the inconvenience. Our supplier failed to deliver the ingredients for the secondary vegetarian dish. We did, however, provide extra portions of the primary vegetarian option to compensate.
+                                </div>
+</div>
+</div>
+<!-- Admin Note (Internal) -->
+<div class="flex justify-center my-4">
+<div class="bg-secondary-container/30 border border-secondary-container px-4 py-2 rounded-full text-center max-w-md">
+<p class="font-label-caps text-label-caps text-on-secondary-fixed-variant mb-1 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">admin_panel_settings</span>
+                                     Internal Note Added
+                                 </p>
+<p class="font-body-md text-sm text-on-surface-variant">Vendor contract stipulates full menu delivery or 15% refund per missing item.</p>
+</div>
+</div>
+</div>
+<!-- Admin Action Area -->
+<div class="p-6 border-t border-outline-variant/30 bg-surface-bright">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Add Internal Note (Not visible to parties)</p>
+<div class="flex gap-3">
+<input id="note-input" class="flex-grow bg-surface border-b border-outline-variant focus:border-primary-container px-0 py-2 font-body-md text-on-surface focus:ring-0 focus:outline-none transition-colors" placeholder="Type your note here..." type="text"/>
+<button id="send-note-btn" class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center hover:bg-surface-variant transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+
+<!-- Confirm Modal (generic, used for Full Refund / Resolve / Back / Logout) -->
+<div id="confirm-modal-backdrop" class="hidden fixed inset-0 bg-black/40 z-[60] modal-backdrop flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-sm p-6">
+<h3 id="confirm-title" class="font-headline-sm text-headline-sm text-on-surface mb-2">Confirm</h3>
+<p id="confirm-body" class="text-body-md text-on-surface-variant mb-5"></p>
+<div class="flex gap-3">
+<button id="confirm-cancel" class="flex-1 py-2.5 rounded-full border border-outline-variant text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors">Cancel</button>
+<button id="confirm-ok" class="flex-1 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md hover:bg-surface-tint transition-colors">Confirm</button>
+</div>
+</div>
+</div>
+
+<!-- Resolve Dispute Modal -->
+<div id="resolve-modal-backdrop" class="hidden fixed inset-0 bg-black/40 z-[60] modal-backdrop flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-md p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Resolve Dispute</h3>
+<button id="resolve-modal-close" class="p-1 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+</div>
+<form id="resolve-form" class="flex flex-col gap-3">
+<label class="flex items-center gap-2 border border-outline-variant rounded-lg px-3 py-2 cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input type="radio" name="resolution" value="client" checked class="text-primary"> Rule in favor of client — full refund
+</label>
+<label class="flex items-center gap-2 border border-outline-variant rounded-lg px-3 py-2 cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input type="radio" name="resolution" value="vendor" class="text-primary"> Rule in favor of vendor — no refund
+</label>
+<label class="flex items-center gap-2 border border-outline-variant rounded-lg px-3 py-2 cursor-pointer has-[:checked]:border-primary has-[:checked]:bg-primary-container/10">
+<input type="radio" name="resolution" value="split" class="text-primary"> Split resolution — partial refund per contract (15%)
+</label>
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Resolution note (visible to both parties)</label>
+<textarea id="resolve-note" rows="3" placeholder="Summarize the decision..." class="w-full px-3 py-2 border border-outline-variant rounded-lg outline-none focus:border-primary focus:ring-1 focus:ring-primary resize-none"></textarea>
+</div>
+<button type="submit" class="mt-1 w-full py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md hover:bg-surface-tint transition-colors">Confirm resolution</button>
+</form>
+</div>
+</div>
+
+<!-- Partial Refund Modal -->
+<div id="partial-modal-backdrop" class="hidden fixed inset-0 bg-black/40 z-[60] modal-backdrop flex items-center justify-center p-4">
+<div class="bg-surface-container-lowest rounded-xl shadow-2xl w-full max-w-sm p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Issue Partial Refund</h3>
+<button id="partial-modal-close" class="p-1 text-on-surface-variant hover:text-on-surface"><span class="material-symbols-outlined">close</span></button>
+</div>
+<form id="partial-form" class="flex flex-col gap-3">
+<div>
+<label class="font-label-md text-label-md text-on-surface-variant block mb-1">Refund amount (of $4,500.00)</label>
+<input required id="partial-amount" type="number" min="0.01" max="4500" step="0.01" placeholder="e.g. 675.00" class="w-full px-3 py-2 border border-outline-variant rounded-lg outline-none focus:border-primary focus:ring-1 focus:ring-primary">
+<p class="text-xs text-on-surface-variant mt-1">Contract suggests 15% per missing item ($675.00 for one missing dish).</p>
+</div>
+<button type="submit" class="mt-1 w-full py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md hover:bg-surface-tint transition-colors">Issue refund</button>
+</form>
+</div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------- Toast ---------------- */
+  function showToast(message, icon) {
+    icon = icon || "check_circle";
+    const container = document.getElementById("toast-container");
+    const el = document.createElement("div");
+    el.className = "toast bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-lg flex items-center gap-2 text-label-md font-label-md";
+    el.innerHTML = '<span class="material-symbols-outlined text-lg">' + icon + '</span><span>' + message + '</span>';
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.transition = "opacity .3s ease";
+      el.style.opacity = "0";
+      setTimeout(() => el.remove(), 300);
+    }, 2800);
+  }
+
+  /* ---------------- State ---------------- */
+  const state = {
+    resolved: false,
+    totalRefunded: 0
+  };
+  const TOTAL_VALUE = 4500;
+
+  /* ---------------- Generic confirm modal ---------------- */
+  const confirmBackdrop = document.getElementById("confirm-modal-backdrop");
+  const confirmTitle = document.getElementById("confirm-title");
+  const confirmBody = document.getElementById("confirm-body");
+  const confirmOk = document.getElementById("confirm-ok");
+  let confirmCallback = null;
+
+  function askConfirm(title, body, okLabel, onConfirm) {
+    confirmTitle.textContent = title;
+    confirmBody.textContent = body;
+    confirmOk.textContent = okLabel || "Confirm";
+    confirmCallback = onConfirm;
+    confirmBackdrop.classList.remove("hidden");
+  }
+  function closeConfirm() { confirmBackdrop.classList.add("hidden"); confirmCallback = null; }
+  document.getElementById("confirm-cancel").addEventListener("click", closeConfirm);
+  confirmOk.addEventListener("click", () => {
+    const cb = confirmCallback;
+    closeConfirm();
+    if (cb) cb();
+  });
+  confirmBackdrop.addEventListener("click", (e) => { if (e.target === confirmBackdrop) closeConfirm(); });
+
+  /* ---------------- Messages / system notes ---------------- */
+  const messagesArea = document.getElementById("messages-area");
+
+  function addAdminNote(text) {
+    const div = document.createElement("div");
+    div.className = "flex justify-center my-4 msg-in";
+    div.innerHTML =
+      '<div class="bg-secondary-container/30 border border-secondary-container px-4 py-2 rounded-full text-center max-w-md">' +
+        '<p class="font-label-caps text-label-caps text-on-secondary-fixed-variant mb-1 flex items-center justify-center gap-1">' +
+          '<span class="material-symbols-outlined text-[14px]">admin_panel_settings</span> Internal Note Added' +
+        '</p>' +
+        '<p class="font-body-md text-sm text-on-surface-variant">' + text + '</p>' +
+      '</div>';
+    messagesArea.appendChild(div);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+
+  function addSystemMessage(text, tone) {
+    const colorClass = tone === "success" ? "bg-primary-container/20 border-primary-container text-primary" : "bg-surface-container border-outline-variant/50 text-on-surface-variant";
+    const div = document.createElement("div");
+    div.className = "flex justify-center my-4 msg-in";
+    div.innerHTML =
+      '<div class="' + colorClass + ' border px-4 py-2 rounded-full text-center max-w-md">' +
+        '<p class="font-body-md text-sm">' + text + '</p>' +
+      '</div>';
+    messagesArea.appendChild(div);
+    messagesArea.scrollTop = messagesArea.scrollHeight;
+  }
+
+  /* ---------------- Internal note input ---------------- */
+  const noteInput = document.getElementById("note-input");
+  function sendNote() {
+    const val = noteInput.value.trim();
+    if (!val) return;
+    addAdminNote(val);
+    noteInput.value = "";
+    showToast("Internal note added", "admin_panel_settings");
+  }
+  document.getElementById("send-note-btn").addEventListener("click", sendNote);
+  noteInput.addEventListener("keydown", (e) => { if (e.key === "Enter") sendNote(); });
+
+  /* ---------------- Dispute status ---------------- */
+  const statusBadge = document.getElementById("dispute-status-badge");
+  const escrowStatus = document.getElementById("escrow-status");
+  const refundLine = document.getElementById("refund-line");
+  const refundAmountEl = document.getElementById("refund-amount");
+  const fullRefundBtn = document.getElementById("full-refund-btn");
+  const resolveBtn = document.getElementById("resolve-btn");
+  const partialRefundBtn = document.getElementById("partial-refund-btn");
+
+  function setStatus(label, colorClasses) {
+    statusBadge.className = "inline-flex items-center px-3 py-1 rounded-full font-label-caps text-label-caps " + colorClasses;
+    statusBadge.textContent = label;
+  }
+
+  function recordRefund(amount, note) {
+    state.totalRefunded += amount;
+    refundLine.classList.remove("hidden");
+    refundAmountEl.textContent = "$" + state.totalRefunded.toFixed(2);
+    addSystemMessage(note, "success");
+  }
+
+  function markResolved(finalStatusLabel, finalStatusClasses, escrowLabel) {
+    state.resolved = true;
+    setStatus(finalStatusLabel, finalStatusClasses);
+    escrowStatus.textContent = escrowLabel;
+    escrowStatus.className = "font-label-md text-primary";
+    fullRefundBtn.disabled = true;
+    resolveBtn.disabled = true;
+    partialRefundBtn.disabled = true;
+  }
+
+  /* ---------------- Issue Full Refund ---------------- */
+  fullRefundBtn.addEventListener("click", () => {
+    if (state.resolved) return;
+    askConfirm(
+      "Issue full refund?",
+      "This refunds Sarah Jenkins the full $4,500.00 and closes the dispute in the client's favor. This can't be undone.",
+      "Issue $4,500.00 refund",
+      () => {
+        recordRefund(TOTAL_VALUE - state.totalRefunded, "Full refund of $" + TOTAL_VALUE.toFixed(2) + " issued to Sarah Jenkins.");
+        markResolved("Resolved — Refunded", "bg-primary-container text-on-primary-container", "Released to Client");
+        showToast("Full refund issued and dispute closed", "paid");
+      }
+    );
+  });
+
+  /* ---------------- Issue Partial Refund ---------------- */
+  const partialModal = document.getElementById("partial-modal-backdrop");
+  document.getElementById("partial-refund-btn").addEventListener("click", () => {
+    if (state.resolved) return;
+    document.getElementById("partial-amount").value = "675.00";
+    partialModal.classList.remove("hidden");
+  });
+  document.getElementById("partial-modal-close").addEventListener("click", () => partialModal.classList.add("hidden"));
+  partialModal.addEventListener("click", (e) => { if (e.target === partialModal) partialModal.classList.add("hidden"); });
+
+  document.getElementById("partial-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const amount = parseFloat(document.getElementById("partial-amount").value);
+    if (isNaN(amount) || amount <= 0) return;
+    const remaining = TOTAL_VALUE - state.totalRefunded;
+    const applied = Math.min(amount, remaining);
+    recordRefund(applied, "Partial refund of $" + applied.toFixed(2) + " issued to Sarah Jenkins.");
+    partialModal.classList.add("hidden");
+    showToast("Partial refund of $" + applied.toFixed(2) + " issued", "paid");
+  });
+
+  /* ---------------- Resolve Dispute ---------------- */
+  const resolveModal = document.getElementById("resolve-modal-backdrop");
+  resolveBtn.addEventListener("click", () => {
+    if (state.resolved) return;
+    resolveModal.classList.remove("hidden");
+  });
+  document.getElementById("resolve-modal-close").addEventListener("click", () => resolveModal.classList.add("hidden"));
+  resolveModal.addEventListener("click", (e) => { if (e.target === resolveModal) resolveModal.classList.add("hidden"); });
+
+  document.getElementById("resolve-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const choice = document.querySelector('input[name="resolution"]:checked').value;
+    const note = document.getElementById("resolve-note").value.trim();
+
+    if (choice === "client") {
+      recordRefund(TOTAL_VALUE - state.totalRefunded, "Resolution: ruled in favor of client. Full refund of $" + TOTAL_VALUE.toFixed(2) + " issued.");
+      markResolved("Resolved — Client Favored", "bg-primary-container text-on-primary-container", "Released to Client");
+    } else if (choice === "vendor") {
+      addSystemMessage("Resolution: ruled in favor of vendor. No refund issued.", "success");
+      markResolved("Resolved — Vendor Favored", "bg-surface-container-high text-on-surface", "Released to Vendor");
+    } else {
+      const splitAmount = TOTAL_VALUE * 0.15;
+      recordRefund(splitAmount, "Resolution: split decision per contract terms. Partial refund of $" + splitAmount.toFixed(2) + " issued.");
+      markResolved("Resolved — Split Decision", "bg-secondary-container text-on-secondary-container", "Partially Released");
+    }
+
+    if (note) {
+      addAdminNote("Resolution note: " + note);
+    }
+
+    resolveModal.classList.add("hidden");
+    document.getElementById("resolve-form").reset();
+    showToast("Dispute marked as resolved", "gavel");
+  });
+
+  /* ---------------- Back to Disputes ---------------- */
+  document.getElementById("back-link").addEventListener("click", () => {
+    showToast("This preview only has the dispute detail view — no list to return to yet", "arrow_back");
+  });
+
+  /* ---------------- Contact links ---------------- */
+  document.querySelectorAll(".contact-link").forEach(link => {
+    link.addEventListener("click", () => {
+      const email = link.getAttribute("data-email");
+      showToast("Opening mail app for " + email, "mail");
+      window.location.href = "mailto:" + email;
+    });
+  });
+
+  /* ---------------- Sidebar nav (desktop + mobile) ---------------- */
+  const navNames = { overview: "Overview", disputes: "Disputes", users: "Users" };
+  function setActiveNav(section) {
+    document.querySelectorAll(".nav-item, .nav-item-mobile").forEach(item => {
+      const isActive = item.getAttribute("data-nav") === section;
+      item.classList.toggle("bg-primary-container", isActive);
+      item.classList.toggle("text-on-primary-container", isActive);
+      item.classList.toggle("text-on-surface-variant", !isActive);
+      const icon = item.querySelector(".nav-icon");
+      if (icon) icon.style.fontVariationSettings = isActive ? "'FILL' 1" : "'FILL' 0";
+    });
+    if (section !== "disputes") {
+      showToast(navNames[section] + " isn't built yet in this preview — staying on Disputes", "info");
+    }
+  }
+  document.querySelectorAll(".nav-item, .nav-item-mobile").forEach(item => {
+    item.addEventListener("click", () => {
+      setActiveNav(item.getAttribute("data-nav"));
+      closeMobileDrawer();
+    });
+  });
+
+  /* ---------------- Mobile drawer ---------------- */
+  const drawer = document.getElementById("mobile-drawer");
+  const drawerBackdrop = document.getElementById("mobile-drawer-backdrop");
+  function openMobileDrawer() {
+    drawerBackdrop.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      drawerBackdrop.classList.remove("opacity-0");
+      drawer.classList.remove("translate-x-full");
+    });
+  }
+  function closeMobileDrawer() {
+    drawerBackdrop.classList.add("opacity-0");
+    drawer.classList.add("translate-x-full");
+    setTimeout(() => drawerBackdrop.classList.add("hidden"), 250);
+  }
+  document.getElementById("mobile-menu-btn").addEventListener("click", openMobileDrawer);
+  document.getElementById("mobile-drawer-close").addEventListener("click", closeMobileDrawer);
+  drawerBackdrop.addEventListener("click", closeMobileDrawer);
+
+  /* ---------------- Logout ---------------- */
+  function doLogout() {
+    askConfirm("Log out?", "You'll need to sign back in to access the Admin Suite.", "Log out", () => {
+      showToast("Logged out", "logout");
+    });
+  }
+  document.getElementById("logout-link").addEventListener("click", doLogout);
+  document.getElementById("logout-link-mobile").addEventListener("click", () => { closeMobileDrawer(); doLogout(); });
+
+  /* ---------------- Escape key ---------------- */
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeConfirm();
+      resolveModal.classList.add("hidden");
+      partialModal.classList.add("hidden");
+      closeMobileDrawer();
+    }
+  });
+})();
+</script>
+
+</body></html>

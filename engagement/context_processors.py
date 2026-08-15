@@ -7,7 +7,7 @@ def unread_notifications(request):
 
     return {
         "unread_notifications": Notification.objects.filter(
-            recipient=request.user,
-            read_at__isnull=True,
+            user=request.user,
+            is_read=False,
         ).count()
     }

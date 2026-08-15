@@ -14,7 +14,7 @@ def notify_vendor_of_review(sender, instance, created, **kwargs):
     if created:
         notify(
             instance.vendor,
-            "review_received",
+            "New review received",
             f"You received a {instance.rating}-star review "
             f"from {instance.author.username}.",
         )
@@ -28,7 +28,7 @@ def notify_vendor_of_review(sender, instance, created, **kwargs):
 def notify_recipient_of_message(sender, instance, created, **kwargs):
     if created:
         notify(
-            instance.recipient,
-            "message_received",
+            instance.receiver,
+            "New message",
             f"New message from {instance.sender.username}.",
         )
