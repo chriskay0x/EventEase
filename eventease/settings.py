@@ -145,3 +145,23 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+# ---------- Paystack ----------
+PAYSTACK_SECRET_KEY  = os.environ.get("PAYSTACK_SECRET_KEY", "")
+PAYSTACK_PUBLIC_KEY  = os.environ.get("PAYSTACK_PUBLIC_KEY", "")
+PAYSTACK_CURRENCY    = os.environ.get("PAYSTACK_CURRENCY", "NGN")  # NGN / GHS / KES / ZAR
+PAYSTACK_API         = "https://api.paystack.co"
+APP_URL              = os.environ.get("APP_URL", "http://localhost:8000")
+
+# ---------- Static / Media (whitenoise needs STATIC_ROOT) ----------
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+MEDIA_URL  = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# ---------- Prevents "Auto-created primary key" warnings on new models ----------
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# ---------- CSRF cookie so the frontend JS can read it ----------
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_HTTPONLY = False   # must be readable by JS for the X-CSRFToken header

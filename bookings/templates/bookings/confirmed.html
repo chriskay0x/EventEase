@@ -1,109 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Confirmed — EventEase</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        forest: '#0E3B2E',
-        cream:  '#F6F3EC',
-        sand:   '#ECE7DC',
-        mint:   '#DCEAE0',
-        gold:   '#8A6D3B',
-        ink:    '#1E2B26',
-      },
-      fontFamily: {
-        display: ['"Playfair Display"', 'serif'],
-        body: ['Inter', 'system-ui', 'sans-serif'],
-      },
-    },
-  },
-}
-</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Booking Confirmed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F1EB;
+    --green:#0C3B2E;
+    --green-soft:#D9EEE3;
+    --green-softer:#E6F4EC;
+    --ink:#111827;
+    --muted:#52606D;
+    --card:#F7F8FA;
+    --card-border:#E8EAEE;
+    --beige:#E9E4DB;
+    --line:#DCD8CF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+  /* ---------- Confetti + Congratulations overlay ---------- */
+  #confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+  #congrats{
+    position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    pointer-events:none;z-index:70;text-align:center;padding:0 16px;
+    animation:congrats 4.2s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  #congrats h2{
+    font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
+    font-size:clamp(44px,8vw,88px);color:var(--green);
+    text-shadow:0 2px 0 rgba(255,255,255,.6);
+  }
+  #congrats p{margin-top:8px;font-size:15px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  @keyframes congrats{
+    0%{opacity:0;transform:scale(.6) rotate(-4deg)}
+    12%{opacity:1;transform:scale(1.06) rotate(1deg)}
+    20%{transform:scale(1) rotate(0)}
+    78%{opacity:1}
+    100%{opacity:0;transform:scale(1.04)}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{padding:76px 24px 0;text-align:center}
+  .badge{position:relative;width:180px;height:180px;margin:0 auto}
+  .badge::before,.badge::after,.badge .core{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+  .badge::before{content:'';width:180px;height:180px;background:var(--green-softer)}
+  .badge::after{content:'';width:148px;height:148px;background:var(--green-soft)}
+  .badge .core{width:116px;height:116px;background:var(--green);display:flex;align-items:center;justify-content:center}
+  .badge svg{width:46px;height:46px;stroke:#A9D8C0}
+
+  h1{
+    font-family:'Playfair Display',serif;font-weight:700;color:var(--green);
+    font-size:clamp(42px,6vw,64px);margin-top:44px;letter-spacing:.5px;
+  }
+  .sub{max-width:660px;margin:18px auto 0;color:var(--muted);font-size:18px;line-height:1.65}
+
+  .ref-pill{
+    display:inline-flex;align-items:center;gap:14px;margin-top:44px;
+    background:#ECE9E2;border:1px solid #E0DCD3;border-radius:999px;padding:18px 32px;
+  }
+  .ref-pill .label{font-size:12px;font-weight:600;letter-spacing:.14em;color:#5B6470}
+  .ref-pill .value{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--green)}
+  .ref-pill .value .hash{color:#9AA1AB}
+
+  /* ---------- What happens next ---------- */
+  .card{
+    max-width:1140px;margin:72px auto 0;background:var(--card);
+    border:1px solid var(--card-border);border-radius:18px;
+    padding:52px 56px;text-align:left;
+  }
+  .card h2{font-family:'Playfair Display',serif;font-weight:700;font-size:28px;color:var(--green)}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:36px;margin-top:40px}
+  .step-head{display:flex;align-items:center}
+  .step-icon{
+    flex:none;width:56px;height:56px;border-radius:50%;background:var(--beige);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .step-icon svg{width:24px;height:24px;stroke:var(--ink)}
+  .step-line{flex:1;height:2px;background:var(--line);margin:0 0 0 14px;border-radius:2px}
+  .step:last-child .step-line{display:none}
+  .step h3{font-size:16px;font-weight:600;margin-top:26px}
+  .step p{font-size:15px;color:#4B5563;line-height:1.65;margin-top:10px}
+
+  /* ---------- Actions ---------- */
+  .actions{display:flex;justify-content:center;gap:16px;margin:64px 0 96px;padding:0 24px;flex-wrap:wrap}
+  .btn{border-radius:999px;padding:18px 34px;font-size:16px;font-weight:500;cursor:pointer;font-family:inherit;transition:transform .15s ease, box-shadow .15s ease}
+  .btn:active{transform:scale(.97)}
+  .btn-primary{background:var(--green);color:#EAF4EE;border:none;box-shadow:0 8px 20px rgba(12,59,46,.25)}
+  .btn-primary:hover{box-shadow:0 10px 26px rgba(12,59,46,.35)}
+  .btn-secondary{background:transparent;color:var(--ink);border:1px solid #1F2937}
+  .btn-secondary:hover{background:rgba(17,24,39,.05)}
+
+  /* entrance */
+  .fade-up{opacity:0;transform:translateY(18px);animation:fadeUp .7s ease forwards}
+  .d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.35s}.d5{animation-delay:.45s}.d6{animation-delay:.55s}
+  @keyframes fadeUp{to{opacity:1;transform:none}}
+
+  @media (max-width:900px){
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .step-line{display:none}
+    .card{margin-left:20px;margin-right:20px;padding:40px 32px}
+  }
+  @media (max-width:560px){
+    .steps{grid-template-columns:1fr}
+    .ref-pill{flex-direction:column;gap:6px;padding:16px 28px}
+  }
+</style>
 </head>
-<body class="bg-cream font-body text-ink antialiased">
+<body>
 
-<main class="mx-auto flex min-h-screen w-full max-w-4xl flex-col items-center px-4 py-16 sm:py-20">
+<canvas id="confetti"></canvas>
+<div id="congrats" aria-hidden="true">
+  <h2>Congratulations!</h2>
+  <p>Your booking is confirmed</p>
+</div>
 
-  <!-- Success icon with soft rings -->
-  <div class="relative mb-8 flex h-24 w-24 items-center justify-center">
-    <span class="absolute inset-0 scale-[1.6] rounded-full bg-mint/50"></span>
-    <span class="absolute inset-0 scale-125 rounded-full bg-mint"></span>
-    <span class="relative flex h-20 w-20 items-center justify-center rounded-full bg-forest">
-      <svg class="h-9 w-9 text-mint" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-      </svg>
-    </span>
+<main>
+  <section class="hero">
+    <div class="badge fade-up d1">
+      <span class="core">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>
+        </svg>
+      </span>
+    </div>
+    <h1 class="fade-up d2">Booking Confirmed</h1>
+    <p class="sub fade-up d3">Your request has been successfully sent. We're thrilled to help you curate an unforgettable experience.</p>
+    <div class="ref-pill fade-up d4">
+      <span class="label">REFERENCE NUMBER</span>
+      <span class="value"><span class="hash">#</span><span id="ref">EE-1024-GV</span></span>
+    </div>
+  </section>
+
+  <section class="card fade-up d5">
+    <h2>What happens next?</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-head">
+          <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg></span>
+          <span class="step-line"></span>
+        </div>
+        <h3>Vendor confirms</h3>
+        <p>The vendor reviews and accepts your request within 48 hours.</p>
+      </div>
+      <div class="step">
+        <div class="step-head">
+          <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+          <span class="step-line"></span>
+        </div>
+        <h3>Reminder emails</h3>
+        <p>We'll send you timely updates and tips leading up to the date.</p>
+      </div>
+      <div class="step">
+        <div class="step-head">
+          <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-2.02 1.11-.22 1.01-1.26 1.6-2.25 1.28l-.51-.17"/><path d="m11 5.47-.49-.24a1.9 1.9 0 0 0-2.47.88l-.2.4"/></svg></span>
+          <span class="step-line"></span>
+        </div>
+        <h3>Your Event</h3>
+        <p>Enjoy a flawlessly executed celebration tailored to your vision.</p>
+      </div>
+      <div class="step">
+        <div class="step-head">
+          <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.904l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg></span>
+          <span class="step-line"></span>
+        </div>
+        <h3>Review</h3>
+        <p>Share your experience to help others discover great vendors.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="actions fade-up d6">
+    <button class="btn btn-primary">View Booking Details</button>
+    <button class="btn btn-secondary">Return to Discover</button>
   </div>
+</main>
 
-  <h1 class="font-display text-5xl font-semibold text-forest sm:text-6xl">Booking Confirmed</h1>
+<script>
+/* ============ Confetti engine (no dependencies) ============ */
+(function(){
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let W, H, parts = [], running = false;
 
-  <p class="mt-5 max-w-md text-center leading-relaxed text-ink/60">
-    Your request has been successfully sent. We're thrilled to help you
-    curate an unforgettable experience.
-  </p>
+  function resize(){
+    const dpr = window.devicePixelRatio || 1;
+    W = innerWidth; H = innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  addEventListener('resize', resize); resize();
 
-  <!-- Reference number pill (pulled from your database) -->
-  <div class="mt-9 flex items-center gap-4 rounded-full border border-ink/10 bg-sand/70 px-7 py-3.5">
-    <span class="text-[11px] font-semibold uppercase tracking-[0.18em] text-ink/50">Reference Number</span>
-    <span class="font-display text-xl text-forest">#{{ booking.reference_code }}</span>
-  </div>
+  const COLORS = ['#0C3B2E','#2E7D5B','#7FC8A4','#D9EEE3','#F2C14E','#E8837A','#FBF9F4'];
+  const rand = (a,b) => a + Math.random() * (b - a);
+  const pick = arr => arr[(Math.random()*arr.length)|0];
 
-  <!-- What happens next -->
-  <section class="mt-14 w-full rounded-2xl border border-ink/10 bg-white/60 p-8 sm:p-10">
-    <h2 class="font-display text-2xl font-semibold text-forest">What happens next?</h2>
+  function makePiece(x,y,vx,vy){
+    return { x,y,vx,vy, w:rand(6,11), h:rand(8,16), color:pick(COLORS),
+      rot:rand(0,Math.PI*2), vr:rand(-.18,.18),
+      sway:rand(0,Math.PI*2), swaySpeed:rand(.06,.14),
+      shape:pick(['rect','rect','circle','ribbon']), life:0, ttl:rand(200,320) };
+  }
+  function cannon(side){
+    const x = side === 'left' ? -10 : W + 10, y = H * .85;
+    for(let i=0;i<130;i++){
+      const ang = (side==='left' ? rand(-78,-28) : rand(-152,-102)) * Math.PI/180;
+      const sp = rand(8,17);
+      parts.push(makePiece(x,y,Math.cos(ang)*sp,Math.sin(ang)*sp));
+    }
+  }
+  function rain(n){
+    for(let i=0;i<n;i++)
+      parts.push(makePiece(rand(0,W), rand(-H*.2,-10), rand(-1,1), rand(2,5)));
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    parts = parts.filter(p => p.life < p.ttl && p.y < H + 40);
+    for(const p of parts){
+      p.life++; p.vy += .12; p.vx *= .99; p.vy *= .995; p.sway += p.swaySpeed;
+      p.x += p.vx + Math.sin(p.sway) * .8; p.y += p.vy; p.rot += p.vr;
+      const fade = (p.ttl - p.life) < 40 ? (p.ttl - p.life)/40 : 1;
+      ctx.save(); ctx.globalAlpha = fade;
+      ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      if(p.shape === 'circle'){ ctx.beginPath(); ctx.arc(0,0,p.w/2,0,Math.PI*2); ctx.fill(); }
+      else {
+        const flutter = .35 + .65 * Math.abs(Math.sin(p.sway*2));
+        ctx.scale(1, p.shape === 'ribbon' ? 1 : flutter);
+        const w = p.shape === 'ribbon' ? 3 : p.w, h = p.shape === 'ribbon' ? 16 : p.h;
+        ctx.fillRect(-w/2,-h/2,w,h);
+      }
+      ctx.restore();
+    }
+    if(parts.length) requestAnimationFrame(frame);
+    else { running = false; ctx.clearRect(0,0,W,H); }
+  }
 
-    <ol class="mt-9 grid grid-cols-1 gap-10 sm:grid-cols-4 sm:gap-6">
-      <!-- Step 1: Vendor confirms -->
-      <li>
-        <div class="flex items-center">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand">
-            <svg class="h-5 w-5 text-ink/70" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"/>
-            </svg>
-          </span>
-          <span class="ml-3 hidden h-px flex-1 bg-ink/15 sm:block"></span>
-        </div>
-        <h3 class="mt-4 text-sm font-semibold">Vendor confirms</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink/55">The vendor reviews and accepts your request within 48 hours.</p>
-      </li>
+  /* Call this the moment Paystack confirmation succeeds */
+  window.celebrate = function(){
+    if(reduced) return;
+    cannon('left'); cannon('right');
+    setTimeout(() => rain(120), 250);
+    setTimeout(() => rain(80), 900);
+    if(!running){ running = true; requestAnimationFrame(frame); }
+  };
+})();
 
-      <!-- Step 2: Reminder emails -->
-      <li>
-        <div class="flex items-center">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand">
-            <svg class="h-5 w-5 text-ink/70" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
-            </svg>
-          </span>
-          <span class="ml-3 hidden h-px flex-1 bg-ink/15 sm:block"></span>
-        </div>
-        <h3 class="mt-4 text-sm font-semibold">Reminder emails</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink/55">We'll send you timely updates and tips leading up to the date.</p>
-      </li>
+/* ============ Paystack hand-off ============
+   Paystack redirects back to this page with ?reference=Txxxxxx
+   after a successful payment. Show that reference, verify it
+   on your backend, then fire the celebration.               */
+(function(){
+  const params = new URLSearchParams(location.search);
+  const ref = params.get('reference') || params.get('trxref');
+  if(ref) document.getElementById('ref').textContent = ref.toUpperCase();
 
-      <!-- Step 3: Your Event -->
-      <li>
-        <div class="flex items-center">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand">
-            <svg class="h-5 w-5 text-ink/70" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/>
-            </svg>
-          </span>
-          <span class="ml-3 hidden h-px flex-1 bg-ink/15 sm:block"></span>
-        </div>
-        <h3 class="mt-4 text-sm font-semibold">Your Event</h3>
-        <p class="mt-2 text-sm leading-relaxed text-ink/55">Enjoy a flawlessly executed celebration tailored to your vision.</p>
-      </li>
-
-      <!-- Step 4: Review -->
-      <li>
-        <div class="flex items-center">
-          <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-sand">
-            <svg class="h-5 w-5 text
+  // TODO: replace with real verification, e.g.
+  // fetch('/api/verify-paystack?reference=' + ref)
+  //   .then(r => r.json())
+  //   .then(d => { if(d.status === 'success') celebrate(); });
+  window.addEventListener('load', () => {
+    celebrate();                                  // confetti 🎉
+    setTimeout(() => document.getElementById('congrats')?.remove(), 4300);
+  });
+})();
+</script>
+</body>
+</html>

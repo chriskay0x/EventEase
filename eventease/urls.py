@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('api/v1/', include('bookings.urls')),   # ← Team 3: YOUR line, added here
+    path('', include('bookings.urls')),
 ]

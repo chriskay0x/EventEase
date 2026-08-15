@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Discover — EventEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--green:#0C3B2E;--ink:#111827;--muted:#5B6470;--border:#E6E3DB}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink)}
+a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;border-bottom:1px solid var(--border)}
+.logo{font-family:'Playfair Display',serif;font-size:27px;font-weight:700}
+.nav-links{display:flex;gap:40px}.nav-links a{font-size:12.5px;font-weight:600;letter-spacing:.1em;color:#374151;position:relative;padding:6px 0}
+.nav-links a.active{color:var(--green)}.nav-links a.active::after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-7px;width:4px;height:4px;border-radius:50%;background:var(--green)}
+.switch{border:1px solid #1F2937;border-radius:999px;padding:12px 26px;font-size:14px}
+.wrap{max-width:1400px;margin:0 auto;padding:56px 48px 96px}
+h1{font-family:'Playfair Display',serif;font-size:46px;font-weight:700;color:var(--green)}
+.sub{margin-top:12px;color:#374151}
+.search{margin-top:32px;display:flex;gap:14px}
+.search input{flex:1;height:54px;border:1px solid #D8D5CD;border-radius:999px;background:#FAFAF8;padding:0 24px;font-size:15px;font-family:inherit}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:28px;margin-top:44px}
+.card{background:#FAFAF8;border:1px solid var(--border);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.card .img{height:220px;background:linear-gradient(150deg,#5A7360,#1E2C24)}
+.card .img img{width:100%;height:100%;object-fit:cover}
+.card .body{padding:22px;display:flex;flex-direction:column;flex:1}
+.card h3{font-family:'Playfair Display',serif;font-size:22px}
+.card .addr{font-size:14px;color:var(--muted);margin-top:6px}
+.card .row{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.card .price{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--green)}
+.btn{border-radius:999px;padding:12px 24px;font-size:14px;font-weight:500}
+.btn-green{background:var(--green);color:#EAF4EE;border:none}
+.empty{color:var(--muted);margin-top:40px}
+</style></head><body>
+<header class="nav">
+  <div class="logo">EventEase</div>
+  <nav class="nav-links"><a href="discover.html" class="active">DISCOVER</a><a href="my_bookings.html">BOOKINGS</a><a href="messages.html">MESSAGES</a></nav>
+  <a class="switch" href="vendor_requests.html">Switch to Vendor</a>
+</header>
+<div class="wrap">
+  <h1>Discover</h1><p class="sub">Hand-picked estates and vendors for unforgettable celebrations.</p>
+  <div class="search"><input id="q" placeholder="Search venues or locations…" oninput="filter()"/></div>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" hidden>No venues match your search.</p>
+</div>
+<script>
+const csrf=()=>document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith('csrftoken='))?.split('=')[1]||'';
+const fmt=k=>'₦'+(k/100).toLocaleString('en-NG',{minimumFractionDigits:2});
+let VENUES=[];
+function render(list){
+  document.getElementById('grid').innerHTML=list.map(v=>`
+    <article class="card">
+      <div class="img">${v.image?`<img src="${v.image}" onerror="this.remove()">`:''}</div>
+      <div class="body">
+        <h3>${v.name}</h3><div class="addr">${v.address||''}</div>
+        <div class="row"><span class="price">${fmt(v.price)}</span>
+        <button class="btn btn-green" onclick="book('${v.id}')">Book Now</button></div>
+      </div>
+    </article>`).join('');
+  document.getElementById('empty').hidden=list.length>0;
+}
+function filter(){const q=document.getElementById('q').value.toLowerCase();
+  render(VENUES.filter(v=>(v.name+' '+(v.address||'')).toLowerCase().includes(q)));}
+async function book(id){
+  try{
+    const r=await fetch('/api/venues/'+id+'/book',{method:'POST',headers:{'X-CSRFToken':csrf(),'Content-Type':'application/json'},body:'{}'});
+    if(!r.ok) throw 0;
+    const d=await r.json();
+    location.href='/payment.html?booking='+d.id;
+  }catch(e){alert('Log in first (via /admin with your user), then click Book Now again.');}
+}
+fetch('/api/venues').then(r=>r.json()).then(d=>{VENUES=d.venues;render(VENUES);}).catch(()=>{
+  document.getElementById('empty').hidden=false;
+  document.getElementById('empty').textContent='No venues yet — add one in /admin.';
+});
+</script></body></html>

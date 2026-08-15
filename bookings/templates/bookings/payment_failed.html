@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment Not Completed — EventEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F1EB;--green:#0C3B2E;--red:#8C1D18;--red-core:#B3261E;--ink:#111827;--muted:#52606D;--border:#E6E3DB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:84px 24px 0;text-align:center}
+.badge{position:relative;width:180px;height:180px;margin:0 auto}
+.badge::before,.badge::after,.badge .core{position:absolute;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.badge::before{content:'';width:180px;height:180px;background:#F7E7E4}
+.badge::after{content:'';width:148px;height:148px;background:#F0D5D0}
+.badge .core{width:116px;height:116px;background:var(--red-core);display:flex;align-items:center;justify-content:center}
+.badge svg{width:46px;height:46px;stroke:#F6D9D6}
+h1{font-family:'Playfair Display',serif;font-weight:700;color:var(--red);font-size:clamp(42px,6vw,64px);margin-top:44px}
+.sub{max-width:640px;margin:18px auto 0;color:var(--muted);font-size:18px;line-height:1.65}
+.ref-pill{display:inline-flex;align-items:center;gap:14px;margin-top:40px;background:#ECE9E2;border:1px solid #E0DCD3;border-radius:999px;padding:18px 32px}
+.ref-pill .label{font-size:12px;font-weight:600;letter-spacing:.14em;color:#5B6470}
+.ref-pill .value{font-family:'Playfair Display',serif;font-size:22px;font-weight:600;color:var(--ink)}
+.ref-pill .value .hash{color:#9AA1AB}
+.card{max-width:880px;margin:64px auto 0;background:#F7F8FA;border:1px solid #E8EAEE;border-radius:18px;padding:44px 52px;text-align:left}
+.card h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--ink)}
+.steps{margin-top:28px;display:flex;flex-direction:column}
+.step{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid #E8EAEE}
+.step:last-child{border-bottom:none}
+.step-icon{flex:none;width:48px;height:48px;border-radius:50%;background:#E9E4DB;display:flex;align-items:center;justify-content:center}
+.step-icon svg{width:20px;height:20px}
+.step h3{font-size:15.5px;font-weight:600}
+.step p{font-size:14.5px;color:#4B5563;line-height:1.6;margin-top:6px}
+.note{max-width:880px;margin:20px auto 0;text-align:center;font-size:14px;color:var(--muted)}
+.note b{color:var(--green)}
+.actions{display:flex;justify-content:center;gap:16px;margin:56px 24px 96px;flex-wrap:wrap}
+.btn{border-radius:999px;padding:18px 36px;font-size:16px;font-weight:500;transition:transform .15s}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:var(--green);color:#EAF4EE;border:none;box-shadow:0 8px 20px rgba(12,59,46,.25)}
+.btn-secondary{background:transparent;border:1px solid #1F2937;color:var(--ink)}
+.fade-up{opacity:0;transform:translateY(18px);animation:fadeUp .7s ease forwards}
+.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.35s}.d5{animation-delay:.45s}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+@media (max-width:640px){.card{margin-left:20px;margin-right:20px;padding:32px 24px}}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="badge fade-up d1"><span class="core">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+  </span></div>
+  <h1 class="fade-up d2">Payment Not Completed</h1>
+  <p class="sub fade-up d3">Your booking wasn't confirmed and no funds were taken from your account. You can retry whenever you're ready.</p>
+  <div class="ref-pill fade-up d4">
+    <span class="label">REFERENCE NUMBER</span>
+    <span class="value"><span class="hash">#</span><span id="ref">EE-0000-XX</span></span>
+  </div>
+</section>
+
+<section class="card fade-up d5">
+  <h2>What you can do</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-icon"><svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></span>
+      <div><h3>Check your card details</h3><p>Make sure the card number, expiry and CVC are correct, and that your card has sufficient funds for the total amount.</p></div>
+    </div>
+    <div class="step">
+      <span class="step-icon"><svg viewBox="0 0 24 24"><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/></svg></span>
+      <div><h3>Try another card or bank</h3><p>Some banks block online or large transactions by default. A different card often goes through instantly.</p></div>
+    </div>
+    <div class="step">
+      <span class="step-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27 1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+      <div><h3>Contact your bank</h3><p>Ask them to authorize online transactions, then retry. Your booking reference is kept safe either way.</p></div>
+    </div>
+  </div>
+</section>
+
+<p class="note">Need help? Write to <b>support@eventease.com</b> with your reference number.</p>
+
+<div class="actions">
+  <button class="btn btn-primary" onclick="retry()">Try Again</button>
+  <a class="btn btn-secondary" href="/my-bookings.html">Return to Bookings</a>
+</div>
+
+<script>
+const ref = new URLSearchParams(location.search).get('reference');
+if (ref) document.getElementById('ref').textContent = ref.toUpperCase();
+function retry(){
+  // go back to the checkout the customer came from; fall back to bookings
+  if (document.referrer && new URL(document.referrer).origin === location.origin) history.back();
+  else location.href = '/my-bookings.html';
+}
+</script>
+</body>
+</html>

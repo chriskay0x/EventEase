@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Messages — EventEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2EC;--green:#0C3B2E;--border:#E6E3DB}
+*{margin:0;padding:0;box-sizing:border-box}body{background:var(--bg);font-family:'Inter',sans-serif;color:#111827;height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}button{font-family:inherit;cursor:pointer}
+.top{display:flex;align-items:center;gap:20px;padding:18px 32px;border-bottom:1px solid var(--border);background:#F7F8FA}
+.logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
+.back{font-size:14px;color:#374151}
+.main{flex:1;display:grid;grid-template-columns:320px 1fr;min-height:0}
+.list{border-right:1px solid var(--border);overflow-y:auto;background:#FAFAF8}
+.conv{padding:18px 22px;border-bottom:1px solid var(--border);cursor:pointer}
+.conv.active{background:#EFECE5}
+.conv b{font-size:15px}.conv p{font-size:13px;color:#5B6470;margin-top:4px}
+.chat{display:flex;flex-direction:column;min-height:0}
+.head{padding:16px 28px;border-bottom:1px solid var(--border);font-weight:600}
+.msgs{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:14px}
+.bubble{max-width:65%;padding:12px 18px;border-radius:16px;font-size:14.5px;line-height:1.5}
+.in{background:#EFECE5;align-self:flex-start;border-bottom-left-radius:4px}
+.out{background:var(--green);color:#EAF4EE;align-self:flex-end;border-bottom-right-radius:4px}
+.bar{display:flex;gap:12px;padding:16px 28px;border-top:1px solid var(--border)}
+.bar input{flex:1;height:50px;border:1px solid #D8D5CD;border-radius:999px;padding:0 22px;font-family:inherit;font-size:14.5px}
+.bar button{border:none;background:var(--green);color:#fff;border-radius:999px;padding:0 28px;font-size:14.5px}
+</style></head><body>
+<div class="top"><div class="logo">EventEase</div><a class="back" href="my_bookings.html">← Back to Bookings</a></div>
+<div class="main">
+  <div class="list" id="list"></div>
+  <div class="chat">
+    <div class="head" id="chatWith">Eleanor Vance</div>
+    <div class="msgs" id="msgs"></div>
+    <div class="bar"><input id="inp" placeholder="Write a message…" onkeydown="if(event.key==='Enter')send()"/><button onclick="send()">Send</button></div>
+  </div>
+</div>
+<script>
+const params=new URLSearchParams(location.search);
+const vendor=params.get('vendor')||'Eleanor Vance';
+const topic=params.get('topic');
+const CONVS=[{name:vendor,last:'Looking forward to hosting you!'},{name:'Petals & Prose',last:'Quote ready for review.'}];
+document.getElementById('chatWith').textContent=vendor;
+document.getElementById('list').innerHTML=CONVS.map((c,i)=>`
+  <div class="conv ${i===0?'active':''}" onclick="pick('${c.name}',this)"><b>${c.name}</b><p>${c.last}</p></div>`).join('');
+const seed=topic==='modify'
+  ?[`in:Hello! How can I help with your celebration?`,`out:Hi ${vendor.split(' ')[0]}, I'd like to modify my booking details.`]
+  :[`in:Hello! How can I help with your celebration?`];
+const msgs=document.getElementById('msgs');
+seed.forEach(m=>add(m.slice(0,2),m.slice(3)));
+function add(side,text){const d=document.createElement('div');d.className='bubble '+side;d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;}
+function send(){
+  const v=document.getElementById('inp').value.trim();if(!v)return;
+  add('out',v);document.getElementById('inp').value='';
+  setTimeout(()=>add('in','Thank you! I\'ve received your message and will reply shortly. — '+vendor),900);
+}
+function pick(name,el){document.querySelectorAll('.conv').forEach(c=>c.classList.remove('active'));el.classList.add('active');
+  document.getElementById('chatWith').textContent=name;msgs.innerHTML='';add('in','Hello! How can I help with your celebration?');}
+</script></body></html>

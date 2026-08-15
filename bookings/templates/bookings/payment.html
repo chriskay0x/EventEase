@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Complete your booking — EventEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+:root{--bg:#F5F2EC;--green:#0C3B2E;--ink:#111827;--muted:#6B7280;--border:#E6E3DB}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;min-height:100vh;flex-direction:column}
+button{font-family:inherit;cursor:pointer}
+a{text-decoration:none;color:inherit}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.topbar{background:#F7F8FA;border-bottom:1px solid var(--border);padding:26px 48px;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:12px;font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--green)}
+.logo svg{width:26px;height:26px}
+.secure{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--green)}
+.secure svg{width:20px;height:20px}
+
+.wrap{flex:1;max-width:1560px;width:100%;margin:0 auto;padding:48px 64px 96px}
+.back{display:inline-flex;align-items:center;gap:12px;font-size:15px;color:#374151}
+.back svg{width:18px;height:18px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(34px,4vw,46px);font-weight:700;color:var(--green);margin-top:40px}
+.sub{font-size:16.5px;color:#374151;margin-top:14px}
+
+.grid{display:grid;grid-template-columns:1fr 520px;gap:40px;margin-top:48px;align-items:start}
+.pay-card{background:#FAFAF8;border:1px solid var(--border);border-radius:18px;padding:44px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.pc-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.pc-head h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+
+/* Payment Badges */
+.brands{display:flex;gap:10px;align-items:center}
+.brand{background:#fff;border:1px solid #E0DCD3;border-radius:8px;height:38px;min-width:58px;padding:0 12px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.brand .visa{font-style:italic;font-weight:800;font-size:15px;letter-spacing:.03em;color:#1A1F71}
+.brand .verve{font-style:italic;font-weight:800;font-size:15px;color:#007B3A;display:flex;align-items:center;gap:6px}
+.brand .verve::after{content:'';width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#F79E1B,#EB001B)}
+.brand svg{display:block}
+
+.stack{display:flex;flex-direction:column;gap:20px;margin-top:36px}
+.field{width:100%;height:64px;border:1px solid #E3DFD6;border-radius:10px;background:#F2EFE8;padding:0 22px;font-size:15.5px;font-family:inherit;color:var(--ink)}
+.field::placeholder{color:#9CA3AF}
+.field:focus{outline:2px solid rgba(12,59,46,.25);border-color:var(--green)}
+.row2{display:grid;grid-template-columns:1.15fr 1fr;gap:24px}
+.cardwrap{position:relative}
+.cardwrap svg{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:22px;height:22px;color:#6B7280;pointer-events:none}
+.country{height:auto;padding:12px 22px 16px}
+.country .label{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.country .value{font-size:17px}
+.pay-btn{width:100%;height:60px;border:none;border-radius:999px;background:var(--green);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:32px;transition:transform .15s,opacity .15s}
+.pay-btn:active{transform:scale(.98)}
+.pay-btn:disabled{opacity:.6;cursor:wait}
+.pay-btn svg{width:17px;height:17px}
+.enc{text-align:center;font-size:12px;font-weight:600;letter-spacing:.16em;color:var(--muted);margin-top:28px}
+.shield{display:flex;justify-content:center;align-items:center;gap:10px;font-size:15px;color:#374151;margin-top:14px}
+.shield svg{width:17px;height:17px;color:var(--green)}
+
+.pkg{background:#FAFAF8;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.pkg img{width:100%;height:300px;object-fit:cover;display:block;background:linear-gradient(150deg,#5A7360,#1E2C24)}
+.pkg-body{padding:30px}
+.pkg-body .label{font-size:12px;letter-spacing:.16em;color:var(--muted);font-weight:600}
+.pkg-body h3{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-top:10px}
+.pkg-body .by{font-size:15px;color:#374151;margin-top:10px}
+.pkg-body hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+.line{display:flex;justify-content:space-between;font-size:15.5px;color:#374151;margin-top:16px}
+.line:first-of-type{margin-top:0}
+.line.green{color:#1D6B47}
+.total{display:flex;justify-content:space-between;align-items:center}
+.total .t{font-size:16px;font-weight:600}
+.total .a{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.terms{margin-top:24px;background:#F4F1EA;border:1px solid var(--border);border-radius:12px;padding:20px 22px;display:flex;gap:14px;font-size:14.5px;color:#374151;line-height:1.6}
+.terms svg{width:20px;height:20px;color:var(--green);flex:none;margin-top:2px}
+.terms a{text-decoration:underline}
+
+footer{background:#F7F8FA;border-top:1px solid var(--border);padding:28px 48px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:13.5px}
+footer .r{display:flex;gap:28px;font-weight:500;letter-spacing:.04em}
+@media (max-width:1100px){.grid{grid-template-columns:1fr}.wrap{padding:40px 24px 72px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo"><svg viewBox="0 0 24 24"><path d="M5.8 11.3 2 22l10.7-3.79"/><path d="M4 3h.01"/><path d="M22 8h.01"/><path d="M15 2h.01"/><path d="M22 20h.01"/><path d="m22 2-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10"/><path d="m22 13-.82-.33c-.86-.34-1.82.2-2.02 1.11-.22 1.01-1.26 1.6-2.25 1.28l-.51-.17"/><path d="m11 5.47-.49-.24a1.9 1.9 0 0 0-2.47.88l-.2.4"/></svg> EventEase</div>
+  <div class="secure"><svg viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure Checkout</div>
+</div>
+
+<div class="wrap">
+  <a class="back" href="booking_detail.html"><svg viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Details</a>
+  <h1>Complete your booking</h1>
+  <p class="sub">Pay securely to confirm your reservation.</p>
+
+  <div class="grid">
+    <section class="pay-card">
+      <div class="pc-head">
+        <h2>Payment Details</h2>
+        <div class="brands" title="Accepted payment channels">
+          <span class="brand"><span class="visa">VISA</span></span>
+          <span class="brand">
+            <svg width="34" height="21" viewBox="0 0 36 22" aria-label="Mastercard">
+              <circle cx="13" cy="11" r="10" fill="#EB001B"/>
+              <circle cx="23" cy="11" r="10" fill="#F79E1B"/>
+              <path d="M18 3.1a10 10 0 0 1 0 15.8 10 10 0 0 1 0-15.8z" fill="#FF5F00"/>
+            </svg>
+          </span>
+          <span class="brand"><span class="verve">Verve</span></span>
+        </div>
+      </div>
+      <div class="stack">
+        <input class="field" placeholder="Name on Card" autocomplete="cc-name"/>
+        <div class="cardwrap"><input class="field" placeholder="Card Information" autocomplete="cc-number"/><svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg></div>
+        <div class="row2">
+          <input class="field" placeholder="MM / YY" autocomplete="cc-exp"/>
+          <input class="field" placeholder="CVC" autocomplete="cc-csc"/>
+        </div>
+        <div class="field country"><div class="label">Country</div><div class="value">Nigeria</div></div>
+      </div>
+      <button class="pay-btn" id="payBtn" onclick="pay()"><svg viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Pay <span id="payBtnTotal">₦4,620.00</span></button>
+      <div class="enc">SECURE ENCRYPTED PAYMENT</div>
+      <div class="shield"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg> Funds released only after your event</div>
+    </section>
+
+    <div>
+      <aside class="pkg">
+        <img id="pkgImg" src="https://images.unsplash.com/photo-1511795409834-ef04bbd6fe9f?auto=format&fit=crop&w=1000&q=70" alt="" onerror="this.style.display='none'">
+        <div class="pkg-body">
+          <div class="label">EVENT PACKAGE</div>
+          <h3 id="pkgName">The Grand Estate Reception</h3>
+          <div class="by" id="pkgVendor">Provided by Luxe Events Co.</div>
+          <hr/>
+          <div class="line"><span>Base Package</span><span id="pkgBase">₦3,800.00</span></div>
+          <div class="line"><span>Service Fee</span><span id="pkgFee">₦344.00</span></div>
+          <div class="line green"><span>Early Booking Discount</span><span id="pkgDiscount">-₦24.00</span></div>
+          <hr/>
+          <div class="total"><span class="t">Total Due Today</span><span class="a" id="pkgTotal">₦4,620.00</span></div>
+        </div>
+      </aside>
+      <div class="terms">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span>By confirming this booking, you agree to EventEase's <a href="#">Terms of Service</a> and <a href="#">Cancellation Policy</a>.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>© 2024 EventEase Luxury Collections.</div>
+  <div class="r"><a href="#">Support</a><a href="#">Privacy</a></div>
+</footer>
+
+<script>
+const csrf = () => document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith('csrftoken='))?.split('=')[1] || '';
+const params = new URLSearchParams(location.search);
+const BOOKING_ID = params.get('booking') || params.get('id');
+const fmt = kobo => '₦' + (kobo/100).toLocaleString('en-NG',{minimumFractionDigits:2, maximumFractionDigits:2});
+
+(async function load(){
+  if(!BOOKING_ID) return;
+  try{
+    const b = await fetch('/api/bookings/' + BOOKING_ID).then(r => r.json());
+    document.getElementById('pkgName').textContent = b.venue;
+    document.getElementById('pkgVendor').textContent = 'Provided by ' + b.vendor.name;
+    document.getElementById('pkgBase').textContent = fmt(b.price);
+    document.getElementById('pkgFee').textContent = fmt(b.fee);
+    document.getElementById('pkgDiscount').textContent = '-' + fmt(b.discount);
+    document.getElementById('pkgTotal').textContent = fmt(b.total);
+    document.getElementById('payBtnTotal').textContent = fmt(b.total);
+    if(b.image) document.getElementById('pkgImg').src = b.image;
+  }catch(e){}
+})();
+
+async function pay(){
+  if(!BOOKING_ID){ alert('Open this page as payment.html?booking=<booking-id>'); return; }
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  try{
+    const s = await fetch('/api/bookings/' + BOOKING_ID + '/pay', {
+      method: 'POST', headers: { 'X-CSRFToken': csrf(), 'Content-Type': 'application/json' },
+    }).then(r => r.json());
+
+    if(typeof PaystackPop === 'undefined'){ alert('Paystack could not load.'); return; }
+
+    PaystackPop.setup({
+      key: s.publicKey, email: s.email, amount: s.amount, currency: s.currency, ref: s.reference,
+      callback: function(resp){ location.href = '/confirmed.html?reference=' + resp.reference; },
+      onClose: function(){ btn.disabled = false; }
+    });
+    PaystackPop.openIframe();
+  }catch(err){
+    alert('Could not start the payment.');
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

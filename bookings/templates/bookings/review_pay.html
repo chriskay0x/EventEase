@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Review & Pay — EventEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<style>
+:root{--bg:#F5F2EC;--green:#0C3B2E;--gold:#8A6D2A;--ink:#111827;--muted:#5B6470;--border:#E0DCD3}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+a{text-decoration:none;color:inherit}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.topbar{background:#F7F8FA;border-bottom:1px solid var(--border);padding:34px 0;text-align:center}
+.topbar .logo{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--green)}
+
+.wrap{max-width:1560px;margin:0 auto;padding:44px 64px 96px}
+.back{display:inline-flex;align-items:center;gap:12px;font-size:15px;color:#374151}
+.back svg{width:18px;height:18px}
+
+.grid{display:grid;grid-template-columns:1fr 620px;gap:72px;margin-top:56px;align-items:start}
+h1{font-family:'Playfair Display',serif;font-size:clamp(40px,5vw,62px);font-weight:700;color:var(--green)}
+.sub{font-size:18px;color:#374151;margin-top:16px}
+
+.notice{background:#EFECE5;border-left:4px solid #C9A24B;border-radius:6px;padding:22px 26px;display:flex;gap:18px;margin-top:44px}
+.notice svg{width:22px;height:22px;color:var(--gold);flex:none;margin-top:2px}
+.notice b{font-size:15.5px}
+.notice p{font-size:16px;color:#374151;margin-top:8px}
+
+.pd-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;margin-top:56px}
+.pd-title + hr{border:none;border-top:1px solid var(--border);margin:18px 0 28px}
+.field{width:100%;height:58px;border:1px solid #D8D5CD;border-radius:10px;background:#FAFAF8;padding:0 20px;font-size:15.5px;font-family:inherit;color:var(--ink)}
+.field::placeholder{color:#9CA3AF}
+.field:focus{outline:2px solid rgba(12,59,46,.25);border-color:var(--green)}
+.stack{display:flex;flex-direction:column;gap:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.cardwrap{position:relative}
+.cardwrap svg{position:absolute;right:18px;top:50%;transform:translateY(-50%);width:22px;height:22px;color:#6B7280;pointer-events:none}
+
+.pay-btn{width:100%;height:64px;border:none;border-radius:999px;background:var(--green);color:#CFE0D6;font-size:16px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:14px;margin-top:44px;transition:transform .15s,opacity .15s}
+.pay-btn:active{transform:scale(.98)}
+.pay-btn:disabled{opacity:.6;cursor:wait}
+.pay-btn svg{width:18px;height:18px}
+.fineprint{text-align:center;font-size:13px;letter-spacing:.03em;color:var(--muted);margin-top:22px}
+
+.summary{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#FAFAF8;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.sum-img{height:300px;position:relative;background:linear-gradient(150deg,#5A7360,#1E2C24)}
+.sum-img img{width:100%;height:100%;object-fit:cover;display:block}
+.sum-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.6))}
+.sum-img .txt{position:absolute;left:28px;right:28px;bottom:22px;z-index:2;color:#fff}
+.sum-img .label{font-size:12px;letter-spacing:.18em;color:#E5E7EB}
+.sum-img h2{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;margin-top:8px}
+.sum-body{padding:30px}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.meta .item{display:flex;gap:14px}
+.meta svg{width:20px;height:20px;color:var(--gold);flex:none;margin-top:2px}
+.meta .label{font-size:13px;color:var(--muted)}
+.meta .value{font-size:17px;margin-top:6px}
+.sum-body hr{border:none;border-top:1px solid var(--border);margin:26px 0}
+.pb-title{font-size:16px;font-weight:600}
+.pb-row{display:flex;justify-content:space-between;font-size:16px;color:#374151;margin-top:18px}
+.total{display:flex;justify-content:space-between;align-items:center}
+.total .t,.total .a{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
+
+footer{background:#DEDCD5;padding:30px 44px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+footer .logo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700}
+.f-links{display:flex;gap:28px;font-size:13px;font-weight:500}
+.f-copy{font-size:13px;color:#4B5563}
+@media (max-width:1100px){.grid{grid-template-columns:1fr;gap:48px}.wrap{padding:40px 24px 72px}}
+/* ---- Payment channel badges ---- */
+.pd-head{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:56px}
+.pd-head .pd-title{margin-top:0}
+.pd-head + hr{border:none;border-top:1px solid var(--border);margin:18px 0 28px}
+.brands{display:flex;gap:10px;align-items:center}
+.brand{background:#fff;border:1px solid #E0DCD3;border-radius:8px;height:38px;min-width:58px;padding:0 12px;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.brand .visa{font-style:italic;font-weight:800;font-size:15px;letter-spacing:.03em;color:#1A1F71}
+.brand .verve{font-style:italic;font-weight:800;font-size:15px;color:#007B3A;display:flex;align-items:center;gap:6px}
+.brand .verve::after{content:'';width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#F79E1B,#EB001B)}
+.brand svg{display:block}
+
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="logo">EventEase</div></div>
+
+<div class="wrap">
+  <a class="back" href="booking_detail.html"><svg viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to details</a>
+
+  <div class="grid">
+    <div>
+      <h1>Review &amp; Pay</h1>
+      <p class="sub" id="subLine">Complete your booking for The Grand Estate Gardens.</p>
+
+      <div class="notice">
+        <svg viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <div><b>Secure Payment</b><p>Funds are held securely in escrow until the event is complete.</p></div>
+      </div>
+
+      <div class="pd-head">
+        <div class="pd-title">Payment Details</div>
+        <div class="brands" title="Accepted payment channels">
+          <!-- Visa -->
+          <span class="brand"><span class="visa">VISA</span></span>
+          <!-- Mastercard -->
+          <span class="brand">
+            <svg width="34" height="21" viewBox="0 0 36 22" aria-label="Mastercard">
+              <circle cx="13" cy="11" r="10" fill="#EB001B"/>
+              <circle cx="23" cy="11" r="10" fill="#F79E1B"/>
+              <path d="M18 3.1a10 10 0 0 1 0 15.8 10 10 0 0 1 0-15.8z" fill="#FF5F00"/>
+            </svg>
+          </span>
+          <!-- Verve -->
+          <span class="brand"><span class="verve">Verve</span></span>
+        </div>
+      </div>
+      <hr/>
+
+      <div class="stack">
+        <input class="field" placeholder="Name on Card" autocomplete="cc-name"/>
+        <div class="cardwrap">
+          <input class="field" placeholder="Card Number" inputmode="numeric" autocomplete="cc-number"/>
+          <svg viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+        </div>
+        <div class="row2">
+          <input class="field" placeholder="MM/YY" inputmode="numeric" autocomplete="cc-exp"/>
+          <input class="field" placeholder="CVC" inputmode="numeric" autocomplete="cc-csc"/>
+        </div>
+      </div>
+
+      <button class="pay-btn" id="payBtn" onclick="pay()">
+        Confirm &amp; Pay <span id="payBtnTotal">₦4,620.00</span>
+        <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+      <p class="fineprint">By confirming, you agree to EventEase's Terms of Service.</p>
+    </div>
+
+    <aside class="summary">
+      <div class="sum-img">
+        <img id="venueImg" src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=70" alt="" onerror="this.style.display='none'">
+        <div class="txt"><div class="label">VENUE SUMMARY</div><h2 id="venueName">The Grand Estate Gardens</h2></div>
+      </div>
+      <div class="sum-body">
+        <div class="meta">
+          <div class="item"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg><div><div class="label">Date</div><div class="value" id="dateVal">Oct 24, 2024</div></div></div>
+          <div class="item"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div><div class="label">Guests</div><div class="value" id="guestsVal">100 Attendees</div></div></div>
+        </div>
+        <hr/>
+        <div class="pb-title">Price Breakdown</div>
+        <div class="pb-row"><span>Venue Hire</span><span id="hireVal">₦4,500.00</span></div>
+        <div class="pb-row"><span>Platform Fee</span><span id="feeVal">₦120.00</span></div>
+        <hr/>
+        <div class="total"><span class="t">Total</span><span class="a" id="totalVal">₦4,620.00</span></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer>
+  <div class="logo">EventEase</div>
+  <div class="f-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Vendor Guide</a><a href="#">Support</a></div>
+  <div class="f-copy">© 2024 EventEase Luxury Collections. All rights reserved.</div>
+</footer>
+
+<script>
+/* ---- Django CSRF helper (session cookies ride along automatically) ---- */
+const csrf = () => document.cookie.split(';').map(c=>c.trim())
+  .find(c=>c.startsWith('csrftoken='))?.split('=')[1] || '';
+
+const params = new URLSearchParams(location.search);
+const BOOKING_ID = params.get('booking') || params.get('id');
+
+/* ---- UPDATED: Formatter uses Naira (₦) and Nigerian locale (en-NG) ---- */
+const fmt = kobo => '₦' + (kobo/100).toLocaleString('en-NG',{minimumFractionDigits:2, maximumFractionDigits:2});
+
+/* ---- Fill the summary with real data when opened as review_pay.html?booking=<uuid> ---- */
+(async function load(){
+  if(!BOOKING_ID) return;                       // no id → keep the demo values
+  try{
+    const b = await fetch('/api/bookings/' + BOOKING_ID).then(r => { if(!r.ok) throw 0; return r.json(); });
+    document.getElementById('venueName').textContent  = b.venue;
+    document.getElementById('subLine').textContent    = 'Complete your booking for ' + b.venue + '.';
+    document.getElementById('dateVal').textContent    = new Date(b.date + 'T00:00:00')
+                                                          .toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    document.getElementById('guestsVal').textContent  = b.guests + ' Attendees';
+    document.getElementById('hireVal').textContent    = fmt(b.price);
+    document.getElementById('feeVal').textContent     = fmt(b.fee);
+    document.getElementById('totalVal').textContent   = fmt(b.total);
+    document.getElementById('payBtnTotal').textContent= fmt(b.total);
+    if(b.image) document.getElementById('venueImg').src = b.image;
+  }catch(e){ /* stay on demo data */ }
+})();
+
+/* ---- Start Paystack ---- */
+async function pay(){
+  if(!BOOKING_ID){ alert('Open this page as review_pay.html?booking=<booking-id> to pay for a real booking.'); return; }
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  try{
+    const s = await fetch('/api/bookings/' + BOOKING_ID + '/pay', {
+      method: 'POST',
+      headers: { 'X-CSRFToken': csrf(), 'Content-Type': 'application/json' },
+    }).then(r => r.json());
+
+    if(typeof PaystackPop === 'undefined'){ alert('Paystack could not load. Check your connection.'); return; }
+
+    PaystackPop.setup({
+      key:      s.publicKey,
+      email:    s.email,
+      amount:   s.amount,
+      currency: s.currency,
+      ref:      s.reference,
+      callback: function(resp){ location.href = '/confirmed.html?reference=' + resp.reference; },
+      onClose:  function(){ btn.disabled = false; }
+    });
+    PaystackPop.openIframe();
+  }catch(err){
+    alert('Could not start the payment. Please try again.');
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>

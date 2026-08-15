@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Financial Overview — EventEase Vendor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--green:#0C3B2E;--bg:#F7F7F5;--side:#EFEAE2;--ink:#111827;--muted:#6B7280;--border:#E8E6E0;--gold:#8A6D2A;--red:#B3261E}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+a{text-decoration:none;color:inherit}
+svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.sidebar{position:fixed;inset:0 auto 0 0;width:104px;background:var(--side);border-right:1px solid #E2DCD2;display:flex;flex-direction:column;align-items:center;padding:24px 0;gap:22px;z-index:10}
+.v-logo{width:52px;height:52px;border-radius:50%;background:#E2DCD2;color:var(--ink);display:flex;align-items:center;justify-content:center}
+.v-logo svg{width:22px;height:22px}
+.side-btn{width:50px;height:50px;border-radius:14px;border:none;background:transparent;color:#4B5563;display:flex;align-items:center;justify-content:center}
+.side-btn svg{width:22px;height:22px}
+.side-btn.active{background:var(--green);color:#DCEDE3;box-shadow:0 6px 14px rgba(12,59,46,.3)}
+.side-btn:hover:not(.active){background:#E4DDD2}
+.side-bottom{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:22px}
+.add-btn{width:56px;height:56px;border-radius:50%;border:none;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(12,59,46,.35)}
+.add-btn svg{width:22px;height:22px}
+
+.main{margin-left:104px;padding:48px 64px 80px}
+.head{display:flex;justify-content:space-between;align-items:center;gap:24px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(34px,4vw,46px);font-weight:700;color:var(--green)}
+.head-right{display:flex;align-items:center;gap:22px}
+.icon-btn{background:none;border:none;color:var(--ink);display:flex}
+.icon-btn svg{width:20px;height:20px}
+.avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;background:#DDD}
+
+.stats{display:grid;grid-template-columns:1fr 400px;gap:28px;margin-top:40px;align-items:stretch}
+.card{background:#FCFCFA;border:1px solid var(--border);border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.earned{padding:36px 40px;position:relative}
+.label{font-size:12px;font-weight:600;letter-spacing:.14em;color:var(--muted)}
+.earned .amount{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;color:var(--green);margin-top:16px}
+.earned .amount .cents{font-size:22px;font-weight:600}
+.trend{display:flex;align-items:center;gap:8px;color:#1D6B47;font-size:14px;margin-top:10px}
+.trend svg{width:16px;height:16px}
+.wallet{position:absolute;top:36px;right:40px;width:52px;height:52px;border-radius:50%;background:#DEE7E0;color:var(--green);display:flex;align-items:center;justify-content:center}
+.wallet svg{width:22px;height:22px}
+.earned hr{border:none;border-top:1px solid var(--border);margin:56px 0 20px}
+.withdraw{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.withdraw .amt{font-family:'Playfair Display',serif;font-size:24px;font-weight:600}
+
+.side-col{display:flex;flex-direction:column;gap:24px}
+.escrow{border-left:4px solid #A5812F;padding:26px 28px}
+.escrow .amount{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;margin-top:12px}
+.escrow p{font-size:14px;color:var(--muted);margin-top:10px}
+.payout{background:linear-gradient(140deg,#0C3B2E,#0A2E24);border:none;color:#F3EFE6;padding:26px 28px;position:relative}
+.payout .label{color:#BFD8CA}
+.payout .date{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;margin-top:12px}
+.payout p{font-size:14px;color:#BFD8CA;margin-top:10px}
+.payout .cal{position:absolute;top:24px;right:24px;color:#C9A24B}
+.payout .cal svg{width:20px;height:20px}
+
+.chart-card{margin-top:44px;padding:36px 40px}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.chart-head h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.chart-head p{font-size:15px;color:var(--muted);margin-top:8px}
+.seg{display:inline-flex;background:#EFECE6;border:1px solid #E1DED6;border-radius:999px;padding:4px}
+.seg button{border:none;border-radius:999px;background:transparent;padding:8px 18px;font-size:12.5px;font-weight:600;letter-spacing:.06em;color:#374151}
+.seg button.active{background:#fff;border:1px solid #E1DED6;color:var(--ink)}
+.chart-area{position:relative;margin-top:44px;padding-left:44px;height:340px}
+.yaxis span{position:absolute;left:0;transform:translateY(-50%);font-size:12px;color:var(--muted)}
+.bars{display:flex;align-items:flex-end;height:100%}
+.slot{flex:1;display:flex;justify-content:center;align-items:flex-end;height:100%}
+.bar{width:min(96px,58%);background:var(--green);height:0;transition:height .9s cubic-bezier(.22,1,.36,1);position:relative;border-radius:2px}
+.bar:hover::after{content:attr(data-v);position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;padding:4px 8px;border-radius:6px;white-space:nowrap}
+.xaxis{display:flex;margin-top:16px}
+.xaxis span{flex:1;text-align:center;font-size:12px;letter-spacing:.08em;color:var(--muted)}
+
+.history{margin-top:56px}
+.history-head{display:flex;justify-content:space-between;align-items:center}
+.history-head h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700}
+.view-all{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:14px;font-weight:500}
+.view-all svg{width:15px;height:15px}
+.table{margin-top:24px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead th{background:#F4F3EF;text-align:left;font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--muted);padding:16px 28px}
+thead th:last-child{text-align:right}
+tbody td{padding:24px 28px;border-top:1px solid var(--border);vertical-align:middle}
+td .date{font-size:15px}
+td .desc{font-size:15px;font-weight:500}
+td .sub{font-size:13.5px;color:var(--muted);margin-top:5px}
+.pill{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:500;padding:6px 14px;border-radius:999px}
+.pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.paid{background:#DCEDE3;color:#176A48}
+.pill.escrow{background:#F8ECD4;color:#8A6D2A}
+.pill.deducted{background:#ECEAE4;color:#6B7280}
+.pill.deducted svg{width:12px;height:12px}
+td.amount{text-align:right;font-family:'Playfair Display',serif;font-size:18px;font-weight:600}
+td.amount.neg{color:var(--red)}
+
+@media (max-width:1100px){.stats{grid-template-columns:1fr}}
+@media (max-width:720px){
+  .sidebar{inset:auto 0 0 0;width:100%;height:64px;flex-direction:row;justify-content:center;padding:0;gap:12px;border-right:none;border-top:1px solid #E2DCD2}
+  .v-logo,.side-bottom{display:none}
+  .main{margin-left:0;padding:32px 20px 96px}
+  thead th,tbody td{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="v-logo"><svg viewBox="0 0 24 24"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg></div>
+  <button class="side-btn" title="Dashboard"><svg viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></button>
+  <button class="side-btn" title="Booking Requests" onclick="location.href='vendor-requests.html'"><svg viewBox="0 0 24 24"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><circle cx="12" cy="14" r="3.5"/><path d="M12 12.5V14l1.2 1.2"/></svg></button>
+  <button class="side-btn active" title="Payouts"><svg viewBox="0 0 24 24"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg></button>
+  <button class="side-btn" title="Calendar"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></button>
+  <div class="side-bottom">
+    <button class="side-btn" title="Settings"><svg viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button class="add-btn" title="New listing"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="head">
+    <h1>Financial Overview</h1>
+    <div class="head-right">
+      <button class="icon-btn" aria-label="Export"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg></button>
+      <button class="icon-btn" aria-label="Filter"><svg viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="14" y1="20" y2="20"/><line x1="8" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="21" x2="21" y1="18" y2="22"/></svg></button>
+      <img class="avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="" onerror="this.style.visibility='hidden'">
+    </div>
+  </div>
+
+  <div class="stats">
+    <section class="card earned">
+      <div class="label">TOTAL EARNED YTD</div>
+      <div class="amount">$24,500<span class="cents">.00</span></div>
+      <div class="trend"><svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg> +15% from last year</div>
+      <div class="wallet"><svg viewBox="0 0 24 24"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg></div>
+      <hr/>
+      <div class="withdraw"><span>Available for withdrawal</span><span class="amt">$8,200</span></div>
+    </section>
+    <div class="side-col">
+      <section class="card escrow">
+        <div class="label">PENDING ESCROW</div>
+        <div class="amount">$4,100</div>
+        <p>Locked until event completion</p>
+      </section>
+      <section class="card payout">
+        <div class="label">NEXT PAYOUT</div>
+        <div class="date">Oct 30</div>
+        <p>Estimated $2,400</p>
+        <span class="cal"><svg viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg></span>
+      </section>
+    </div>
+  </div>
+
+  <section class="card chart-card">
+    <div class="chart-head">
+      <div><h2>Earnings Over Time</h2><p>Monthly revenue breakdown for the current year.</p></div>
+      <div class="seg">
+        <button class="active" data-range="6m">6M</button>
+        <button data-range="1y">1Y</button>
+        <button data-range="all">ALL</button>
+      </div>
+    </div>
+    <div class="chart-area">
+      <div class="yaxis">
+        <span style="top:0%">5k</span><span style="top:20%">4k</span><span style="top:40%">3k</span>
+        <span style="top:60%">2k</span><span style="top:80%">1k</span>
+      </div>
+      <div class="bars" id="bars"></div>
+    </div>
+    <div class="xaxis" id="xaxis"></div>
+  </section>
+
+  <section class="history">
+    <div class="history-head">
+      <h2>Payout History</h2>
+      <a class="view-all" href="#">View All <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+    </div>
+    <div class="card table">
+      <table>
+        <thead><tr><th>DATE</th><th>DESCRIPTION</th><th>STATUS</th><th>AMOUNT</th></tr></thead>
+        <tbody>
+          <tr><td class="date">Oct 15, 2024</td><td><div class="desc">Wedding Floral Design</div><div class="sub">Client: S. Thompson</div></td><td><span class="pill paid"><span class="dot"></span>Paid</span></td><td class="amount">+$1,250.00</td></tr>
+          <tr><td class="date">Oct 02, 2024</td><td><div class="desc">Corporate Gala Catering (Deposit)</div><div class="sub">Client: TechCorp Inc.</div></td><td><span class="pill escrow"><span class="dot"></span>Escrow</span></td><td class="amount">+$3,400.00</td></tr>
+          <tr><td class="date">Sep 28, 2024</td><td><div class="desc">Birthday Venue Rental</div><div class="sub">Client: M. Davis</div></td><td><span class="pill paid"><span class="dot"></span>Paid</span></td><td class="amount">+$850.00</td></tr>
+          <tr><td class="date">Sep 15, 2024</td><td><div class="desc">Platform Fee</div><div class="sub">Monthly Subscription</div></td><td><span class="pill deducted"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Deducted</span></td><td class="amount neg">-$49.00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script>
+const DATA = {
+  '6m': {labels:['MAY','JUN','JUL','AUG','SEP','OCT'], values:[1200,1800,2700,1500,2100,2400]},
+  '1y': {labels:['N','D','J','F','M','A','M','J','J','A','S','O'], values:[900,1400,800,1100,1600,1300,1200,1800,2700,1500,2100,2400]},
+  'all':{labels:['2019','2020','2021','2022','2023','2024'], values:[12000,9000,15000,19000,22000,24500]}
+};
+const barsEl = document.getElementById('bars'), xEl = document.getElementById('xaxis');
+function render(range){
+  const {labels, values} = DATA[range];
+  const max = range === 'all' ? 25000 : 5000;
+  barsEl.innerHTML = ''; xEl.innerHTML = '';
+  labels.forEach((l,i) => {
+    const slot = document.createElement('div'); slot.className = 'slot';
+    const bar = document.createElement('div'); bar.className = 'bar';
+    bar.dataset.v = '$' + values[i].toLocaleString();
+    slot.appendChild(bar); barsEl.appendChild(slot);
+    xEl.insertAdjacentHTML('beforeend', `<span>${l}</span>`);
+    requestAnimationFrame(() => requestAnimationFrame(() => { bar.style.height = (values[i]/max*100) + '%'; }));
+  });
+}
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.seg button').forEach(x => x.classList.remove('active'));
+  b.classList.add('active'); render(b.dataset.range);
+}));
+render('6m');
+</script>
+</body>
+</html>
