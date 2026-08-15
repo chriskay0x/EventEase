@@ -1,0 +1,714 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - EventEase</title>
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-ivory: #FAF8F5;
+            --sidebar-bg: #EFECE6;
+            --primary-emerald: #0A4332;
+            --emerald-hover: #063124;
+            --text-dark: #111827;
+            --text-muted: #6B7280;
+            --input-bg: #F4F1EA;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E1D8;
+            --font-serif: 'Fraunces', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-ivory);
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Fixed Left Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #EFECE6;
+            border-right: 1px solid #E5E1D8;
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            height: 100vh;
+            z-index: 50;
+        }
+
+        .sidebar-brand {
+            margin-bottom: 2.25rem;
+            padding-left: 0.5rem;
+        }
+
+        .sidebar-brand h2 {
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            color: var(--primary-emerald);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 9999px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .nav-menu a i {
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+            color: #4B5563;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(10, 67, 50, 0.05);
+        }
+
+        .nav-menu a.active {
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+        }
+
+        .nav-menu a.active i {
+            color: #FFFFFF;
+        }
+
+        .sidebar-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .btn-create-listing {
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            padding: 0.85rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.2s ease;
+        }
+
+        .btn-create-listing:hover {
+            background: var(--emerald-hover);
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background-color: #E2DDD5;
+            margin: 0.25rem 0;
+        }
+
+        .vendor-profile-capsule {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            text-decoration: none;
+        }
+
+        .vendor-profile-capsule img, 
+        .vendor-profile-capsule .avatar-fallback {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #D1D5DB;
+            flex-shrink: 0;
+        }
+
+        .vendor-profile-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .vendor-profile-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .vendor-profile-info span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Full Width Main Workspace */
+        .workspace {
+            flex: 1;
+            margin-left: 250px;
+            padding: 3rem 4rem;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-family: var(--font-serif);
+            font-size: 2.4rem;
+            color: var(--primary-emerald);
+            font-weight: 600;
+            margin-bottom: 0.35rem;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .settings-layout {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 3.5rem;
+            align-items: flex-start;
+        }
+
+        .section-nav {
+            position: sticky;
+            top: 2rem;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .section-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .section-nav a:hover, .section-nav a.active {
+            color: var(--primary-emerald);
+            font-weight: 600;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 3rem 3rem 2.5rem 3rem;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            color: var(--primary-emerald);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-top: 1rem;
+        }
+
+        .photo-block {
+            display: flex;
+            align-items: center;
+            gap: 1.75rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .avatar-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #E5E7EB;
+        }
+
+        .photo-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .photo-info p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 0.85rem;
+        }
+
+        .photo-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-upload {
+            padding: 0.45rem 1.1rem;
+            border: 1px solid #D1D5DB;
+            background: #FFFFFF;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-remove {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            cursor: pointer;
+        }
+
+        .btn-remove:hover { color: #DC2626; }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #4B5563;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .input-field, .textarea-field {
+            background: var(--input-bg);
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            font-size: 0.92rem;
+            font-family: var(--font-sans);
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus, .textarea-field:focus {
+            background: #FFFFFF;
+            border-color: var(--primary-emerald);
+        }
+
+        .textarea-field {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.5;
+        }
+
+        .verified-notice {
+            background: var(--input-bg);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.82rem;
+            color: #4B5563;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .verified-notice a { color: var(--primary-emerald); font-weight: 600; text-decoration: underline; }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1rem;
+            background: var(--input-bg);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-text h4 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .toggle-text p { font-size: 0.8rem; color: var(--text-muted); }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #D1D5DB;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--primary-emerald); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .card-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-cancel {
+            padding: 0.75rem 1.75rem;
+            background: transparent;
+            border: 1px solid #D1D5DB;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            padding: 0.75rem 2rem;
+            background: var(--primary-emerald);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 9999px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-save:hover { background: var(--emerald-hover); }
+
+        .flash-messages { margin-bottom: 1.5rem; }
+
+        .alert {
+            padding: 0.85rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+        .alert-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { position: static; width: 100%; height: auto; }
+            .settings-layout { grid-template-columns: 1fr; gap: 1.5rem; }
+            .section-nav { display: none; }
+            .workspace { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .settings-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Standardized Fixed Left Sidebar -->
+    <aside class="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <h2>Vendor Hub</h2>
+                <p>Manage your events</p>
+            </div>
+
+            <ul class="nav-menu">
+                <li>
+                    <a href="{% url 'accounts:vendor_dashboard' %}">
+                        <i class="fa-solid fa-table-cells-large"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa-solid fa-list-check"></i> Listings</a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa-solid fa-wallet"></i> Earnings</a>
+                </li>
+                <li>
+                    <a href="{% url 'accounts:vendor_settings' %}" class="active">
+                        <i class="fa-solid fa-gear"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="btn-create-listing">
+                <i class="fa-solid fa-plus"></i> Create Listing
+            </a>
+            
+            <div class="sidebar-divider"></div>
+
+            <a href="{% url 'accounts:vendor_settings' %}" class="vendor-profile-capsule">
+                {% if vendor_profile.avatar %}
+                    <img src="{{ vendor_profile.avatar.url }}" alt="Profile Avatar">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ vendor_profile.business_name|default:user.username }}&background=0A4332&color=fff" class="avatar-fallback" alt="Avatar">
+                {% endif %}
+                <div class="vendor-profile-info">
+                    <h4>{{ vendor_profile.business_name|default:"My Business" }}</h4>
+                    <span>Vendor Account</span>
+                </div>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="workspace">
+        <div class="page-header">
+            <h1>Account Settings</h1>
+            <p>Manage your professional profile and account details.</p>
+        </div>
+
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="settings-layout">
+            <nav class="section-nav">
+                <a href="#profile-details" class="active">Profile Details</a>
+                <a href="#business-info">Business Info</a>
+                <a href="#notifications">Notifications</a>
+                <a href="#security">Security</a>
+            </nav>
+
+            <form method="post" enctype="multipart/form-data" class="settings-card">
+                {% csrf_token %}
+                <input type="hidden" name="remove_photo" id="removePhotoInput" value="false">
+
+                <div id="profile-details">
+                    <div class="photo-block">
+                        {% if vendor_profile.avatar %}
+                            <img src="{{ vendor_profile.avatar.url }}" id="avatarImg" class="avatar-preview" alt="Profile Photo">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ user.get_full_name|default:user.username }}&background=0A4332&color=fff" id="avatarImg" class="avatar-preview" alt="Profile Photo">
+                        {% endif %}
+
+                        <div class="photo-info">
+                            <h4>Profile Photo</h4>
+                            <p>This image will be displayed on your vendor listings.</p>
+                            <div class="photo-actions">
+                                <button type="button" class="btn-upload" onclick="document.getElementById('avatarInput').click()">Upload New</button>
+                                <button type="button" class="btn-remove" onclick="removeAvatar()">Remove</button>
+                                <input type="file" name="avatar" id="avatarInput" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">Personal Details</h3>
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" name="full_name" class="input-field" value="{{ user.get_full_name }}" placeholder="e.g. Eleanor Vance">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" class="input-field" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phone" class="input-field" value="{{ vendor_profile.phone|default:'' }}" placeholder="+1 (555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="input-field" value="********" readonly style="cursor: pointer;" onclick="document.getElementById('currentPasswordInput').focus()">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="business-info" style="margin-top: 2rem;">
+                    <h3 class="section-title">Business Information</h3>
+
+                    <div class="form-group">
+                        <label>Business Description</label>
+                        <textarea name="bio" class="textarea-field" placeholder="Lumière Event Design specializes in bespoke floral arrangements and immersive decor...">{{ vendor_profile.bio|default:'' }}</textarea>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Instagram Handle</label>
+                            <input type="text" name="instagram_handle" class="input-field" value="{{ vendor_profile.instagram_handle|default:'' }}" placeholder="@lumiere_events">
+                        </div>
+                        <div class="form-group">
+                            <label>Website URL</label>
+                            <input type="text" name="website_url" class="input-field" value="{{ vendor_profile.website_url|default:'' }}" placeholder="www.lumiereevents.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Service Location</label>
+                        <input type="text" name="city" class="input-field" value="{{ vendor_profile.city|default:'' }}" placeholder="Greater New York Area">
+                    </div>
+
+                    <div class="verified-notice">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Business Name and Category are verified. <a href="mailto:support@eventease.com">Contact support</a> to change them.</span>
+                    </div>
+                </div>
+
+                <div id="notifications" style="margin-top: 2rem;">
+                    <h3 class="section-title">Notification Preferences</h3>
+
+                    <div class="toggle-item">
+                        <div class="toggle-text">
+                            <h4>Email Notifications</h4>
+                            <p>New bookings, messages, and platform updates</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="email_notifications" {% if vendor_profile.email_notifications %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-item">
+                        <div class="toggle-text">
+                            <h4>SMS Alerts</h4>
+                            <p>Urgent booking requests and reminders</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="sms_alerts" {% if vendor_profile.sms_alerts %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="security" style="margin-top: 2rem;">
+                    <h3 class="section-title">Security & Password</h3>
+
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Current Password</label>
+                            <input type="password" name="current_password" id="currentPasswordInput" class="input-field" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>New Password</label>
+                            <input type="password" name="new_password" class="input-field" placeholder="Enter new password">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" name="confirm_password" class="input-field" placeholder="Confirm new password">
+                    </div>
+
+                    <div class="toggle-item" style="margin-top: 1rem;">
+                        <div class="toggle-text">
+                            <h4>Two-Factor Authentication</h4>
+                            <p>Add an extra layer of security to your account</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" name="two_factor_enabled" {% if vendor_profile.two_factor_enabled %}checked{% endif %}>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'accounts:vendor_settings' %}" class="btn-cancel">Cancel</a>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImg').src = e.target.result;
+                    document.getElementById('removePhotoInput').value = 'false';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeAvatar() {
+            document.getElementById('avatarImg').src = "https://ui-avatars.com/api/?name={{ user.get_full_name|default:user.username }}&background=0A4332&color=fff";
+            document.getElementById('avatarInput').value = '';
+            document.getElementById('removePhotoInput').value = 'true';
+        }
+    </script>
+</body>
+</html>

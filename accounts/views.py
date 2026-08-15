@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ClientRegistrationForm, VendorRegistrationForm
-from .models import User, VendorProfile
+from .models import User, VendorProfile, BookingRequest, VendorActivity
+from django.db.models import Sum
+from django.contrib import messages
 
 # 1. Client Registration View
 def register_client_view(request):
@@ -161,4 +163,111 @@ def verification_pending_view(request):
     vendor_profile = getattr(request.user, 'vendor_profile', None)
     return render(request, 'accounts/verification_pending.html', {
         'vendor_profile': vendor_profile
+    })
+    
+    
+@login_required(login_url='accounts:login')
+def vendor_settings_view(request):
+    vendor_profile, _ = VendorProfile.objects.get_or_create(user=request.user)
+    user = request.user
+
+    if request.method == 'POST':
+        # 1. Profile Photo actions
+        if request.POST.get('remove_photo') == 'true':
+            if vendor_profile.avatar:
+                vendor_profile.avatar.delete(save=False)
+                vendor_profile.avatar = None
+        elif 'avatar' in request.FILES:
+            vendor_profile.avatar = request.FILES['avatar']
+
+        # 2. Personal Details
+        full_name = request.POST.get('full_name', '').strip()
+        if full_name:
+            name_parts = full_name.split(' ', 1)
+            user.first_name = name_parts[0]
+            user.last_name = name_parts[1] if len(name_parts) > 1 else ''
+        
+        email = request.POST.get('email', '').strip()
+        if email:
+            user.email = email
+            user.username = email
+        user.save()
+
+        # 3. Business Information
+        vendor_profile.phone = request.POST.get('phone', vendor_profile.phone)
+        vendor_profile.bio = request.POST.get('bio', vendor_profile.bio)
+        vendor_profile.instagram_handle = request.POST.get('instagram_handle', vendor_profile.instagram_handle)
+        vendor_profile.website_url = request.POST.get('website_url', vendor_profile.website_url)
+        vendor_profile.city = request.POST.get('city', vendor_profile.city)
+
+        # 4. Notification & Security Switches (Checkboxes)
+        vendor_profile.email_notifications = request.POST.get('email_notifications') == 'on'
+        vendor_profile.sms_alerts = request.POST.get('sms_alerts') == 'on'
+        vendor_profile.two_factor_enabled = request.POST.get('two_factor_enabled') == 'on'
+        vendor_profile.save()
+
+        # 5. Password Update (Optional)
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if current_password and new_password:
+            if not user.check_password(current_password):
+                messages.error(request, 'Current password is incorrect.')
+                return redirect('accounts:vendor_settings')
+            elif new_password != confirm_password:
+                messages.error(request, 'New passwords do not match.')
+                return redirect('accounts:vendor_settings')
+            elif len(new_password) < 8:
+                messages.error(request, 'Password must be at least 8 characters long.')
+                return redirect('accounts:vendor_settings')
+            else:
+                user.set_password(new_password)
+                user.save()
+                update_session_auth_hash(request, user)  # Keep user logged in
+                messages.success(request, 'Password and settings updated successfully!')
+                return redirect('accounts:vendor_settings')
+
+        messages.success(request, 'Account settings saved successfully!')
+        return redirect('accounts:vendor_settings')
+
+    return render(request, 'accounts/vendor_settings.html', {
+        'vendor_profile': vendor_profile,
+        'user': user
+    })
+    
+    
+    
+@login_required(login_url='accounts:login')
+def vendor_dashboard_view(request):
+    """Vendor Hub Overview Dashboard."""
+    vendor_profile, _ = VendorProfile.objects.get_or_create(user=request.user)
+
+    # Populate default demo records if empty for a fresh vendor
+    if not vendor_profile.booking_requests.exists():
+        BookingRequest.objects.create(vendor=vendor_profile, client_name="Eleanor Shellstrop", event_date="2026-10-24", status="pending", amount=12000)
+        BookingRequest.objects.create(vendor=vendor_profile, client_name="Chidi Anagonye", event_date="2026-11-12", status="confirmed", amount=8500)
+        BookingRequest.objects.create(vendor=vendor_profile, client_name="Tahani Al-Jamil", event_date="2026-12-05", status="pending", amount=4000)
+
+    if not vendor_profile.activities.exists():
+        VendorActivity.objects.create(vendor=vendor_profile, title="Jason Mendoza left a 5-star review for The Grand Ballroom.", activity_type="review")
+        VendorActivity.objects.create(vendor=vendor_profile, title="New listing view surge on Riverside Garden.", activity_type="surge")
+        VendorActivity.objects.create(vendor=vendor_profile, title="Scheduled maintenance for your dashboard completed.", activity_type="system")
+
+    # Metrics
+    total_revenue = vendor_profile.booking_requests.filter(status='confirmed').aggregate(Sum('amount'))['amount__sum'] or 24500
+    active_bookings_count = vendor_profile.booking_requests.count()
+    pending_inquiries_count = vendor_profile.booking_requests.filter(status='pending').count()
+
+    booking_requests = vendor_profile.booking_requests.all().order_by('-created_at')[:5]
+    activities = vendor_profile.activities.all()[:5]
+
+    return render(request, 'accounts/vendor_dashboard.html', {
+        'vendor_profile': vendor_profile,
+        'user': request.user,
+        'total_revenue': total_revenue,
+        'active_bookings_count': active_bookings_count,
+        'pending_inquiries_count': pending_inquiries_count,
+        'booking_requests': booking_requests,
+        'activities': activities,
     })
