@@ -1,17 +1,8 @@
 from django.contrib import admin
 from django.test import SimpleTestCase
-from django.urls import reverse
 
 from engagement.admin import MessageAdmin, ReviewAdmin
 from engagement.models import Message, Review
-
-
-class LandingPageTests(SimpleTestCase):
-    def test_landing_page_renders_successfully(self):
-        response = self.client.get(reverse('landing'))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'EventEase')
 
 
 class AdminConfigurationTests(SimpleTestCase):

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventEase Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#003527", "primary-container": "#064e3b", "on-primary": "#ffffff",
+                        "on-primary-container": "#80bea6", secondary: "#755a26", "secondary-container": "#fdd897",
+                        background: "#fcf9f4", surface: "#fcf9f4",
+                        "surface-container-low": "#f6f3ee", "surface-container": "#f0ede9",
+                        "surface-container-high": "#ebe8e3", "surface-container-highest": "#e5e2dd",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1c1c19", "on-surface": "#1c1c19", "on-surface-variant": "#404944",
+                        "outline": "#707974", "outline-variant": "#bfc9c3",
+                        error: "#ba1a1a", "error-container": "#ffdad6", "on-error-container": "#93000a",
+                        "surface-tint": "#2b6954"
+                    },
+                    fontFamily: { display: ["Playfair Display"], headline: ["Playfair Display"], body: ["Inter"], label: ["Inter"] }
+                }
+            }
+        };
+    </script>
+    <style>
+        body { background-color: #fcf9f4; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background text-on-background flex min-h-screen antialiased">
+
+    <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/30 flex-col py-8 z-40 hidden md:flex shadow-sm">
+        <div class="px-6 mb-16">
+            <h2 class="font-display text-2xl text-primary mb-1">EventEase</h2>
+            <p class="text-sm text-on-surface-variant">System Administration</p>
+        </div>
+
+        <nav class="flex-1 flex flex-col gap-1">
+            <a href="{% url 'admin_overview' %}" class="flex items-center gap-3 px-4 py-3 bg-primary-container text-white rounded-lg mx-2 font-medium">
+                <span class="material-symbols-outlined">dashboard</span>Platform Overview
+            </a>
+            <a href="{% url 'verification_queue' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg">
+                <span class="material-symbols-outlined">verified_user</span>Verification Queue
+            </a>
+            <a href="{% url 'coming_soon' feature_name='Vendors' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg">
+                <span class="material-symbols-outlined">storefront</span>Vendors
+            </a>
+            <a href="{% url 'booking_oversight' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg">
+                <span class="material-symbols-outlined">calendar_today</span>Bookings
+            </a>
+            <a href="{% url 'coming_soon' feature_name='Payments' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high mx-2 rounded-lg">
+                <span class="material-symbols-outlined">payments</span>Payments
+            </a>
+        </nav>
+
+        <div class="mt-auto flex flex-col gap-1 px-2">
+            <a href="{% url 'coming_soon' feature_name='Settings' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg">
+                <span class="material-symbols-outlined">settings</span>Settings
+            </a>
+            <a href="{% url 'coming_soon' feature_name='Help' %}" class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg">
+                <span class="material-symbols-outlined">help</span>Help
+            </a>
+            <form method="post" action="/admin/logout/">
+                {% csrf_token %}
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg text-left">
+                    <span class="material-symbols-outlined">logout</span>Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="flex-1 md:ml-64 p-6 md:p-12 w-full max-w-7xl mx-auto">
+
+        {% if messages %}
+        {% for message in messages %}
+        <div class="mb-4 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <header class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+            <div>
+                <p class="text-xs font-semibold text-secondary uppercase tracking-widest mb-2">Platform Overview</p>
+                <h1 class="font-display text-4xl md:text-5xl text-on-background">System Administration</h1>
+            </div>
+            <div class="flex items-center gap-3">
+                <div class="text-right hidden sm:block">
+                    <p class="text-sm font-semibold">{{ request.user.get_username|default:"Admin User" }}</p>
+                    <p class="text-xs text-on-surface-variant uppercase tracking-wider">Global Access</p>
+                </div>
+                <div class="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
+                    <span class="material-symbols-outlined text-2xl">account_circle</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+
+            <div class="bg-white rounded-xl p-8 border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Gross Merch. Value</h3>
+                    <div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-sm">payments</span>
+                    </div>
+                </div>
+                <p class="font-display text-3xl text-on-background">${{ total_gmv }}</p>
+                <p class="text-sm text-surface-tint mt-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">trending_up</span>+12.5% vs last month
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Active Vendors</h3>
+                    <div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-sm">storefront</span>
+                    </div>
+                </div>
+                <p class="font-display text-3xl text-on-background">{{ active_vendors }}</p>
+                <p class="text-sm text-surface-tint mt-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">trending_up</span>+4 new this week
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 border border-outline-variant/30 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Booking Volume</h3>
+                    <div class="w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-sm">event_available</span>
+                    </div>
+                </div>
+                <p class="font-display text-3xl text-on-background">{{ total_bookings }}</p>
+                <p class="text-sm text-on-surface-variant mt-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs">remove</span>Steady baseline
+                </p>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 border border-secondary-container/50 shadow-sm hover:shadow-lg transition-all">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 class="text-xs font-semibold text-on-surface-variant uppercase tracking-wider">Pending Verifications</h3>
+                    <div class="w-8 h-8 rounded-full bg-secondary-container/30 flex items-center justify-center text-secondary">
+                        <span class="material-symbols-outlined text-sm">verified_user</span>
+                    </div>
+                </div>
+                <p class="font-display text-3xl text-on-background">{{ pending_verifications }}</p>
+                <a href="{% url 'verification_queue' %}" class="text-sm text-secondary mt-1 flex items-center gap-1 hover:underline">
+                    <span class="material-symbols-outlined text-xs">warning</span>Action required
+                </a>
+            </div>
+
+        </section>
+
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="lg:col-span-2 bg-white rounded-xl p-8 border border-outline-variant/30 shadow-sm">
+                <div class="flex justify-between items-end mb-8">
+                    <div>
+                        <h2 class="font-display text-2xl text-on-background">Platform Growth Trend</h2>
+                        <p class="text-sm text-on-surface-variant mt-1">Monthly gross volume trailing 12 months.</p>
+                    </div>
+                    <form method="post" action="{% url 'export_report' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="text-xs font-semibold text-primary border border-outline-variant/50 rounded-full px-4 py-2 hover:bg-surface-container-low">
+                            Export Report
+                        </button>
+                    </form>
+                </div>
+
+                <div class="w-full h-64 bg-surface-container-low rounded-lg relative overflow-hidden flex items-end p-4">
+                    <div class="absolute left-0 right-0 top-1/4 border-b border-outline-variant/20"></div>
+                    <div class="absolute left-0 right-0 top-2/4 border-b border-outline-variant/20"></div>
+                    <div class="absolute left-0 right-0 top-3/4 border-b border-outline-variant/20"></div>
+                    <svg class="w-full h-full text-primary" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="chart-gradient" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="currentColor" stop-opacity="0.2"></stop>
+                                <stop offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+                            </linearGradient>
+                        </defs>
+                        <path d="M0,80 Q20,70 40,60 T80,30 T100,10 L100,100 L0,100 Z" fill="url(#chart-gradient)"></path>
+                        <path d="M0,80 Q20,70 40,60 T80,30 T100,10" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2"></path>
+                        <circle cx="40" cy="60" fill="currentColor" r="1.5"></circle>
+                        <circle cx="80" cy="30" fill="currentColor" r="1.5"></circle>
+                        <circle cx="100" cy="10" fill="#064e3b" r="2" stroke="#ffffff" stroke-width="0.5"></circle>
+                    </svg>
+                    <div class="absolute right-[5%] top-[10%] flex flex-col items-center">
+                        <div class="bg-white shadow-md rounded px-3 py-2 border border-outline-variant/30 mb-2">
+                            <p class="text-xs text-on-surface-variant mb-1">Nov 2024</p>
+                            <p class="text-sm text-on-background font-semibold">$310k</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-8 border border-outline-variant/30 shadow-sm flex flex-col">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="font-display text-2xl text-on-background">Needs Attention</h2>
+                    <span class="bg-error-container text-on-error-container text-xs font-semibold px-2 py-1 rounded-full">{{ alerts|length }} Alerts</span>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                {% for alert in alerts %}
+                    <div class="p-4 bg-surface rounded-lg border border-outline-variant/30 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-1 {% if alert.type == 'dispute' %}bg-error-container{% elif alert.type == 'flag' %}bg-secondary-container{% else %}bg-outline-variant{% endif %}"></div>
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined {% if alert.type == 'dispute' %}text-error{% elif alert.type == 'flag' %}text-secondary{% else %}text-on-surface-variant{% endif %}">
+                                {% if alert.type == 'dispute' %}gavel{% elif alert.type == 'flag' %}flag{% else %}description{% endif %}
+                            </span>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold">{{ alert.title }}</p>
+                                <p class="text-sm text-on-surface-variant mt-1 mb-3">{{ alert.description }}</p>
+
+                                {% if alert.action_url_name == 'send_bulk_reminder' %}
+                                <form method="post" action="{% url 'send_bulk_reminder' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-sm text-primary w-full text-center py-2 bg-surface-container-low rounded">{{ alert.action_label }}</button>
+                                </form>
+                                {% else %}
+                                <div class="flex items-center justify-between">
+                                    {% if alert.tag %}
+                                    <span class="text-xs bg-surface-container-high px-2 py-1 rounded">{{ alert.tag }}</span>
+                                    {% endif %}
+                                    <a href="{% url alert.action_url_name alert.action_url_arg %}" class="text-sm text-primary hover:underline">{{ alert.action_label }}</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

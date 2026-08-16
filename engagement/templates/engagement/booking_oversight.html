@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EventEase - Admin Bookings Oversight</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#707974", "secondary": "#755a26", "primary-container": "#064e3b",
+                      "surface-tint": "#2b6954", "on-secondary": "#ffffff", "secondary-fixed-dim": "#e5c183",
+                      "on-error-container": "#93000a", "surface-container-highest": "#e5e2dd",
+                      "surface-bright": "#fcf9f4", "background": "#fcf9f4", "on-primary-container": "#80bea6",
+                      "surface-container": "#f0ede9", "inverse-primary": "#95d3ba", "tertiary-fixed": "#e4e2e1",
+                      "on-secondary-fixed-variant": "#5b4310", "secondary-container": "#fdd897",
+                      "on-surface-variant": "#404944", "tertiary": "#2e2e2e", "primary-fixed": "#b0f0d6",
+                      "surface-container-high": "#ebe8e3", "on-primary-fixed": "#002117", "outline-variant": "#bfc9c3",
+                      "tertiary-container": "#444444", "on-tertiary-container": "#b3b1b1",
+                      "inverse-on-surface": "#f3f0eb", "on-primary-fixed-variant": "#0b513d",
+                      "on-secondary-fixed": "#271900", "surface-dim": "#dcdad5", "surface-variant": "#e5e2dd",
+                      "surface": "#fcf9f4", "on-tertiary-fixed": "#1b1c1c", "secondary-fixed": "#ffdea8",
+                      "error-container": "#ffdad6", "on-error": "#ffffff", "primary-fixed-dim": "#95d3ba",
+                      "on-background": "#1c1c19", "surface-container-low": "#f6f3ee",
+                      "on-tertiary-fixed-variant": "#474747", "primary": "#003527", "tertiary-fixed-dim": "#c8c6c6",
+                      "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "on-surface": "#1c1c19",
+                      "error": "#ba1a1a", "on-primary": "#ffffff", "on-secondary-container": "#785c28",
+                      "inverse-surface": "#31302d"
+              },
+              "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+              "spacing": {
+                      "margin-mobile": "16px", "gutter": "24px", "margin-desktop": "48px", "section-gap": "80px",
+                      "stack-sm": "8px", "stack-md": "16px", "stack-lg": "32px", "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "label-md": ["Inter"], "label-caps": ["Inter"], "display-lg-mobile": ["Playfair Display"],
+                      "headline-md": ["Playfair Display"], "body-lg": ["Inter"], "headline-sm": ["Playfair Display"],
+                      "body-md": ["Inter"], "display-lg": ["Playfair Display"]
+              },
+              "fontSize": {
+                      "label-md": ["14px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                      "label-caps": ["12px", { "lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600" }],
+                      "display-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                      "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }]
+              }
+      }}}
+    </script>
+<style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .icon-filled { font-variation-settings: 'FILL' 1; }
+        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #dcdad5; border-radius: 20px; }
+</style>
+</head>
+<body class="bg-background text-on-background antialiased min-h-screen flex flex-col md:flex-row font-body-md text-body-md">
+
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/30 py-stack-lg z-40">
+<div class="px-6 mb-stack-lg">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary">Vendor Portal</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mt-1">Management Suite</p>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="{% url 'admin_overview' %}">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 mx-2 rounded-lg bg-primary-container text-on-primary-container" href="{% url 'booking_oversight' %}">
+<span class="material-symbols-outlined icon-filled">calendar_today</span>
+<span class="font-label-md text-label-md font-semibold">Bookings</span>
+</a>
+</div>
+</nav>
+
+<header class="md:hidden flex items-center justify-between px-margin-mobile py-4 bg-surface/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-outline-variant/20">
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary">EventEase</h1>
+</header>
+
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-surface min-h-screen">
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="mb-4 px-4 py-2 rounded-lg bg-surface-container-high text-on-surface">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Bookings Oversight</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Monitor and manage all platform reservations. Review high-value transactions and flag suspicious activities.</p>
+</div>
+
+<form method="get" class="flex items-center gap-3 w-full md:w-auto">
+<div class="relative flex-1 md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-full font-label-md text-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all shadow-sm"
+       name="q" value="{{ request.GET.q }}" placeholder="Search ID, Client..." type="text"/>
+</div>
+<input type="hidden" name="status" value="{{ request.GET.status }}">
+<button type="submit" aria-label="Search" class="p-2.5 rounded-full border border-outline-variant text-on-surface-variant hover:bg-surface-container-highest transition-colors flex-shrink-0">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</form>
+</div>
+
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(45,45,45,0.05)] border border-surface-variant overflow-hidden">
+<div class="px-6 py-4 border-b border-surface-variant flex items-center justify-between bg-surface-bright">
+<div class="flex gap-2">
+<a href="?status=all{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+   class="px-3 py-1.5 rounded-full font-label-md text-label-md transition-colors {% if request.GET.status == 'all' or not request.GET.status %}bg-surface-container-high text-on-surface{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %}">
+   All ({{ total_count }})
+</a>
+<a href="?status=pending{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+   class="px-3 py-1.5 rounded-full font-label-md text-label-md transition-colors {% if request.GET.status == 'pending' %}bg-surface-container-high text-on-surface{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %}">
+   Pending
+</a>
+<a href="?status=flagged{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+   class="px-3 py-1.5 rounded-full font-label-md text-label-md transition-colors hidden sm:block {% if request.GET.status == 'flagged' %}bg-surface-container-high text-on-surface{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %}">
+   Flagged
+</a>
+<a href="?status=paid{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+   class="px-3 py-1.5 rounded-full font-label-md text-label-md transition-colors hidden sm:block {% if request.GET.status == 'paid' %}bg-surface-container-high text-on-surface{% else %}text-on-surface-variant hover:bg-surface-container-low{% endif %}">
+   Paid
+</a>
+</div>
+</div>
+
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">Booking ID</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">Client</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">Vendor / Service</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">Event Date</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-right whitespace-nowrap">Total Amount</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap">Status</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface-variant text-center whitespace-nowrap">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant font-body-md text-body-md">
+{% for booking in all_bookings %}
+<tr class="hover:bg-surface-bright/50 transition-colors group {% if booking.is_flagged %}bg-error-container/10{% endif %}">
+<td class="px-6 py-4 whitespace-nowrap font-medium text-on-surface">#{{ booking.id }}</td>
+<td class="px-6 py-4 whitespace-nowrap">{{ booking.client }}</td>
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">{{ booking.listing }}</td>
+<td class="px-6 py-4 whitespace-nowrap text-on-surface-variant">{{ booking.event_date }}</td>
+<td class="px-6 py-4 whitespace-nowrap text-right font-medium text-on-surface">${{ booking.total_price }}</td>
+<td class="px-6 py-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#fff7ed] text-[#9a3412] border border-[#ffedd5]">{{ booking.status }}</span>
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-center">
+<form method="post" action="{% url 'flag_booking' booking.id %}">
+    {% csrf_token %}
+    <button type="submit" class="p-1.5 {% if booking.is_flagged %}text-error{% else %}text-outline-variant hover:text-error{% endif %} transition-colors rounded-full hover:bg-error-container/30" title="Flag suspicious activity">
+        <span class="material-symbols-outlined {% if booking.is_flagged %}icon-filled{% endif %} text-lg">flag</span>
+    </button>
+</form>
+</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="7" class="px-6 py-12 text-center text-on-surface-variant">No bookings to display.</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+<div class="px-6 py-4 border-t border-surface-variant bg-surface-bright flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface-variant">Showing {{ all_bookings|length }} of {{ total_count }} entries</span>
+</div>
+</div>
+</main>
+</body></html>
