@@ -1,0 +1,5 @@
+59459ac (HEAD -> team/section2, origin/team/section2) Need to debug a lot
+1cf8e03 Templates with html created
+f6f1790 Updated Models and Views, added serializers and urls
+f3627e2 ignored files
+a14a250 Caught up with main

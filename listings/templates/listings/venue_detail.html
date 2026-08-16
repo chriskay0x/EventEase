@@ -1,0 +1,208 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Palms Centre - EventEase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #064E3B;
+            --primary-hover: #04382B;
+            --text-dark: #1F2937;
+            --text-muted: #6B7280;
+            --bg-light: #F9FAFB;
+            --border-color: #E5E7EB;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #FFFFFF; color: var(--text-dark); line-height: 1.5; }
+
+        /* Header */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.25rem 5%; border-bottom: 1px solid var(--border-color);
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
+        nav a { margin: 0 1rem; text-decoration: none; color: var(--text-dark); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; }
+        .btn-vendor { text-decoration: none; color: var(--text-dark); font-size: 0.875rem; font-weight: 500; margin-right: 1rem; }
+
+        /* Container */
+        .main-container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: repeat(2, 200px); gap: 10px;
+            border-radius: 12px; overflow: hidden; margin-bottom: 2rem;
+        }
+        .grid-item { width: 100%; height: 100%; object-fit: cover; }
+        .grid-main { grid-column: 1 / 2; grid-row: 1 / 3; }
+        .grid-item-container { position: relative; width: 100%; height: 100%; }
+        .overlay-btn {
+            position: absolute; bottom: 15px; right: 15px; background: rgba(0,0,0,0.6);
+            color: #FFF; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; border: none; cursor: pointer;
+        }
+
+        /* Listing Body Layout */
+        .content-layout { display: flex; gap: 3rem; position: relative; }
+        .details-col { flex: 2; }
+        .booking-col { flex: 1; }
+
+        /* Badges & Titles */
+        .tag-group { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .badge { background: #FEF3C7; color: #92400E; font-size: 0.75rem; font-weight: 600; padding: 4px 8px; border-radius: 4px; }
+        .category-badge { background: #E0E7FF; color: #3730A3; }
+        
+        .venue-title { font-family: 'Playfair Display', serif; font-size: 2.25rem; font-weight: 700; color: #111827; margin-bottom: 0.75rem; }
+        .description { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; }
+
+        /* Key Info Row */
+        .info-row { display: flex; gap: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border-color); margin-bottom: 2rem; }
+        .info-item label { display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+        .info-item span { font-weight: 600; font-size: 0.95rem; }
+
+        /* Amenities Grid */
+        .amenities-section h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 1.25rem; }
+        .amenities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .amenity-card { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--text-dark); }
+
+        /* Booking Card */
+        .booking-card {
+            border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); position: sticky; top: 20px; background: #FFF;
+        }
+        .price-text { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: #111827; }
+        .price-period { font-size: 0.875rem; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+        
+        .input-group { margin: 1.25rem 0; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
+        .input-box { padding: 0.75rem; border-bottom: 1px solid var(--border-color); }
+        .input-box:last-child { border-bottom: none; }
+        .input-box label { display: block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+        .input-box input, .input-box select { width: 100%; border: none; outline: none; font-size: 0.875rem; background: transparent; }
+
+        .btn-book {
+            width: 100%; background-color: var(--primary); color: white; border: none;
+            padding: 0.875rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.95rem;
+        }
+        .btn-book:hover { background-color: var(--primary-hover); }
+        .disclaimer { text-align: center; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.75rem; }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-color); margin-top: 4rem; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); }
+        footer .links a { color: var(--text-muted); text-decoration: none; margin-left: 1rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="{% url 'listings:home' %}" class="logo">EventEase</a>
+        <nav>
+            <a href="{% url 'listings:browse' %}">BROWSE</a>
+            <a href="#">BOOKINGS</a>
+            <a href="#">ACCOUNT</a>
+        </nav>
+        <div>
+            <a href="{% url 'listings:create_listing' %}" class="btn-vendor">Switch to Vendor</a>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Gallery -->
+        <div class="image-grid">
+            <img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1200&q=80" class="grid-item grid-main" alt="Main Event Centre">
+            <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" class="grid-item" alt="Decoration Setup">
+            <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=600&q=80" class="grid-item" alt="Table Setting">
+            <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=600&q=80" class="grid-item" alt="Stage Lighting">
+            <div class="grid-item-container">
+                <img src="https://images.unsplash.com/photo-1505236858219-8359eb29e329?auto=format&fit=crop&w=600&q=80" class="grid-item" alt="Exterior View">
+                <button class="overlay-btn">Show all 24 photos</button>
+            </div>
+        </div>
+
+        <!-- Details & Booking Form -->
+        <div class="content-layout">
+            <div class="details-col">
+                <div class="tag-group">
+                    <span class="badge">★ 4.9 (128 reviews)</span>
+                    <span class="badge category-badge">Marquee / Event Hall</span>
+                </div>
+
+                <h1 class="venue-title">The Royal Palms Centre</h1>
+                <p class="description">
+                    Experience world-class luxury in the heart of Victoria Island. Ideal for grand Nigerian weddings, corporate galas, and executive summits, offering a fully air-conditioned marquee with state-of-the-art audiovisual infrastructure.
+                </p>
+
+                <div class="info-row">
+                    <div class="info-item">
+                        <label>Capacity</label>
+                        <span>500 - 1,500 guests</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Starting Price</label>
+                        <span>From ₦2,500,000</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Location</label>
+                        <span>Victoria Island, Lagos</span>
+                    </div>
+                </div>
+
+                <!-- Amenities Section -->
+                <div class="amenities-section">
+                    <h3>Amenities</h3>
+                    <div class="amenities-grid">
+                        <div class="amenity-card">⚡ 250kVA Standby Generator</div>
+                        <div class="amenity-card">❄️ Central Air Conditioning</div>
+                        <div class="amenity-card">🔒 MOPOL Security & Bouncers</div>
+                        <div class="amenity-card">🅿️ Secure Parking (200+ Cars)</div>
+                        <div class="amenity-card">👗 Executive Changing Rooms</div>
+                        <div class="amenity-card">🍽️ Vendor Catering Area</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Sidebar -->
+            <div class="booking-col">
+                <div class="booking-card">
+                    <div class="price-text">₦3,500,000 <span class="price-period">/ day</span></div>
+
+                    <form action="#" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <div class="input-box">
+                                <label>Event Date</label>
+                                <input type="date" required>
+                            </div>
+                            <div class="input-box">
+                                <label>Expected Guests</label>
+                                <select required>
+                                    <option value="" disabled selected>Select guest count</option>
+                                    <option value="500">Up to 500 guests</option>
+                                    <option value="1000">500 - 1,000 guests</option>
+                                    <option value="1500">1,000 - 1,500 guests</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-book">Request to Book</button>
+                    </form>
+                    <p class="disclaimer">You won't be charged yet</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div>EventEase © 2026. All rights reserved.</div>
+        <div class="links">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+        </div>
+    </footer>
+
+</body>
+</html>

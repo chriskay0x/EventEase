@@ -62,7 +62,7 @@ class VenueBrowseView(ListView):
         return context
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    return render(request, 'listings/homepage.html')
 
 def browse(request):
     return render(request, 'browse.html')
@@ -80,4 +80,4 @@ def service_detail(request):
     return render(request, 'service_detail.html')
 
 def venue_detail(request):
-    return render(request, 'venue_detail.html')
+    return render(request, 'listings/venue_detail.html')
