@@ -1,1 +1,364 @@
-{%extehds "layouts/public_base.html"%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventEase - Home</title>
+    
+    <!-- Google Fonts for exact typography match -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #F7F5F0; 
+            color: #2C2C2C; 
+        }
+
+        /* --- NAVBAR STYLES --- */
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 22px 60px; 
+            background: #F7F5F0; 
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 28px; 
+            font-weight: 700; 
+            color: #1b4332; 
+            text-decoration: none; 
+            letter-spacing: -0.5px;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        nav a { 
+            text-decoration: none; 
+            color: #4A5568; 
+            font-size: 11px; 
+            font-weight: 600; 
+            text-transform: uppercase; 
+            letter-spacing: 1.2px; 
+            position: relative;
+            padding-bottom: 6px;
+        }
+
+        /* Active dot under BROWSE */
+        nav a.active {
+            color: #1b4332;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #1b4332;
+            border-radius: 50%;
+        }
+
+        .nav-right { 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+        }
+
+        .btn-vendor { 
+            border: 1px solid #D1D5DB; 
+            padding: 8px 20px; 
+            border-radius: 20px; 
+            text-decoration: none; 
+            color: #1F2937; 
+            font-size: 13px; 
+            font-weight: 500;
+            background: transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-vendor:hover {
+            border-color: #1b4332;
+            color: #1b4332;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero { 
+            text-align: center; 
+            padding: 90px 20px; 
+            background: #F7F5F0; 
+        }
+
+        .hero h1 { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 52px; 
+            color: #111827;
+            margin-bottom: 12px; 
+            font-weight: 600; 
+        }
+
+        .hero p { 
+            font-size: 15px; 
+            color: #6B7280; 
+            margin-bottom: 40px; 
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        /* Search Bar Widget */
+        .search-box { 
+            background: white; 
+            padding: 8px 12px 8px 28px; 
+            border-radius: 40px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 24px; 
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid #E5E7EB;
+        }
+
+        .search-item { text-align: left; }
+        .search-item label { display: block; font-size: 10px; text-transform: uppercase; color: #9CA3AF; font-weight: 700; letter-spacing: 0.5px; }
+        .search-item input { border: none; outline: none; font-size: 13px; color: #1F2937; width: 140px; background: transparent; }
+        .btn-search { background: #1b4332; color: white; border: none; padding: 12px 28px; border-radius: 30px; cursor: pointer; font-size: 14px; font-weight: 500; }
+
+        /* --- MAIN CONTENT CONTAINER --- */
+        .container { max-width: 1140px; margin: 60px auto; padding: 0 20px; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 6px; color: #111827; }
+        .section-subtitle { color: #6B7280; font-size: 14px; margin-bottom: 32px; }
+
+        /* Category Grid */
+        .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 70px; }
+        .category-card { height: 260px; border-radius: 16px; background-size: cover; background-position: center; position: relative; overflow: hidden; display: flex; align-items: flex-end; padding: 24px; color: white; text-decoration: none; }
+        .category-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.75) 100%); }
+        .category-content { position: relative; z-index: 1; }
+        .category-content h3 { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+        .category-content small { font-size: 12px; opacity: 0.9; }
+
+        /* Vendor Grid */
+        .vendor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .vendor-card { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #F3F4F6; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02); }
+        .vendor-img { height: 210px; background-size: cover; background-position: center; position: relative; }
+        .badge { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.92); padding: 4px 10px; border-radius: 12px; font-size: 9px; font-weight: 700; letter-spacing: 0.5px; }
+        .vendor-info { padding: 18px; }
+        .vendor-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .vendor-title { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 18px; color: #111827; }
+        .vendor-rating { font-size: 12px; font-weight: 600; color: #111827; }
+        .vendor-desc { font-size: 13px; color: #6B7280; margin-bottom: 18px; line-height: 1.4; }
+        .vendor-footer { display: flex; justify-content: space-between; font-size: 12px; border-top: 1px solid #F3F4F6; padding-top: 12px; color: #9CA3AF; }
+        .price { color: #111827; font-weight: 600; }
+
+        /* --- FOOTER STYLES --- */
+        footer { 
+            border-top: 1px solid #E5E7EB; 
+            padding: 28px 60px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            font-size: 13px; 
+            color: #4B5563; 
+            background: #F7F5F0;
+        }
+
+        .footer-center {
+            display: flex;
+            gap: 28px;
+        }
+
+        .footer-center a {
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-right {
+            color: #4B5563;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <a href="{% url 'listings:home' %}" class="logo">EventEase</a>
+        
+        
+        
+        <div class="nav-right">
+            <a href="{% url 'listings:create_listing' %}" class="btn-vendor">Switch to Vendor</a>
+            
+            <!-- Bell Notification Icon -->
+            <button class="icon-btn" aria-label="Notifications">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+            </button>
+
+            <!-- User Profile Icon -->
+            <button class="icon-btn" aria-label="Account">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Curate Your Perfect Celebration</h1>
+        <p>Discover and book extraordinary venues and verified vendors for events that leave a lasting impression.</p>
+
+        <!-- Search Bar -->
+        <form action="" method="GET" class="search-box">
+            <div class="search-item">
+                <label>Where</label>
+                <input type="text" name="location" placeholder="Where is your event?">
+            </div>
+            <div class="search-item">
+                <label>When</label>
+                <input type="date" name="event_date">
+            </div>
+            <div class="search-item">
+                <label>Guests</label>
+                <input type="number" name="guest_count" placeholder="Add guests">
+            </div>
+            <button type="submit" class="btn-search">Search</button>
+        </form>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- Browse by Category -->
+        <h2 class="section-title">Browse by Category</h2>
+        <p class="section-subtitle">Find specialists and professionals for every aspect of your event.</p>
+        
+        <div class="category-grid">
+            <a href="" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=500&q=80');">
+                <div class="category-content">
+                    <h3>Venues & Spaces</h3>
+                    <small>Explore &rarr;</small>
+                </div>
+            </a>
+            <a href="" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=500&q=80');">
+                <div class="category-content">
+                    <h3>Fine Catering</h3>
+                    <small>Explore &rarr;</small>
+                </div>
+            </a>
+            <a href="{% url 'listings:browse'}" class="category-card" style="background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=500&q=80');">
+                <div class="category-content">
+                    <h3>Music & Entertainment</h3>
+                    <small>Explore &rarr;</small>
+                </div>
+            </a>
+        </div>
+
+        <!-- Featured Verified Vendors -->
+        <h2 class="section-title">Featured Verified Vendors</h2>
+        <p class="section-subtitle">Top-tier professionals verified for excellence and reliability.</p>
+
+        <div class="vendor-grid">
+            <!-- Vendor 1 -->
+            <div class="vendor-card">
+                <div class="vendor-img" style="background-image: url('https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=500&q=80');">
+                    <span class="badge">VERIFIED</span>
+                </div>
+                <div class="vendor-info">
+                    <div class="vendor-header">
+                        <span class="vendor-title">Lumina Florals</span>
+                        <span class="vendor-rating">★ 4.9</span>
+                    </div>
+                    <p class="vendor-desc">Bespoke botanical designs and immersive floral installations.</p>
+                    <div class="vendor-footer">
+                        <span>Florist</span>
+                        <span class="price">From $3,600</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendor 2 -->
+            <div class="vendor-card">
+                <div class="vendor-img" style="background-image: url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=500&q=80');">
+                    <span class="badge">VERIFIED</span>
+                </div>
+                <div class="vendor-info">
+                    <div class="vendor-header">
+                        <span class="vendor-title">DJ Marcus V.</span>
+                        <span class="vendor-rating">★ 5.0</span>
+                    </div>
+                    <p class="vendor-desc">Curated soundscapes and seamless mixing for luxury events.</p>
+                    <div class="vendor-footer">
+                        <span>Entertainment</span>
+                        <span class="price">From $1,200</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vendor 3 -->
+            <div class="vendor-card">
+                <div class="vendor-img" style="background-image: url('https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80');">
+                    <span class="badge">VERIFIED</span>
+                </div>
+                <div class="vendor-info">
+                    <div class="vendor-header">
+                        <span class="vendor-title">Artisan Confections</span>
+                        <span class="vendor-rating">★ 4.8</span>
+                    </div>
+                    <p class="vendor-desc">Sculpted cakes and artisanal dessert tables.</p>
+                    <div class="vendor-footer">
+                        <span>Bakery</span>
+                        <span class="price">From $850</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <a href="{% url 'listings:home' %}" class="logo" style="font-size: 22px;">EventEase</a>
+        
+        <div class="footer-center">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Support</a>
+            <a href="#">Careers</a>
+        </div>
+        
+        <div class="footer-right">
+            © 2024 EventEase. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

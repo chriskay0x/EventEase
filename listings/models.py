@@ -14,7 +14,7 @@ class AvailabilityStatus(models.TextChoices):
     BOOKED = 'booked', 'Booked'
     BLOCKED = 'blocked', 'Blocked'
 
-class Venue(models.Model):
+class VenueListing(models.Model):
     Vendor = models.CharField(max_length= 1000)
     location = models.CharField(max_length=1000)
     latitude = models.DecimalField(max_digits=9, decimal_places=6)  # PostGIS PointField swap later
