@@ -176,8 +176,75 @@
 
 <body class="min-h-screen">
 
-
 <!-- =====================================================
+     MOBILE HEADER
+====================================================== -->
+
+<header
+    class="md:hidden fixed top-0 left-0 right-0 z-40
+           bg-surface/95 backdrop-blur-md
+           border-b border-outline-variant/30
+           px-5 py-4
+           flex items-center justify-between"
+>
+
+    <div>
+
+        <h1 class="font-headline text-xl text-primary">
+            EventEase
+        </h1>
+
+        <p class="text-xs text-on-surface-variant">
+            Browse Listings
+        </p>
+
+    </div>
+
+
+    <div class="flex items-center gap-2">
+
+        <!-- Dashboard -->
+
+        <a
+            href="{% url 'listings:home' %}"
+            class="w-10 h-10 rounded-full
+                   bg-surface-container
+                   text-primary
+                   flex items-center justify-center"
+            aria-label="Dashboard"
+        >
+
+            <span class="material-symbols-outlined">
+                dashboard
+            </span>
+
+        </a>
+
+
+        <!-- Create Listing -->
+
+        <a
+            href="{% url 'listings:create_listing' %}"
+            class="w-10 h-10 rounded-full
+                   bg-primary-container
+                   text-on-primary-container
+                   flex items-center justify-center
+                   hover:scale-105
+                   transition-transform"
+            aria-label="Create Listing"
+        >
+
+            <span class="material-symbols-outlined">
+                add
+            </span>
+
+        </a>
+
+    </div>
+
+</header>
+
+{% comment %} <!-- =====================================================
      MOBILE HEADER
 ====================================================== -->
 
@@ -219,10 +286,375 @@
 
     </a>
 
-</header>
-
+</header> {% endcomment %}
 
 <!-- =====================================================
+     DESKTOP DASHBOARD SIDEBAR
+====================================================== -->
+
+<aside
+    class="hidden md:flex fixed left-0 top-0
+           h-screen w-64
+           flex-col
+           bg-surface-container
+           border-r border-outline-variant
+           py-8
+           z-30"
+>
+
+    <!-- BRAND -->
+
+    <div class="px-6 mb-8">
+
+        <a href="{% url 'listings:browse' %}">
+
+            <h1 class="font-headline text-2xl text-primary">
+                EventEase
+            </h1>
+
+            <p class="text-sm text-on-surface-variant mt-1">
+                Event management made easy
+            </p>
+
+        </a>
+
+    </div>
+
+
+    <!-- =================================================
+         MAIN NAVIGATION
+    ================================================== -->
+
+    <nav class="flex-1 overflow-y-auto">
+
+        <p
+            class="px-6 mb-3
+                   text-xs font-bold
+                   uppercase tracking-wider
+                   text-on-surface-variant"
+        >
+            Dashboard
+        </p>
+
+
+        <ul class="flex flex-col gap-1 pr-4">
+
+
+            <!-- OVERVIEW -->
+
+            <li>
+
+                <a
+                    href="{% url 'listings:home' %}"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        home
+                    </span>
+
+                    Overview
+
+                </a>
+
+            </li>
+
+
+            <!-- MY LISTINGS -->
+
+            <li>
+
+                <a
+                    href="{% url 'listings:my_listings' %}"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        calendar_month
+                    </span>
+
+                    My Listings
+
+                </a>
+
+            </li>
+
+
+            <!-- BROWSE LISTINGS - ACTIVE -->
+
+            <li>
+
+                <a
+                    href="{% url 'listings:browse' %}"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           bg-primary-container
+                           text-on-primary-container
+                           rounded-r-full
+                           font-semibold"
+                >
+
+                    <span class="material-symbols-outlined">
+                        explore
+                    </span>
+
+                    Browse Listings
+
+                </a>
+
+            </li>
+
+
+            <!-- SAVED LISTINGS -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        favorite
+                    </span>
+
+                    Saved Listings
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+
+        <!-- =================================================
+             FINANCIAL
+        ================================================== -->
+
+        <p
+            class="px-6
+                   mt-8 mb-3
+                   text-xs font-bold
+                   uppercase tracking-wider
+                   text-on-surface-variant"
+        >
+            Financial
+        </p>
+
+
+        <ul class="flex flex-col gap-1 pr-4">
+
+
+            <!-- EARNINGS -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        payments
+                    </span>
+
+                    Earnings
+
+                </a>
+
+            </li>
+
+
+            <!-- PAYMENTS -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        account_balance_wallet
+                    </span>
+
+                    Payments
+
+                </a>
+
+            </li>
+
+
+            <!-- TRANSACTIONS -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        receipt_long
+                    </span>
+
+                    Transactions
+
+                </a>
+
+            </li>
+
+        </ul>
+
+
+
+        <!-- =================================================
+             ACCOUNT
+        ================================================== -->
+
+        <p
+            class="px-6
+                   mt-8 mb-3
+                   text-xs font-bold
+                   uppercase tracking-wider
+                   text-on-surface-variant"
+        >
+            Account
+        </p>
+
+
+        <ul class="flex flex-col gap-1 pr-4">
+
+
+            <!-- PROFILE -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        person
+                    </span>
+
+                    Profile
+
+                </a>
+
+            </li>
+
+
+            <!-- SETTINGS -->
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           hover:text-primary
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        settings
+                    </span>
+
+                    Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+
+    <!-- =================================================
+         CREATE LISTING CTA
+    ================================================== -->
+
+    <div class="px-6 mt-6">
+
+        <a
+            href="{% url 'listings:create_listing' %}"
+            class="w-full
+                   bg-primary
+                   text-on-primary
+                   py-3 px-4
+                   rounded-full
+                   font-semibold
+                   flex items-center
+                   justify-center gap-2
+                   hover:bg-primary-container
+                   transition-colors"
+        >
+
+            <span
+                class="material-symbols-outlined text-[18px]"
+            >
+                add
+            </span>
+
+            Create Listing
+
+        </a>
+
+    </div>
+
+</aside>
+
+{% comment %} <!-- =====================================================
      DESKTOP SIDEBAR
 ====================================================== -->
 
@@ -360,7 +792,7 @@
 
     </div>
 
-</aside>
+</aside> {% endcomment %}
 
 
 
