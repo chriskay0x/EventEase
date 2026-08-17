@@ -1,344 +1,1688 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curated Vendors | EventEase</title>
 
-  <!-- Bootstrap 5 CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Fonts for African Aesthetic -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Browse Listings | EventEase</title>
 
-  <style>
-    :root {
-      --bg-cream: #FAF5EE;          /* Warm Cream Canvas */
-      --card-bg: #FFFFFF;
-      --text-dark: #191614;         /* Rich Ebony Charcoal */
-      --text-muted: #6B6259;
-      --primary-earth: #B84A28;    /* Deep Terracotta */
-      --accent-gold: #D4AF37;      /* Warm African Gold */
-      --pill-bg: #EFE6D8;          /* Warm Ochre Soft Tag Tint */
-      --pill-border: #E0D3C1;
-    }
 
-    body {
-      background-color: var(--bg-cream);
-      color: var(--text-dark);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    <!-- =====================================================
+         GOOGLE FONTS
+         Matches my_listing.html and create_listing.html
+    ====================================================== -->
 
-    /* Cultural Title Typography */
-    .font-brand {
-      font-family: 'Cinzel', serif;
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-    /* Top Decorative Kente / Traditional Pattern Stripe */
-    .pattern-stripe {
-      height: 5px;
-      background: repeating-linear-gradient(
-        45deg,
-        var(--primary-earth),
-        var(--primary-earth) 12px,
-        var(--accent-gold) 12px,
-        var(--accent-gold) 24px,
-        var(--text-dark) 24px,
-        var(--text-dark) 36px
-      );
-      border-radius: 4px;
-    }
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
-    /* Navbar Styling */
-    .navbar-custom {
-      background-color: var(--text-dark);
-    }
-    .navbar-custom .navbar-brand {
-      font-family: 'Cinzel', serif;
-      color: var(--accent-gold);
-      font-weight: 700;
-    }
 
-    /* Filter Label Styling */
-    .filter-label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
+    <!-- Material Symbols -->
 
-    /* Custom African Tag Pills */
-    .btn-pill {
-      background-color: var(--pill-bg);
-      border: 1px solid var(--pill-border);
-      color: var(--text-dark);
-      font-size: 0.8rem;
-      padding: 0.35rem 0.9rem;
-      border-radius: 20px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1"
+        rel="stylesheet"
+    >
 
-    .btn-pill:hover, .btn-pill.active {
-      background-color: var(--primary-earth);
-      color: #FFFFFF;
-      border-color: var(--primary-earth);
-    }
 
-    /* Vendor Card Overhauls */
-    .vendor-card {
-      background: var(--card-bg);
-      border: 1px solid var(--pill-border);
-      border-radius: 16px;
-      overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
+    <!-- Tailwind -->
 
-    .vendor-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(25, 22, 20, 0.08);
-    }
+    <script src="https://cdn.tailwindcss.com"></script>
 
-    .vendor-img-wrapper {
-      position: relative;
-      height: 220px;
-    }
 
-    .vendor-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    <!-- =====================================================
+         EVENTEASE THEME
+    ====================================================== -->
 
-    .verified-badge {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      background: rgba(25, 22, 20, 0.85);
-      backdrop-filter: blur(4px);
-      color: var(--accent-gold);
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(212, 175, 55, 0.4);
-    }
+    <script>
 
-    .card-category-tag {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: var(--primary-earth);
-    }
+        tailwind.config = {
 
-    /* Pagination Bullets */
-    .pagination .page-link {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-weight: 600;
-      margin: 0 4px;
-      border-radius: 50%;
-      width: 38px;
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+            darkMode: "class",
 
-    .pagination .page-item.active .page-link {
-      background-color: var(--primary-earth);
-      color: #FFFFFF;
-    }
-  </style>
+            theme: {
+
+                extend: {
+
+                    colors: {
+
+                        primary: "#003527",
+
+                        "primary-container": "#064e3b",
+
+                        "on-primary": "#ffffff",
+
+                        "on-primary-container": "#80bea6",
+
+                        background: "#fcf9f4",
+
+                        surface: "#fcf9f4",
+
+                        "surface-container": "#f0ede9",
+
+                        "surface-container-low": "#f6f3ee",
+
+                        "surface-container-lowest": "#ffffff",
+
+                        "on-surface": "#1c1c19",
+
+                        "on-surface-variant": "#404944",
+
+                        outline: "#707974",
+
+                        "outline-variant": "#bfc9c3",
+
+                        error: "#ba1a1a"
+
+                    },
+
+                    fontFamily: {
+
+                        headline: ["Playfair Display"],
+
+                        body: ["Inter"]
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    </script>
+
+
+    <style>
+
+        body {
+            background: #fcf9f4;
+            color: #1c1c19;
+            font-family: Inter, sans-serif;
+        }
+
+
+        .shadow-ambient {
+            box-shadow: 0 4px 20px rgba(45, 45, 45, 0.05);
+        }
+
+
+        .shadow-ambient-lg {
+            box-shadow: 0 10px 40px rgba(45, 45, 45, 0.08);
+        }
+
+
+        .listing-card {
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .listing-card:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 12px 30px rgba(45, 45, 45, 0.10);
+
+        }
+
+
+        .listing-image {
+            transition: transform 0.5s ease;
+        }
+
+
+        .listing-card:hover .listing-image {
+            transform: scale(1.04);
+        }
+
+
+        .filter-input:focus,
+        .filter-select:focus {
+
+            border-color: #003527 !important;
+
+            box-shadow:
+                0 0 0 1px #003527 !important;
+
+            outline: none;
+
+        }
+
+
+        .filter-pill.active {
+
+            background: #003527;
+
+            color: #ffffff;
+
+            border-color: #003527;
+
+        }
+
+    </style>
+
 </head>
-<body>
 
-  <!-- Minimal Header / Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom py-3">
-    <div class="container">
-      <a class="navbar-brand fs-4" href="/">EventEase</a>
-      <div class="d-flex align-items-center gap-3">
-        <a href="/" class="text-white text-decoration-none small">Home</a>
-        <a href="#" class="btn btn-sm text-dark font-weight-bold" style="background-color: var(--accent-gold);">List Your Business</a>
-      </div>
+
+<body class="min-h-screen">
+
+
+<!-- =====================================================
+     MOBILE HEADER
+====================================================== -->
+
+<header
+    class="md:hidden fixed top-0 left-0 right-0 z-40
+           bg-surface/95 backdrop-blur-md
+           border-b border-outline-variant/30
+           px-5 py-4
+           flex items-center justify-between"
+>
+
+    <div>
+
+        <h1 class="font-headline text-xl text-primary">
+            EventEase
+        </h1>
+
+        <p class="text-xs text-on-surface-variant">
+            Browse Listings
+        </p>
+
     </div>
-  </nav>
 
-  <!-- Main Content Container -->
-  <div class="container py-5">
-    
-    <!-- Title Section -->
-    <div class="text-center mb-4">
-      <div class="pattern-stripe col-2 mx-auto mb-3"></div>
-      <h1 class="display-5 font-brand fw-bold mb-2">Curated Vendors for African Celebrations</h1>
-      <p class="text-muted col-md-7 mx-auto">
-        Discover exceptional traditional caterers, Aso-Ebi stylists, Alagas, live bands, and decorators matching your event vision.
-      </p>
+
+    <a
+        href="{% url 'listings:create_listing' %}"
+        class="w-10 h-10 rounded-full
+               bg-primary-container
+               text-on-primary-container
+               flex items-center justify-center
+               hover:scale-105
+               transition-transform"
+        aria-label="Create Listing"
+    >
+
+        <span class="material-symbols-outlined">
+            add
+        </span>
+
+    </a>
+
+</header>
+
+
+<!-- =====================================================
+     DESKTOP SIDEBAR
+====================================================== -->
+
+<aside
+    class="hidden md:flex fixed left-0 top-0
+           h-screen w-64
+           flex-col
+           bg-surface-container
+           border-r border-outline-variant
+           py-8
+           z-30"
+>
+
+
+    <!-- BRAND -->
+
+    <div class="px-6 mb-10">
+
+        <h1 class="font-headline text-2xl text-primary">
+            EventEase
+        </h1>
+
+        <p class="text-sm text-on-surface-variant mt-1">
+            Find your perfect event space
+        </p>
+
     </div>
 
-    <div class="row g-4 mt-2">
-      
-      <!-- Left Filter Column -->
-      <div class="col-lg-3">
-        <div class="pe-lg-3">
-          <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
-            <h5 class="fw-bold mb-0 font-brand">Filters</h5>
-            <!-- <a href="{% url 'listings:browse' %}" class="text-decoration-none text-muted small">Reset All</a> -->
-          </div>
 
-          <!-- <form method="GET" action="{% url 'browse' %}">
-            
-            <!-- Location Filter -->
-            <div class="mb-4">
-              <div class="filter-label">Location / City</div>
-              <select name="location" class="form-select form-select-sm border-0 shadow-sm py-2" style="background-color: #FFF;">
-                <option value="">All Locations</option>
-                <option value="Lagos Island" {% if request.GET.location == "Lagos Island" %}selected{% endif %}>Lagos (Island & Lekki)</option>
-                <option value="Lagos Mainland" {% if request.GET.location == "Lagos Mainland" %}selected{% endif %}>Lagos (Mainland)</option>
-                <option value="Abuja" {% if request.GET.location == "Abuja" %}selected{% endif %}>Abuja (FCT)</option>
-                <option value="Port Harcourt" {% if request.GET.location == "Port Harcourt" %}selected{% endif %}>Port Harcourt</option>
-                <option value="Accra" {% if request.GET.location == "Accra" %}selected{% endif %}>Accra</option>
-                <option value="London" {% if request.GET.location == "London" %}selected{% endif %}>London (Diaspora)</option>
-              </select>
+    <!-- NAVIGATION -->
+
+    <nav>
+
+        <ul class="flex flex-col gap-1 pr-4">
+
+
+            <li>
+
+                <a
+                    href="{% url 'listings:browse' %}"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           bg-primary-container
+                           text-on-primary-container
+                           rounded-r-full
+                           font-semibold"
+                >
+
+                    <span class="material-symbols-outlined">
+                        explore
+                    </span>
+
+                    Browse Listings
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'listings:my_listings' %}"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        calendar_month
+                    </span>
+
+                    My Listings
+
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="#"
+                    class="flex items-center gap-3
+                           px-6 py-3
+                           text-on-surface-variant
+                           hover:bg-surface-container-lowest
+                           rounded-r-full
+                           transition-colors"
+                >
+
+                    <span class="material-symbols-outlined">
+                        favorite
+                    </span>
+
+                    Saved Listings
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+
+    <!-- BOTTOM CTA -->
+
+    <div class="mt-auto px-6">
+
+        <a
+            href="{% url 'listings:create_listing' %}"
+            class="w-full
+                   bg-primary
+                   text-on-primary
+                   py-3 px-4
+                   rounded-full
+                   font-semibold
+                   flex items-center
+                   justify-center gap-2
+                   hover:bg-primary-container
+                   transition-colors"
+        >
+
+            <span class="material-symbols-outlined text-[18px]">
+                add
+            </span>
+
+            Create Listing
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main class="md:ml-64 min-h-screen">
+
+
+    <div
+        class="max-w-7xl mx-auto
+               px-5 md:px-10
+               pt-24 md:pt-10
+               pb-12"
+    >
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="mb-10">
+
+            <p
+                class="text-sm font-semibold
+                       text-primary uppercase
+                       tracking-wider mb-2"
+            >
+                Explore EventEase
+            </p>
+
+
+            <h2
+                class="font-headline
+                       text-4xl md:text-5xl
+                       text-primary
+                       tracking-tight"
+            >
+                Find the perfect place for your event
+            </h2>
+
+
+            <p
+                class="mt-3
+                       text-on-surface-variant
+                       max-w-2xl"
+            >
+                Discover venues and event spaces that match
+                your location, budget, capacity and event style.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SEARCH + FILTER AREA
+        ================================================== -->
+
+        <section
+    class="bg-white
+           rounded-2xl
+           border border-outline-variant/40
+           shadow-ambient
+           p-5 md:p-6
+           mb-10"
+>
+
+    <form
+        method="GET"
+        action="{% url 'listings:browse' %}"
+        class="space-y-6"
+    >
+
+        <!-- SEARCH -->
+        <div>
+
+            <label
+                for="search"
+                class="block text-sm
+                       font-semibold mb-2"
+            >
+                Search Listings
+            </label>
+
+            <div class="relative">
+
+                <!-- Search icon -->
+                <span
+                    class="material-symbols-outlined
+                           absolute left-4
+                           top-1/2
+                           -translate-y-1/2
+                           text-on-surface-variant
+                           pointer-events-none"
+                >
+                    search
+                </span>
+
+                <!-- Search input -->
+                <input
+                    type="search"
+                    id="search"
+                    name="search"
+                    value="{{ request.GET.search|default:'' }}"
+                    placeholder="Search venues, locations or event spaces..."
+                    class="filter-input
+                           w-full
+                           rounded-full
+                           border border-outline-variant
+                           bg-surface-container-lowest
+                           pl-12 pr-4 py-3
+                           focus:outline-none
+                           focus:ring-2
+                           focus:ring-primary"
+                >
+
             </div>
 
-            <!-- Price Range Filter Pills -->
-            <div class="mb-4">
-              <div class="filter-label">Budget Tier</div>
-              <div class="d-flex flex-wrap gap-2">
-                <a href="?price=1" class="btn-pill {% if request.GET.price == '1' %}active{% endif %}">₦ (Standard)</a>
-                <a href="?price=2" class="btn-pill {% if request.GET.price == '2' %}active{% endif %}">₦₦ (Premium)</a>
-                <a href="?price=3" class="btn-pill {% if request.GET.price == '3' %}active{% endif %}">₦₦₦ (Luxury / VVIP)</a>
-              </div>
-            </div>
+        </div>
 
-            <!-- African Category Filter Pills -->
-            <div class="mb-4">
-              <div class="filter-label">Category</div>
-              <div class="d-flex flex-wrap gap-2">
-                <a href="?category=catering" class="btn-pill {% if request.GET.category == 'catering' %}active{% endif %}">Jollof & Catering</a>
-                <a href="?category=aso_ebi" class="btn-pill {% if request.GET.category == 'aso_ebi' %}active{% endif %}">Aso-Ebi & Fabrics</a>
-                <a href="?category=decor" class="btn-pill {% if request.GET.category == 'decor' %}active{% endif %}">Traditional Decor</a>
-                <a href="?category=alaga_band" class="btn-pill {% if request.GET.category == 'alaga_band' %}active{% endif %}">Alaga & Live Band</a>
-                <a href="?category=gele_makeup" class="btn-pill {% if request.GET.category == 'gele_makeup' %}active{% endif %}">Gele & Makeup</a>
-                <a href="?category=security" class="btn-pill {% if request.GET.category == 'security' %}active{% endif %}">Security / Bouncers</a>
-                <a href="?category=photo" class="btn-pill {% if request.GET.category == 'photo' %}active{% endif %}">Media & Photo</a>
-              </div>
-            </div>
 
-            <button type="submit" class="btn w-100 py-2 text-white fw-bold rounded-pill shadow-sm" style="background-color: var(--primary-earth);">
-              Filter Vendors
+        <!-- FILTER BUTTONS -->
+        <div
+            class="flex flex-col
+                   sm:flex-row
+                   gap-3"
+        >
+
+            <!-- Search -->
+            <button
+                type="submit"
+                class="w-full sm:w-auto
+                       flex items-center
+                       justify-center
+                       gap-2
+                       rounded-full
+                       bg-primary
+                       text-on-primary
+                       px-6 py-3
+                       font-semibold
+                       hover:bg-primary-container
+                       hover:text-on-primary-container
+                       transition-colors"
+            >
+
+                <span class="material-symbols-outlined text-[20px]">
+                    search
+                </span>
+
+                Search
+
             </button>
-          </form> -->
+
+
+            <!-- Clear Filters -->
+            <a
+                href="{% url 'listings:browse' %}"
+                class="w-full sm:w-auto
+                       flex items-center
+                       justify-center
+                       gap-2
+                       rounded-full
+                       border border-outline-variant
+                       px-6 py-3
+                       font-semibold
+                       text-on-surface-variant
+                       hover:bg-surface-container-low
+                       transition-colors"
+            >
+
+                <span class="material-symbols-outlined text-[20px]">
+                    restart_alt
+                </span>
+
+                Clear
+
+            </a>
+
         </div>
-      </div>
 
-      <!-- Right Listings Grid -->
-      <div class="col-lg-9">
-        
-        <!-- Top Sort Bar -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <span class="text-muted small">Showing verified vendors for your event</span>
-          <div class="d-flex align-items-center gap-2">
-            <select name="sort" class="form-select form-select-sm border-0 shadow-sm" style="background-color: #FFF;">
-              <option value="recommended">Sort by: Recommended</option>
-              <option value="price_low">Price: Low to High</option>
-              <option value="rating">Top Rated Stars</option>
-            </select>
-          </div>
-        </div>
+    </form>
 
-        <!-- 3-Column Card Grid -->
-        {% if listings %}
-          <div class="row g-4">
-            {% for item in listings %}
-              <div class="col-md-6 col-lg-4">
-                <div class="vendor-card h-100 d-flex flex-column">
-                  <div class="vendor-img-wrapper">
-                    {% if item.image %}
-                      <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                    {% else %}
-                      <div class="bg-secondary text-white h-100 d-flex align-items-center justify-content-center">
-                        <small>No Media Image</small>
-                      </div>
-                    {% endif %}
+</section>
 
-                    {% if item.is_verified %}
-                      <span class="verified-badge">✓ Verified</span>
-                    {% endif %}
-                  </div>
+                <!-- FILTER GRID -->
 
-                  <div class="p-3 flex-grow-1 d-flex flex-column justify-content-between">
+                <div
+                    class="grid
+                           grid-cols-1
+                           sm:grid-cols-2
+                           lg:grid-cols-4
+                           gap-4"
+                >
+
+
+                    <!-- LOCATION -->
+
                     <div>
-                      <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="card-category-tag">{{ item.category|default:"VENDOR" }}</span>
-                        <small class="fw-bold text-dark">★ {{ item.rating|default:"5.0" }}</small>
-                      </div>
 
-                      <h3 class="h6 font-brand fw-bold text-dark mb-1">{{ item.title }}</h3>
-                      <p class="text-muted small mb-3">
-                        {{ item.short_description|truncatewords:10 }}
-                      </p>
+                        <label
+                            for="location"
+                            class="block text-sm
+                                   font-semibold mb-2"
+                        >
+                            Location
+                        </label>
+
+
+                        <select
+                            id="location"
+                            name="location"
+                            class="filter-select
+                                   w-full
+                                   rounded-lg
+                                   border border-outline-variant
+                                   bg-surface-container-lowest
+                                   px-4 py-3"
+                        >
+
+                            <option value="">
+                                All Locations
+                            </option>
+
+                            <option
+                                value="Lagos"
+                                {% if request.GET.location == "Lagos" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Lagos
+                            </option>
+
+                            <option
+                                value="Abuja"
+                                {% if request.GET.location == "Abuja" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Abuja
+                            </option>
+
+                            <option
+                                value="Port Harcourt"
+                                {% if request.GET.location == "Port Harcourt" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Port Harcourt
+                            </option>
+
+                            <option
+                                value="Aba"
+                                {% if request.GET.location == "Aba" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Aba
+                            </option>
+
+                            <option
+                                value="Owerri"
+                                {% if request.GET.location == "Owerri" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Owerri
+                            </option>
+
+                        </select>
+
                     </div>
 
-                    <div class="border-top pt-2 mt-2 d-flex justify-content-between align-items-end">
-                      <div>
-                        <span class="text-muted d-block" style="font-size: 0.7rem;">Starting Package</span>
-                        <strong class="text-dark small">₦{{ item.price|floatformat:0 }}</strong>
-                      </div>
-                      
-                      {% if item.is_venue %}
-                        <a href="{% url 'listings:venue_detail' item.slug %}" class="text-decoration-none fw-bold small" style="color: var(--primary-earth);">View &rarr;</a>
-                      {% else %}
-                        <a href="{% url 'listings:service_detail' item.slug %}" class="text-decoration-none fw-bold small" style="color: var(--primary-earth);">View &rarr;</a>
-                      {% endif %}
+
+
+                    <!-- CATEGORY -->
+
+                    <div>
+
+                        <label
+                            for="category"
+                            class="block text-sm
+                                   font-semibold mb-2"
+                        >
+                            Event Type
+                        </label>
+
+
+                        <select
+                            id="category"
+                            name="category"
+                            class="filter-select
+                                   w-full
+                                   rounded-lg
+                                   border border-outline-variant
+                                   bg-surface-container-lowest
+                                   px-4 py-3"
+                        >
+
+                            <option value="">
+                                All Categories
+                            </option>
+
+                            <option
+                                value="wedding"
+                                {% if request.GET.category == "wedding" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Wedding
+                            </option>
+
+                            <option
+                                value="conference"
+                                {% if request.GET.category == "conference" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Conference
+                            </option>
+
+                            <option
+                                value="party"
+                                {% if request.GET.category == "party" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Party / Celebration
+                            </option>
+
+                            <option
+                                value="outdoor"
+                                {% if request.GET.category == "outdoor" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Outdoor Event
+                            </option>
+
+                            <option
+                                value="studio"
+                                {% if request.GET.category == "studio" %}
+                                    selected
+                                {% endif %}
+                            >
+                                Studio
+                            </option>
+
+                        </select>
+
                     </div>
-                  </div>
+
+
+
+                    <!-- CAPACITY -->
+
+                    <div>
+
+                        <label
+                            for="capacity"
+                            class="block text-sm
+                                   font-semibold mb-2"
+                        >
+                            Minimum Capacity
+                        </label>
+
+
+                        <input
+                            type="number"
+                            id="capacity"
+                            name="capacity"
+                            min="1"
+                            value="{{ request.GET.capacity }}"
+                            placeholder="e.g. 100"
+                            class="filter-input
+                                   w-full
+                                   rounded-lg
+                                   border border-outline-variant
+                                   bg-surface-container-lowest
+                                   px-4 py-3"
+                        >
+
+                    </div>
+
+
+
+                    <!-- DATE -->
+
+                    <div>
+
+                        <label
+                            for="date"
+                            class="block text-sm
+                                   font-semibold mb-2"
+                        >
+                            Event Date
+                        </label>
+
+
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            value="{{ request.GET.date }}"
+                            class="filter-input
+                                   w-full
+                                   rounded-lg
+                                   border border-outline-variant
+                                   bg-surface-container-lowest
+                                   px-4 py-3"
+                        >
+
+                    </div>
+
                 </div>
-              </div>
-            {% endfor %}
-          </div>
 
-          <!-- Pagination -->
-          <nav class="mt-5">
-            <ul class="pagination justify-content-center">
-              <li class="page-item"><a class="page-link" href="#">&lsaquo;</a></li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">&rsaquo;</a></li>
-            </ul>
-          </nav>
+
+
+                <!-- PRICE FILTER -->
+
+                <div class="mt-6">
+
+                    <p
+                        class="text-sm
+                               font-semibold mb-3"
+                    >
+                        Budget
+                    </p>
+
+
+                    <div class="flex flex-wrap gap-2">
+
+
+                        <button
+                            type="submit"
+                            name="price"
+                            value=""
+                            class="filter-pill
+                                   px-4 py-2
+                                   rounded-full
+                                   border border-outline-variant
+                                   text-sm
+                                   hover:border-primary
+                                   hover:text-primary
+                                   transition-colors
+                                   {% if not request.GET.price %}
+                                       active
+                                   {% endif %}"
+                        >
+                            Any Price
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="price"
+                            value="1"
+                            class="filter-pill
+                                   px-4 py-2
+                                   rounded-full
+                                   border border-outline-variant
+                                   text-sm
+                                   hover:border-primary
+                                   hover:text-primary
+                                   transition-colors
+                                   {% if request.GET.price == '1' %}
+                                       active
+                                   {% endif %}"
+                        >
+                            Under ₦100k
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="price"
+                            value="2"
+                            class="filter-pill
+                                   px-4 py-2
+                                   rounded-full
+                                   border border-outline-variant
+                                   text-sm
+                                   hover:border-primary
+                                   hover:text-primary
+                                   transition-colors
+                                   {% if request.GET.price == '2' %}
+                                       active
+                                   {% endif %}"
+                        >
+                            ₦100k – ₦250k
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="price"
+                            value="3"
+                            class="filter-pill
+                                   px-4 py-2
+                                   rounded-full
+                                   border border-outline-variant
+                                   text-sm
+                                   hover:border-primary
+                                   hover:text-primary
+                                   transition-colors
+                                   {% if request.GET.price == '3' %}
+                                       active
+                                   {% endif %}"
+                        >
+                            ₦250k – ₦500k
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="price"
+                            value="4"
+                            class="filter-pill
+                                   px-4 py-2
+                                   rounded-full
+                                   border border-outline-variant
+                                   text-sm
+                                   hover:border-primary
+                                   hover:text-primary
+                                   transition-colors
+                                   {% if request.GET.price == '4' %}
+                                       active
+                                   {% endif %}"
+                        >
+                            ₦500k+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FORM ACTIONS -->
+
+                <div
+                    class="mt-6
+                           flex flex-col sm:flex-row
+                           gap-3
+                           justify-end"
+                >
+
+                    <a
+                        href="{% url 'listings:browse' %}"
+                        class="px-6 py-3
+                               rounded-full
+                               border border-outline-variant
+                               text-center
+                               font-semibold
+                               text-on-surface-variant
+                               hover:text-primary
+                               hover:border-primary
+                               transition-colors"
+                    >
+                        Reset Filters
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="px-6 py-3
+                               rounded-full
+                               bg-primary
+                               text-white
+                               font-semibold
+                               hover:bg-primary-container
+                               transition-colors"
+                    >
+                        Search Listings
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RESULTS HEADER
+        ================================================== -->
+
+        <div
+            class="flex flex-col
+                   sm:flex-row
+                   sm:items-center
+                   sm:justify-between
+                   gap-4 mb-6"
+        >
+
+            <div>
+
+                {% if listings %}
+
+                    <p class="text-sm text-on-surface-variant">
+
+                        Showing
+                        <strong class="text-on-surface">
+                            {{ listings|length }}
+                        </strong>
+
+                        listing{{ listings|length|pluralize }}
+
+                    </p>
+
+                {% else %}
+
+                    <p class="text-sm text-on-surface-variant">
+                        No listings found
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- SORT -->
+
+            <form method="GET">
+
+                {% for key, value in request.GET.items %}
+
+                    {% if key != "sort" %}
+
+                        <input
+                            type="hidden"
+                            name="{{ key }}"
+                            value="{{ value }}"
+                        >
+
+                    {% endif %}
+
+                {% endfor %}
+
+
+                <select
+                    name="sort"
+                    onchange="this.form.submit()"
+                    class="rounded-full
+                           border border-outline-variant
+                           bg-white
+                           px-4 py-2
+                           text-sm
+                           cursor-pointer"
+                >
+
+                    <option
+                        value="recommended"
+                        {% if request.GET.sort == "recommended" %}
+                            selected
+                        {% endif %}
+                    >
+                        Recommended
+                    </option>
+
+                    <option
+                        value="price_low"
+                        {% if request.GET.sort == "price_low" %}
+                            selected
+                        {% endif %}
+                    >
+                        Price: Low to High
+                    </option>
+
+                    <option
+                        value="price_high"
+                        {% if request.GET.sort == "price_high" %}
+                            selected
+                        {% endif %}
+                    >
+                        Price: High to Low
+                    </option>
+
+                    <option
+                        value="capacity"
+                        {% if request.GET.sort == "capacity" %}
+                            selected
+                        {% endif %}
+                    >
+                        Largest Capacity
+                    </option>
+
+                </select>
+
+            </form>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LISTINGS
+        ================================================== -->
+
+        {% if listings %}
+
+            <div
+                class="grid
+                       grid-cols-1
+                       sm:grid-cols-2
+                       lg:grid-cols-3
+                       gap-6"
+            >
+
+
+                {% for item in listings %}
+
+                    <article
+                        class="listing-card
+                               bg-surface-container-lowest
+                               rounded-2xl
+                               overflow-hidden
+                               border border-outline-variant/40
+                               shadow-ambient
+                               flex flex-col"
+                    >
+
+
+                        <!-- IMAGE -->
+
+                        <div
+                            class="relative
+                                   w-full
+                                   aspect-[4/3]
+                                   overflow-hidden
+                                   bg-surface-container"
+                        >
+
+                            {% if item.image %}
+
+                                <img
+                                    src="{{ item.image.url }}"
+                                    alt="{{ item.title|default:item.name }}"
+                                    class="listing-image
+                                           w-full h-full
+                                           object-cover"
+                                    loading="lazy"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="w-full h-full
+                                           flex flex-col
+                                           items-center
+                                           justify-center
+                                           text-on-surface-variant"
+                                >
+
+                                    <span
+                                        class="material-symbols-outlined
+                                               text-4xl mb-2"
+                                    >
+                                        image
+                                    </span>
+
+                                    <span class="text-sm">
+                                        No image available
+                                    </span>
+
+                                </div>
+
+                            {% endif %}
+
+
+                            <!-- CATEGORY -->
+
+                            <span
+                                class="absolute
+                                       left-4 top-4
+                                       bg-white/90
+                                       backdrop-blur-sm
+                                       text-primary
+                                       text-xs
+                                       font-bold
+                                       uppercase
+                                       tracking-wide
+                                       px-3 py-1.5
+                                       rounded-full"
+                            >
+                                {{ item.category|default:"Venue" }}
+                            </span>
+
+
+                            <!-- VERIFIED -->
+
+                            {% comment %} {% if item.is_verified %}
+
+                                <span
+                                    class="absolute
+                                           right-4 top-4
+                                           bg-primary
+                                           text-white
+                                           text-xs
+                                           font-semibold
+                                           px-3 py-1.5
+                                           rounded-full
+                                           flex items-center gap-1"
+                                >
+
+                                    <span
+                                        class="material-symbols-outlined
+                                               text-[14px]"
+                                    >
+                                        verified
+                                    </span>
+
+                                    Verified
+
+                                </span>
+
+                            {% endif %} {% endcomment %}
+
+                        </div>
+
+
+
+                        <!-- CARD CONTENT -->
+
+                        <div
+                            class="p-5
+                                   flex flex-col
+                                   flex-grow"
+                        >
+
+
+                            <!-- TITLE -->
+
+                            <div>
+
+                                <h3
+                                    class="font-headline
+                                           text-xl
+                                           text-primary
+                                           font-semibold"
+                                >
+                                    {{ item.name }}
+                                </h3>
+
+
+                                <!-- LOCATION -->
+
+                                <div
+                                    class="flex items-center
+                                           gap-1.5
+                                           mt-2
+                                           text-sm
+                                           text-on-surface-variant"
+                                >
+
+                                    <span
+                                        class="material-symbols-outlined
+                                               text-[18px]"
+                                    >
+                                        location_on
+                                    </span>
+
+                                    <span>
+
+                                        {% if item.city %}
+                                            {{ item.city }}
+                                        {% elif item.location %}
+                                            {{ item.location }}
+                                        {% else %}
+                                            Location available on request
+                                        {% endif %}
+
+                                    </span>
+
+                                </div>
+
+
+                                <!-- DESCRIPTION -->
+
+                                <p
+                                    class="mt-3
+                                           text-sm
+                                           leading-6
+                                           text-on-surface-variant"
+                                >
+                                    {{ item.description|truncatewords:18 }}
+                                </p>
+
+                            </div>
+
+
+
+                            <!-- CARD FOOTER -->
+
+                            <div
+                                class="mt-auto
+                                       pt-5
+                                       mt-5
+                                       border-t
+                                       border-outline-variant/40"
+                            >
+
+                                <div
+                                    class="flex
+                                           items-end
+                                           justify-between
+                                           gap-3"
+                                >
+
+
+                                    <!-- PRICE -->
+
+                                    <div>
+
+                                        <span
+                                            class="block
+                                                   text-xs
+                                                   text-on-surface-variant
+                                                   mb-1"
+                                        >
+                                            Starting from
+                                        </span>
+
+
+                                        <span
+                                            class="text-lg
+                                                   font-bold
+                                                   text-primary"
+                                        >
+
+                                            ₦{{ item.price|floatformat:0 }}
+
+                                        </span>
+
+                                        <span
+                                            class="text-xs
+                                                   text-on-surface-variant"
+                                        >
+                                            / day
+                                        </span>
+
+                                    </div>
+
+
+
+                                    <!-- RATING -->
+
+                                    {% if item.rating %}
+
+                                        <div
+                                            class="flex
+                                                   items-center
+                                                   gap-1
+                                                   text-sm
+                                                   font-semibold"
+                                        >
+
+                                            <span
+                                                class="material-symbols-outlined
+                                                       text-[18px]"
+                                            >
+                                                star
+                                            </span>
+
+                                            {{ item.rating }}
+
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+
+
+                                <!-- VIEW BUTTON -->
+
+                                <div class="mt-4">
+
+                                    {% if item.is_venue %}
+
+                                        <a
+                                            href="{% url 'listings:venue_detail' item.slug %}"
+                                            class="w-full
+                                                   flex
+                                                   items-center
+                                                   justify-center
+                                                   gap-2
+                                                   py-3
+                                                   px-4
+                                                   rounded-full
+                                                   bg-primary
+                                                   text-white
+                                                   font-semibold
+                                                   hover:bg-primary-container
+                                                   transition-colors"
+                                        >
+
+                                            View Listing
+
+                                            <span
+                                                class="material-symbols-outlined
+                                                       text-[18px]"
+                                            >
+                                                arrow_forward
+                                            </span>
+
+                                        </a>
+
+                                    {% else %}
+
+                                        <a
+                                            href="{% url 'listings:service_detail' item.slug %}"
+                                            class="w-full
+                                                   flex
+                                                   items-center
+                                                   justify-center
+                                                   gap-2
+                                                   py-3
+                                                   px-4
+                                                   rounded-full
+                                                   bg-primary
+                                                   text-white
+                                                   font-semibold
+                                                   hover:bg-primary-container
+                                                   transition-colors"
+                                        >
+
+                                            View Listing
+
+                                            <span
+                                                class="material-symbols-outlined
+                                                       text-[18px]"
+                                            >
+                                                arrow_forward
+                                            </span>
+
+                                        </a>
+
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
+
         {% else %}
-          <!-- Empty State -->
-          <div class="text-center py-5 bg-white rounded-3 border">
-            <div class="fs-1 mb-2">🥁</div>
-            <h4 class="font-brand fw-bold">No Vendors Found</h4>
-            <p class="text-muted small">Try selecting different categories or broader location parameters.</p>
-          </div>
+
+
+            <!-- =================================================
+                 EMPTY STATE
+            ================================================== -->
+
+            <section
+                class="bg-white
+                       rounded-2xl
+                       border border-outline-variant/40
+                       shadow-ambient
+                       p-10 md:p-16
+                       text-center"
+            >
+
+                <div
+                    class="w-16 h-16
+                           rounded-full
+                           bg-surface-container
+                           flex items-center
+                           justify-center
+                           mx-auto mb-5"
+                >
+
+                    <span
+                        class="material-symbols-outlined
+                               text-3xl
+                               text-primary"
+                    >
+                        search_off
+                    </span>
+
+                </div>
+
+
+                <h3
+                    class="font-headline
+                           text-2xl
+                           text-primary"
+                >
+                    No Listings Found
+                </h3>
+
+
+                <p
+                    class="mt-2
+                           text-on-surface-variant
+                           max-w-md
+                           mx-auto"
+                >
+                    We couldn't find any listings matching
+                    your current search criteria. Try changing
+                    your filters.
+                </p>
+
+
+                <a
+                    href="{% url 'listings:browse' %}"
+                    class="inline-flex
+                           items-center
+                           gap-2
+                           mt-6
+                           bg-primary
+                           text-white
+                           px-6 py-3
+                           rounded-full
+                           font-semibold
+                           hover:bg-primary-container
+                           transition-colors"
+                >
+
+                    Clear Filters
+
+                    <span
+                        class="material-symbols-outlined text-[18px]"
+                    >
+                        refresh
+                    </span>
+
+                </a>
+
+            </section>
+
         {% endif %}
 
-      </div>
-    </div>
-  </div>
 
-  <!-- Footer -->
-  <footer class="py-4 mt-5 border-top" style="background-color: var(--text-dark); color: #FFF;">
-    <div class="container text-center">
-      <small class="text-muted">&copy; EventEase. All rights reserved.</small>
-    </div>
-  </footer>
 
-  <!-- Bootstrap 5 JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- =================================================
+             PAGINATION
+        ================================================== -->
+
+        {% if page_obj %}
+
+            {% if page_obj.has_other_pages %}
+
+                <nav
+                    class="flex items-center
+                           justify-center
+                           gap-2 mt-10"
+                    aria-label="Pagination"
+                >
+
+
+                    {% if page_obj.has_previous %}
+
+                        <a
+                            href="?page={{ page_obj.previous_page_number }}"
+                            class="w-10 h-10
+                                   rounded-full
+                                   border border-outline-variant
+                                   flex items-center
+                                   justify-center
+                                   hover:border-primary
+                                   hover:text-primary"
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                chevron_left
+                            </span>
+
+                        </a>
+
+                    {% endif %}
+
+
+
+                    {% for number in page_obj.paginator.page_range %}
+
+                        {% if page_obj.number == number %}
+
+                            <span
+                                class="w-10 h-10
+                                       rounded-full
+                                       bg-primary
+                                       text-white
+                                       flex items-center
+                                       justify-center
+                                       font-semibold"
+                            >
+                                {{ number }}
+                            </span>
+
+                        {% else %}
+
+                            <a
+                                href="?page={{ number }}"
+                                class="w-10 h-10
+                                       rounded-full
+                                       border border-outline-variant
+                                       flex items-center
+                                       justify-center
+                                       hover:border-primary
+                                       hover:text-primary"
+                            >
+                                {{ number }}
+                            </a>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+
+
+                    {% if page_obj.has_next %}
+
+                        <a
+                            href="?page={{ page_obj.next_page_number }}"
+                            class="w-10 h-10
+                                   rounded-full
+                                   border border-outline-variant
+                                   flex items-center
+                                   justify-center
+                                   hover:border-primary
+                                   hover:text-primary"
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                chevron_right
+                            </span>
+
+                        </a>
+
+                    {% endif %}
+
+                </nav>
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer
+    class="md:ml-64
+           border-t border-outline-variant/40
+           bg-surface-container-low
+           py-8"
+>
+
+    <div
+        class="max-w-7xl mx-auto
+               px-5 md:px-10
+               flex flex-col
+               sm:flex-row
+               items-center
+               justify-between
+               gap-4"
+    >
+
+        <p
+            class="text-sm
+                   text-on-surface-variant"
+        >
+            © {% now "Y" %} EventEase. All rights reserved.
+        </p>
+
+
+        <div class="flex gap-5">
+
+            <a
+                href="#"
+                class="text-sm
+                       text-on-surface-variant
+                       hover:text-primary"
+            >
+                Help
+            </a>
+
+            <a
+                href="#"
+                class="text-sm
+                       text-on-surface-variant
+                       hover:text-primary"
+            >
+                Terms
+            </a>
+
+            <a
+                href="#"
+                class="text-sm
+                       text-on-surface-variant
+                       hover:text-primary"
+            >
+                Privacy
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
 </body>
+
 </html>

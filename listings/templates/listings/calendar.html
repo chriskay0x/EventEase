@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Availability - {{ listing.name }}</title>
+</head>
+
+<body>
+
+    <h1>Manage Availability</h1>
+
+    <h2>{{ listing.name }}</h2>
+
+    <p>{{ listing.location }}</p>
+
+    <hr>
+
+    {% if availability %}
+
+        {% for day in availability %}
+
+            <p>
+                {{ day.date }}
+                —
+                {{ day.get_status_display }}
+            </p>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No availability dates have been created yet.</p>
+
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>EventEase - Create Listing</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:FILL@0..1"
+        rel="stylesheet"
+    >
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+
+            theme: {
+                extend: {
+
+                    colors: {
+                        primary: "#003527",
+                        "primary-container": "#064e3b",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#80bea6",
+
+                        background: "#fcf9f4",
+                        surface: "#fcf9f4",
+
+                        "surface-container": "#f0ede9",
+                        "surface-container-low": "#f6f3ee",
+                        "surface-container-lowest": "#ffffff",
+
+                        "on-surface": "#1c1c19",
+                        "on-surface-variant": "#404944",
+
+                        outline: "#707974",
+                        "outline-variant": "#bfc9c3",
+
+                        error: "#ba1a1a",
+                        "error-container": "#ffdad6"
+                    },
+
+                    fontFamily: {
+                        headline: ["Playfair Display"],
+                        body: ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+
+        body {
+            background: #fcf9f4;
+            color: #1c1c19;
+            font-family: Inter, sans-serif;
+        }
+
+        .shadow-ambient {
+            box-shadow: 0 4px 20px rgba(45, 45, 45, 0.05);
+        }
+
+        .shadow-ambient-lg {
+            box-shadow: 0 10px 40px rgba(45, 45, 45, 0.08);
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #003527 !important;
+            box-shadow: 0 0 0 1px #003527 !important;
+        }
+
+        /* Calendar */
+
+        .calendar-day {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .calendar-day:hover {
+            background: #e5e2dd;
+        }
+
+        .calendar-day.selected {
+            background: #003527;
+            color: white;
+        }
+
+        .calendar-day.booked {
+            background: #ecdfe3;
+            color: #7a465c;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .calendar-day.unavailable {
+            background: #f0ede9;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #003527;
+        }
+
+        /* Hide scrollbar on horizontal mobile nav */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #dcdad5;
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+
+<body class="min-h-screen">
+
+<!-- ========================================= -->
+<!-- NAVIGATION -->
+<!-- ========================================= -->
+
+<nav class="hidden md:flex fixed left-0 top-0 h-screen w-64
+            flex-col bg-surface-container border-r border-outline-variant
+            py-8 z-30">
+
+    <div class="px-6 mb-10">
+
+        <h1 class="font-headline text-2xl text-primary">
+            Vendor Hub
+        </h1>
+
+        <p class="text-sm text-on-surface-variant mt-1">
+            Manage your events
+        </p>
+
+    </div>
+
+
+    <ul class="flex flex-col gap-1 pr-4">
+
+        <li>
+            <a href="#"
+               class="flex items-center gap-3 px-6 py-3
+                      text-on-surface-variant
+                      hover:bg-surface-variant
+                      rounded-r-full">
+
+                <span class="material-symbols-outlined">
+                    dashboard
+                </span>
+
+                Dashboard
+            </a>
+        </li>
+
+
+        <li>
+            <a href="{% url 'listings:my_listings' %}"
+               class="flex items-center gap-3 px-6 py-3
+                      text-on-surface-variant
+                      hover:bg-surface-variant
+                      rounded-r-full">
+
+                <span class="material-symbols-outlined">
+                    list_alt
+                </span>
+
+                Listings
+            </a>
+        </li>
+
+
+        <li>
+            <a href="#"
+               class="flex items-center gap-3 px-6 py-3
+                      text-on-surface-variant
+                      hover:bg-surface-variant
+                      rounded-r-full">
+
+                <span class="material-symbols-outlined">
+                    payments
+                </span>
+
+                Earnings
+            </a>
+        </li>
+
+
+        <li>
+            <a href="#"
+               class="flex items-center gap-3 px-6 py-3
+                      text-on-surface-variant
+                      hover:bg-surface-variant
+                      rounded-r-full">
+
+                <span class="material-symbols-outlined">
+                    settings
+                </span>
+
+                Settings
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="flex items-center gap-3 mt-4 pt-4 border-t border-outline-variant/30">
+    <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant bg-surface">
+    <img alt="Vendor Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional event vendor in a well-lit, minimalist studio space. The lighting is soft and flattering, creating a high-end editorial feel. They are wearing sophisticated, neutral-toned clothing. The background is a warm ivory color, aligning with the boutique hotel aesthetic. The mood is welcoming and trustworthy." src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFb0VviL4e4GKRjZuOjcYUuJaKjUHPBLRh8N-eXSkBeQ&s=10"/>
+    </div>
+    <div class="flex flex-col min-w-0">
+    <span class="font-label-md text-label-md text-on-surface truncate font-semibold">VivianCatering</span>
+    <span class="font-label-md text-label-md text-on-surface-variant truncate text-[12px]">Vendor Account</span>
+    </div>
+    </div>
+    </div>
+    </nav>
+    {% comment %} <div class="mt-auto px-6">
+        <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 border border-outline-variant bg-surface">
+            <img alt="Vendor Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional event vendor in a well-lit, minimalist studio space. The lighting is soft and flattering, creating a high-end editorial feel. They are wearing sophisticated, neutral-toned clothing. The background is a warm ivory color, aligning with the boutique hotel aesthetic. The mood is welcoming and trustworthy." src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFb0VviL4e4GKRjZuOjcYUuJaKjUHPBLRh8N-eXSkBeQ&s=10"/>
+        </div>
+        <div class="border-t border-outline-variant/40 pt-5">
+
+            <p class="text-sm font-semibold">
+                VivianCatering
+            </p>
+
+            <p class="text-xs text-on-surface-variant">
+                Vendor Account
+            </p>
+
+        </div> {% endcomment %}
+
+    </div>
+
+</nav>
+
+
+<!-- ========================================= -->
+<!-- MAIN CONTENT -->
+<!-- ========================================= -->
+
+<main class="md:ml-64 min-h-screen">
+
+    <div class="max-w-6xl mx-auto px-5 md:px-10 py-10">
+
+
+        <!-- HEADER -->
+
+        <div class="flex flex-col md:flex-row md:items-end
+                    justify-between gap-5 mb-10">
+
+            <div>
+
+                <a href="{% url 'listings:my_listings' %}"
+                   class="flex items-center gap-2 text-sm
+                          text-on-surface-variant
+                          hover:text-primary mb-5">
+
+                    <span class="material-symbols-outlined text-lg">
+                        arrow_back
+                    </span>
+
+                    Back to Listings
+
+                </a>
+
+
+                <h2 class="font-headline text-4xl md:text-5xl
+                           text-primary">
+
+                    Create a New Listing
+
+                </h2>
+
+                <p class="mt-3 text-on-surface-variant max-w-2xl">
+
+                    Add your venue or event space and manage its
+                    availability so customers can book with confidence.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- DJANGO FORM -->
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              id="listingForm">
+
+            {% csrf_token %}
+
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+
+                <!-- ========================================= -->
+                <!-- LEFT / MAIN FORM -->
+                <!-- ========================================= -->
+
+                <div class="lg:col-span-2 space-y-6">
+
+
+                    <!-- BASIC INFORMATION -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 md:p-8">
+
+                        <div class="mb-7">
+
+                            <h3 class="font-headline text-2xl text-primary">
+                                Basic Information
+                            </h3>
+
+                            <p class="text-sm text-on-surface-variant mt-1">
+                                Tell customers what makes your venue special.
+                            </p>
+
+                        </div>
+
+
+                        <div class="space-y-5">
+
+
+                            <!-- TITLE -->
+
+                            <div>
+
+                                <label class="block text-sm font-semibold mb-2">
+                                    Listing Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    required
+                                    placeholder="e.g. The Glasshouse Conservatory"
+                                    class="w-full rounded-lg border border-outline-variant
+                                           bg-surface-container-lowest
+                                           px-4 py-3"
+                                >
+
+                            </div>
+
+
+                            <!-- DESCRIPTION -->
+
+                            <div>
+
+                                <label class="block text-sm font-semibold mb-2">
+                                    Description
+                                </label>
+
+                                <textarea
+                                    name="description"
+                                    rows="5"
+                                    required
+                                    placeholder="Describe your venue, its atmosphere and what makes it suitable for events..."
+                                    class="w-full rounded-lg border border-outline-variant
+                                           bg-surface-container-lowest
+                                           px-4 py-3 resize-none"
+                                ></textarea>
+
+                            </div>
+
+
+                            <!-- CATEGORY -->
+
+                            <div class="grid md:grid-cols-2 gap-5">
+
+                                <div>
+
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Venue Type
+                                    </label>
+
+                                    <select
+                                        name="category"
+                                        required
+                                        class="w-full rounded-lg border border-outline-variant
+                                               bg-surface-container-lowest
+                                               px-4 py-3">
+
+                                        <option value="">
+                                            Select venue type
+                                        </option>
+
+                                        <option value="wedding">
+                                            Wedding Venue
+                                        </option>
+
+                                        <option value="conference">
+                                            Conference Centre
+                                        </option>
+
+                                        <option value="party">
+                                            Party/Event Hall
+                                        </option>
+
+                                        <option value="outdoor">
+                                            Outdoor Venue
+                                        </option>
+
+                                        <option value="studio">
+                                            Studio
+                                        </option>
+
+                                        <option value="restaurant">
+                                            Restaurant
+                                        </option>
+
+                                        <option value="other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <!-- CAPACITY -->
+
+                                <div>
+
+                                    <label class="block text-sm font-semibold mb-2">
+                                        Maximum Capacity
+                                    </label>
+
+                                    <input
+                                        type="number"
+                                        name="capacity"
+                                        min="1"
+                                        required
+                                        placeholder="e.g. 120"
+                                        class="w-full rounded-lg border border-outline-variant
+                                               bg-surface-container-lowest
+                                               px-4 py-3"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- LOCATION -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 md:p-8">
+
+                        <h3 class="font-headline text-2xl text-primary mb-1">
+                            Location
+                        </h3>
+
+                        <p class="text-sm text-on-surface-variant mb-7">
+                            Where is your venue located?
+                        </p>
+
+
+                        <div class="space-y-5">
+
+
+                            <div>
+
+                                <label class="block text-sm font-semibold mb-2">
+                                    Address
+                                </label>
+
+                                <input
+                                    type="text"
+                                    name="address"
+                                    required
+                                    placeholder="123 Example Street"
+                                    class="w-full rounded-lg border border-outline-variant
+                                           bg-surface-container-lowest
+                                           px-4 py-3"
+                                >
+
+                            </div>
+
+
+                            <div class="grid md:grid-cols-2 gap-5">
+
+                                <div>
+
+                                    <label class="block text-sm font-semibold mb-2">
+                                        City
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        required
+                                        placeholder="Aba"
+                                        class="w-full rounded-lg border border-outline-variant
+                                               bg-surface-container-lowest
+                                               px-4 py-3"
+                                    >
+
+                                </div>
+
+
+                                <div>
+
+                                    <label class="block text-sm font-semibold mb-2">
+                                        State
+                                    </label>
+
+                                    <input
+                                        type="text"
+                                        name="state"
+                                        required
+                                        placeholder="Abia"
+                                        class="w-full rounded-lg border border-outline-variant
+                                               bg-surface-container-lowest
+                                               px-4 py-3"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- PRICING -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 md:p-8">
+
+                        <h3 class="font-headline text-2xl text-primary mb-1">
+                            Pricing
+                        </h3>
+
+                        <p class="text-sm text-on-surface-variant mb-7">
+                            Set the amount customers pay to book your venue.
+                        </p>
+
+
+                        <div class="grid md:grid-cols-2 gap-5">
+
+                            <div>
+
+                                <label class="block text-sm font-semibold mb-2">
+                                    Price per Day
+                                </label>
+
+                                <div class="relative">
+
+                                    <span class="absolute left-4 top-1/2
+                                                 -translate-y-1/2
+                                                 text-on-surface-variant">
+                                        ₦
+                                    </span>
+
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                        placeholder="150000"
+                                        class="w-full rounded-lg border border-outline-variant
+                                               bg-surface-container-lowest
+                                               pl-9 pr-4 py-3"
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+                            <div>
+
+                                <label class="block text-sm font-semibold mb-2">
+                                    Booking Duration
+                                </label>
+
+                                <select
+                                    name="booking_duration"
+                                    class="w-full rounded-lg border border-outline-variant
+                                           bg-surface-container-lowest
+                                           px-4 py-3">
+
+                                    <option value="day">
+                                        Per Day
+                                    </option>
+
+                                    <option value="half_day">
+                                        Half Day
+                                    </option>
+
+                                    <option value="hour">
+                                        Per Hour
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- AMENITIES -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 md:p-8">
+
+                        <h3 class="font-headline text-2xl text-primary mb-1">
+                            Amenities
+                        </h3>
+
+                        <p class="text-sm text-on-surface-variant mb-6">
+                            Select the facilities available at your venue.
+                        </p>
+
+
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="parking"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Parking</span>
+                            </label>
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="wifi"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Wi-Fi</span>
+                            </label>
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="power"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Power Supply</span>
+                            </label>
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="chairs"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Chairs</span>
+                            </label>
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="tables"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Tables</span>
+                            </label>
+
+
+                            <label class="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    name="amenities"
+                                    value="security"
+                                    class="rounded border-outline-variant text-primary"
+                                >
+                                <span>Security</span>
+                            </label>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- IMAGE -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 md:p-8">
+
+                        <h3 class="font-headline text-2xl text-primary mb-1">
+                            Venue Image
+                        </h3>
+
+                        <p class="text-sm text-on-surface-variant mb-6">
+                            Upload a high-quality image of your venue.
+                        </p>
+
+
+                        <label
+                            class="flex flex-col items-center justify-center
+                                   w-full h-48 border-2 border-dashed
+                                   border-outline-variant rounded-xl
+                                   cursor-pointer
+                                   hover:border-primary
+                                   hover:bg-surface-container-low
+                                   transition">
+
+                            <span class="material-symbols-outlined
+                                         text-4xl text-on-surface-variant">
+                                cloud_upload
+                            </span>
+
+                            <span class="mt-3 text-sm font-medium">
+                                Click to upload image
+                            </span>
+
+                            <span class="text-xs text-on-surface-variant mt-1">
+                                PNG, JPG or WEBP
+                            </span>
+
+                            <input
+                                type="file"
+                                name="image"
+                                accept="image/*"
+                                class="hidden"
+                            >
+
+                        </label>
+
+                    </section>
+
+
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- RIGHT SIDEBAR -->
+                <!-- ========================================= -->
+
+                <div class="space-y-6">
+
+
+                    <!-- AVAILABILITY -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6 sticky top-6">
+
+                        <div class="flex items-start gap-3 mb-6">
+
+                            <div class="w-10 h-10 rounded-full
+                                        bg-primary-container
+                                        text-on-primary-container
+                                        flex items-center justify-center">
+
+                                <span class="material-symbols-outlined">
+                                    calendar_month
+                                </span>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="font-headline text-2xl text-primary">
+                                    Availability
+                                </h3>
+
+                                <p class="text-sm text-on-surface-variant">
+                                    Set when this venue can be booked.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- START DATE -->
+
+                        <div class="mb-5">
+
+                            <label class="block text-sm font-semibold mb-2">
+                                Available From
+                            </label>
+
+                            <input
+                                type="date"
+                                name="available_from"
+                                id="availableFrom"
+                                required
+                                class="w-full rounded-lg border border-outline-variant
+                                       bg-surface-container-lowest
+                                       px-4 py-3"
+                            >
+
+                        </div>
+
+
+                        <!-- END DATE -->
+
+                        <div class="mb-6">
+
+                            <label class="block text-sm font-semibold mb-2">
+                                Available Until
+                            </label>
+
+                            <input
+                                type="date"
+                                name="available_until"
+                                id="availableUntil"
+                                required
+                                class="w-full rounded-lg border border-outline-variant
+                                       bg-surface-container-lowest
+                                       px-4 py-3"
+                            >
+
+                        </div>
+
+
+                        <!-- CALENDAR -->
+
+                        <div class="border border-outline-variant/50
+                                    rounded-xl overflow-hidden">
+
+                            <div class="flex items-center justify-between
+                                        p-4 bg-surface-container-low">
+
+                                <button
+                                    type="button"
+                                    id="previousMonth"
+                                    class="w-9 h-9 rounded-full
+                                           hover:bg-white
+                                           flex items-center justify-center">
+
+                                    <span class="material-symbols-outlined">
+                                        chevron_left
+                                    </span>
+
+                                </button>
+
+
+                                <h4
+                                    id="calendarMonth"
+                                    class="font-semibold">
+                                </h4>
+
+
+                                <button
+                                    type="button"
+                                    id="nextMonth"
+                                    class="w-9 h-9 rounded-full
+                                           hover:bg-white
+                                           flex items-center justify-center">
+
+                                    <span class="material-symbols-outlined">
+                                        chevron_right
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+
+                            <div class="p-4">
+
+                                <div class="grid grid-cols-7
+                                            text-center text-xs
+                                            text-on-surface-variant
+                                            mb-3">
+
+                                    <span>Sun</span>
+                                    <span>Mon</span>
+                                    <span>Tue</span>
+                                    <span>Wed</span>
+                                    <span>Thu</span>
+                                    <span>Fri</span>
+                                    <span>Sat</span>
+
+                                </div>
+
+
+                                <div
+                                    id="calendarDays"
+                                    class="grid grid-cols-7
+                                           gap-1 justify-items-center">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LEGEND -->
+
+                        <div class="mt-5 space-y-2 text-xs">
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="w-3 h-3 rounded-full bg-primary"></span>
+
+                                <span>
+                                    Selected
+                                </span>
+
+                            </div>
+
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="w-3 h-3 rounded-full
+                                             bg-[#ecdfe3]"></span>
+
+                                <span>
+                                    Already booked
+                                </span>
+
+                            </div>
+
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="w-3 h-3 rounded-full
+                                             bg-surface-container"></span>
+
+                                <span>
+                                    Outside availability
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- STATUS -->
+
+                    <section class="bg-white rounded-xl
+                                    shadow-ambient
+                                    border border-outline-variant/40
+                                    p-6">
+
+                        <h3 class="font-headline text-xl text-primary mb-4">
+                            Listing Status
+                        </h3>
+
+
+                        <select
+                            name="status"
+                            class="w-full rounded-lg border border-outline-variant
+                                   bg-surface-container-lowest
+                                   px-4 py-3">
+
+                            <option value="draft">
+                                Save as Draft
+                            </option>
+
+                            <option value="pending">
+                                Submit for Review
+                            </option>
+
+                        </select>
+
+                    </section>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="flex flex-col gap-3">
+
+                        <button
+                            type="submit"
+                            name="action"
+                            value="publish"
+                            class="w-full bg-primary
+                                   text-white
+                                   py-3.5 px-6
+                                   rounded-full
+                                   font-semibold
+                                   hover:bg-primary-container
+                                   transition">
+
+                            Create Listing
+
+                        </button>
+
+
+                        <button
+                            type="submit"
+                            name="action"
+                            value="draft"
+                            class="w-full border border-primary
+                                   text-primary
+                                   py-3.5 px-6
+                                   rounded-full
+                                   font-semibold
+                                   hover:bg-surface-container
+                                   transition">
+
+                            Save Draft
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+
+<!-- ========================================= -->
+<!-- CALENDAR JAVASCRIPT -->
+<!-- ========================================= -->
+
+<script>
+
+    const calendarDays = document.getElementById("calendarDays");
+    const calendarMonth = document.getElementById("calendarMonth");
+
+    const previousMonth =
+        document.getElementById("previousMonth");
+
+    const nextMonth =
+        document.getElementById("nextMonth");
+
+
+    const availableFrom =
+        document.getElementById("availableFrom");
+
+    const availableUntil =
+        document.getElementById("availableUntil");
+
+
+    let currentDate = new Date();
+
+
+    /*
+        Django should eventually provide these dates
+        from your Booking model.
+
+        Example:
+
+        const bookedDates = [
+            "2026-08-20",
+            "2026-08-21",
+            "2026-09-05"
+        ];
+    */
+
+    const bookedDates = {{ booked_dates|default:"[]"|safe }};
+
+
+    function formatDate(date) {
+
+        const year = date.getFullYear();
+
+        const month =
+            String(date.getMonth() + 1).padStart(2, "0");
+
+        const day =
+            String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+
+    function renderCalendar() {
+
+        calendarDays.innerHTML = "";
+
+
+        const year = currentDate.getFullYear();
+
+        const month = currentDate.getMonth();
+
+
+        const monthName =
+            currentDate.toLocaleString("default", {
+                month: "long"
+            });
+
+
+        calendarMonth.textContent =
+            `${monthName} ${year}`;
+
+
+        const firstDay =
+            new Date(year, month, 1).getDay();
+
+
+        const daysInMonth =
+            new Date(year, month + 1, 0).getDate();
+
+
+        /* Empty spaces before first day */
+
+        for (let i = 0; i < firstDay; i++) {
+
+            const empty =
+                document.createElement("div");
+
+            calendarDays.appendChild(empty);
+        }
+
+
+        /* Calendar days */
+
+        for (let day = 1; day <= daysInMonth; day++) {
+
+            const date =
+                new Date(year, month, day);
+
+            const dateString =
+                formatDate(date);
+
+
+            const element =
+                document.createElement("button");
+
+
+            element.type = "button";
+
+            element.textContent = day;
+
+            element.className =
+                "calendar-day";
+
+
+            /* Today's date */
+
+            if (
+                dateString ===
+                formatDate(new Date())
+            ) {
+
+                element.classList.add("today");
+            }
+
+
+            /* Already booked */
+
+            if (bookedDates.includes(dateString)) {
+
+                element.classList.add("booked");
+
+                element.disabled = true;
+
+                element.title =
+                    "This date is already booked";
+
+            }
+
+
+            element.addEventListener("click", function () {
+
+                if (bookedDates.includes(dateString)) {
+                    return;
+                }
+
+
+                /*
+                    When a date is selected,
+                    populate the date input.
+                */
+
+                availableFrom.value =
+                    dateString;
+
+
+                element.classList.add("selected");
+
+            });
+
+
+            calendarDays.appendChild(element);
+
+        }
+
+    }
+
+
+    previousMonth.addEventListener("click", function () {
+
+        currentDate.setMonth(
+            currentDate.getMonth() - 1
+        );
+
+        renderCalendar();
+
+    });
+
+
+    nextMonth.addEventListener("click", function () {
+
+        currentDate.setMonth(
+            currentDate.getMonth() + 1
+        );
+
+        renderCalendar();
+
+    });
+
+
+    /* Prevent invalid availability range */
+
+    availableFrom.addEventListener("change", function () {
+
+        availableUntil.min =
+            this.value;
+
+    });
+
+
+    availableUntil.addEventListener("change", function () {
+
+        if (
+            availableFrom.value &&
+            this.value < availableFrom.value
+        ) {
+
+            alert(
+                "Available Until cannot be before Available From."
+            );
+
+            this.value = "";
+
+        }
+
+    });
+
+
+    renderCalendar();
+
+</script>
+
+</body>
+</html>
